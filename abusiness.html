@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Приложение для бизнеса — кейс</title>
-  <link rel="stylesheet" href="style.css?v=118">
+  <link rel="stylesheet" href="style.css?v=119">
   <!-- Прячем элементы до анимации появления и сразу применяем сохранённую тему, чтобы не было мигания -->
   <script>
     (function () {
@@ -57,6 +57,10 @@
             <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/>
           </svg>
         </span>
+      </button>
+      <!-- на телефоне пункты меню свёрнуты в эту кнопку -->
+      <button class="menu-toggle" type="button" aria-label="Меню" aria-expanded="false">
+        <span class="menu-toggle__lines" aria-hidden="true"><i></i><i></i><i></i></span>
       </button>
       </div>
     </header>
@@ -476,6 +480,6 @@
   <div class="bottom-glass" aria-hidden="true"></div>
 
 
-  <script src="script.js?v=24"></script>
+  <script src="script.js?v=25"></script>
 </body>
 </html>

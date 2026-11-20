@@ -350,3 +350,24 @@ document.querySelectorAll('.phones--scroll').forEach((box) => {
   box.addEventListener('pointerup', stop);
   box.addEventListener('pointercancel', stop);
 });
+
+// Мобильное меню: кнопка с тремя полосками раскрывает пункты меню под шапкой.
+// Закрывается по повторному нажатию, по клику мимо, по Esc и когда шапка уезжает при прокрутке
+(function () {
+  const header = document.querySelector('.header');
+  const btn = header && header.querySelector('.menu-toggle');
+  if (!btn) return;
+  const set = (open) => {
+    header.classList.toggle('menu-open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', open ? 'Закрыть меню' : 'Меню');
+  };
+  btn.addEventListener('click', (e) => { e.stopPropagation(); set(!header.classList.contains('menu-open')); });
+  document.addEventListener('click', (e) => {
+    if (header.classList.contains('menu-open') && !e.target.closest('.menu')) set(false);
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') set(false); });
+  header.querySelectorAll('.menu__item').forEach((a) => a.addEventListener('click', () => set(false)));
+  new MutationObserver(() => { if (header.classList.contains('is-hidden')) set(false); })
+    .observe(header, { attributes: true, attributeFilter: ['class'] });
+})();

@@ -1438,7 +1438,6 @@ body::before {
 /* на телефоне тема — в правом нижнем углу, чтобы не перекрывать текст */
 @media (max-width: 720px) {
   .location { display: none; }
-  .header-side { position: fixed; top: auto; bottom: 24px; right: 16px; margin-top: 0; z-index: 11; }
 }
 
 /* ---------- Сводка кейса слева от контента ----------
@@ -1670,4 +1669,74 @@ body::before {
 /* в мобильной версии пункт CV в меню не показываем */
 @media (max-width: 720px) {
   .menu__item--cv { display: none; }
+}
+
+/* ---------- Мобильное меню ----------
+   На телефоне пункты меню свёрнуты в кнопку с тремя полосками у правого края,
+   слева от неё — переключатель темы. По нажатию меню выпадает под шапкой справа */
+.menu-toggle { display: none; }
+@media (max-width: 720px) {
+  .header-side { position: static; margin: 0 0 0 auto; }
+  .menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    border-radius: 50%;
+    border: 0.5px solid var(--menu-stroke);
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+            backdrop-filter: blur(20px) saturate(180%);
+    color: var(--text);
+    cursor: pointer;
+  }
+  .menu-toggle__lines { position: relative; width: 20px; height: 14px; }
+  .menu-toggle__lines i {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transition: transform 0.25s ease, opacity 0.2s ease, top 0.25s ease;
+  }
+  .menu-toggle__lines i:nth-child(1) { top: 0; }
+  .menu-toggle__lines i:nth-child(2) { top: 6px; }
+  .menu-toggle__lines i:nth-child(3) { top: 12px; }
+  /* открыто — полоски складываются в крестик */
+  .menu-open .menu-toggle__lines i:nth-child(1) { top: 6px; transform: rotate(45deg); }
+  .menu-open .menu-toggle__lines i:nth-child(2) { opacity: 0; }
+  .menu-open .menu-toggle__lines i:nth-child(3) { top: 6px; transform: rotate(-45deg); }
+
+  /* само меню — выпадающая стеклянная карточка справа под шапкой */
+  .header .menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    flex: none;
+    width: 200px;
+    height: auto;
+    padding: 8px;
+    border-radius: 24px;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px) scale(0.98);
+    transform-origin: top right;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
+  }
+  .header.menu-open .menu {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .header .menu__item { padding: 12px 14px; }
+  /* у меню есть анимация появления шапки — на телефоне её заменяет раскрытие по кнопке */
+  .header .menu[data-reveal] { animation: none; }
 }
