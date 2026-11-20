@@ -1666,3 +1666,8 @@ body::before {
 .case-page__section li a { color: var(--link); text-decoration: none; }
 .case-page__section p a:hover,
 .case-page__section li a:hover { text-decoration: underline; }
+
+/* в мобильной версии пункт CV в меню не показываем */
+@media (max-width: 720px) {
+  .menu__item--cv { display: none; }
+}
