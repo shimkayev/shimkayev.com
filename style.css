@@ -1269,7 +1269,7 @@ body::before {
 }
 .case-brief > div { display: grid; grid-template-columns: 120px 1fr; gap: 16px; }
 .case-brief dt { font-size: 15px; line-height: 24px; color: var(--text-muted); }
-.case-brief dd { margin: 0; }
+.case-brief dd { margin: 0; font-size: 15px; line-height: 24px; }
 @media (max-width: 720px) {
   .case-brief > div { grid-template-columns: 1fr; gap: 2px; }
 }
