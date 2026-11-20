@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Покупка и перенос номера в приложении Tele2 — кейс</title>
-  <link rel="stylesheet" href="style.css?v=122">
+  <link rel="stylesheet" href="style.css?v=123">
   <!-- Прячем элементы до анимации появления и сразу применяем сохранённую тему, чтобы не было мигания -->
   <script>
     (function () {
@@ -82,6 +82,15 @@
 
 
       <section class="case-page__section" data-reveal>
+        <p class="case-page__label">Коротко</p>
+        <dl class="case-brief">
+          <div><dt>Задача</dt><dd>Покупка и&nbsp;перенос номера работали только на&nbsp;вебе: оформление занимало 8&nbsp;минут, оплачивали и&nbsp;оформляли покупку 3% пользователей.</dd></div>
+          <div><dt>Что сделал</dt><dd>Перенёс флоу в&nbsp;приложение, убрал обязательные регистрацию и&nbsp;оплату, добавил автоматическую проверку eSIM, провёл юзабилити-тест на&nbsp;8&nbsp;респондентах. Вместе с&nbsp;флоу&nbsp;— CMS для менеджеров на&nbsp;Ant Design.</dd></div>
+          <div><dt>Результат</dt><dd>Оформление&nbsp;— 2&nbsp;минуты вместо&nbsp;8, покупки нового номера +420%, переносы +213%, обращений в&nbsp;колл-центр −74%. Тот&nbsp;же флоу запустили в&nbsp;Altel.</dd></div>
+        </dl>
+      </section>
+
+      <section class="case-page__section" data-reveal>
         <p class="case-page__label">Контекст</p>
         <h2 class="case-page__h2">Проблема</h2>
         <p>Покупка и&nbsp;перенос номера в&nbsp;Tele2 работали только на&nbsp;вебе. Разработка как раз перешла с&nbsp;аутсорса в&nbsp;инхаус и&nbsp;получила легаси с&nbsp;огромным количеством ошибок на&nbsp;фронте, бэкенде и&nbsp;в&nbsp;дизайне.</p>
@@ -150,7 +159,7 @@
       </section>
       <section class="case-page__section" data-reveal>
         <p class="case-page__label">Процесс</p>
-        <h2 class="case-page__h2">Discovery</h2>
+        <h2 class="case-page__h2">Исследование</h2>
         <p>Начал с&nbsp;бизнес-требований и&nbsp;анализа технических возможностей. Провёл конкурентный анализ и&nbsp;построил Service Blueprint, чтобы увидеть весь процесс целиком — включая менеджеров, которые обрабатывают заказы, и&nbsp;курьеров, которые доставляют SIM-карты.</p>
         <figure class="case-page__shot">
           <img src="images/tele2/competitors.webp" alt="Конкурентный анализ: экраны покупки номера, переноса и заказа SIM-карты у МТС, Тинькофф, Билайн, izi и других операторов" loading="lazy">
@@ -186,7 +195,7 @@
         <p>Собрали частые вопросы прямо на&nbsp;экранах продуктов, чтобы снизить нагрузку на&nbsp;колл-центр.</p>
       </section>
       <section class="case-page__section" data-reveal>
-        <h2 class="case-page__h2">Design</h2>
+        <h2 class="case-page__h2">Проектирование</h2>
         <p>Собрал вайрфреймы и&nbsp;провёл несколько итераций по&nbsp;обратной связи. Затем сделал high-fidelity макеты на&nbsp;дизайн-системе, собрал прототип пользовательских сценариев и&nbsp;подготовил скрипт с&nbsp;заданиями для юзабилити-тестирования.</p>
       </section>
       <section class="case-page__section" data-reveal>
