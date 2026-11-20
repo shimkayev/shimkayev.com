@@ -712,7 +712,7 @@ body::before {
 }
 
 /* логотип компании вместо названия — как в опыте работы на странице «Обо мне» */
-.case-summary__logo { display: block; width: 40px; height: 40px; border-radius: 12px; object-fit: cover; }
+.case-summary__logo { display: block; width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
 .case-summary__logos { display: flex; align-items: center; gap: 8px; }
 
 /* маленькая подпись над разделом: «Контекст», «Процесс» */
