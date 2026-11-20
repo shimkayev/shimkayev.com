@@ -298,20 +298,33 @@ document.addEventListener('touchstart', function () {}, { passive: true });
 
 
 // Карточки с экранами: на компьютере листаются перетаскиванием мышью.
-// Пока тянешь и пока карточка доезжает, привязка выключена — иначе браузер дёргает её
-// к ближайшему телефону рывком. После отпускания плавно доводим до телефона по направлению движения.
+// Привязку браузера на компьютере выключили в CSS, поэтому после отпускания карточку
+// доводим до телефона сами — плавной анимацией по направлению движения.
 document.querySelectorAll('.phones--scroll').forEach((box) => {
-  let startX = 0, startLeft = 0, down = false, timer = 0;
+  let startX = 0, startLeft = 0, down = false, anim = 0;
   const snapPoints = () => {
-    // позиция телефона внутри прокрутки минус левый отступ карточки (тот же, что у привязки)
     const pad = parseFloat(getComputedStyle(box).paddingLeft) || 0;
     const max = box.scrollWidth - box.clientWidth;
     const left = box.getBoundingClientRect().left - box.scrollLeft;
     return [...box.children].map((el) => Math.min(max, Math.max(0, Math.round(el.getBoundingClientRect().left - left - pad))));
   };
+  const glide = (to) => {
+    cancelAnimationFrame(anim);
+    const from = box.scrollLeft, dist = to - from;
+    if (Math.abs(dist) < 1) return;
+    const dur = Math.min(500, 250 + Math.abs(dist) * 0.6);
+    const t0 = performance.now();
+    const ease = (t) => 1 - Math.pow(1 - t, 3); // плавное замедление в конце
+    const step = (now) => {
+      const t = Math.min(1, (now - t0) / dur);
+      box.scrollLeft = from + dist * ease(t);
+      if (t < 1) anim = requestAnimationFrame(step);
+    };
+    anim = requestAnimationFrame(step);
+  };
   box.addEventListener('pointerdown', (e) => {
     if (e.pointerType !== 'mouse' || e.button !== 0) return; // на тачскрине работает обычная прокрутка
-    clearTimeout(timer);
+    cancelAnimationFrame(anim);
     down = true; startX = e.clientX; startLeft = box.scrollLeft;
     box.classList.add('is-dragging');
     box.setPointerCapture(e.pointerId);
@@ -319,9 +332,10 @@ document.querySelectorAll('.phones--scroll').forEach((box) => {
   box.addEventListener('pointermove', (e) => {
     if (down) box.scrollLeft = startLeft - (e.clientX - startX);
   });
-  const stop = (e) => {
+  const stop = () => {
     if (!down) return;
     down = false;
+    box.classList.remove('is-dragging');
     const moved = startLeft - box.scrollLeft; // >0 — тянули вправо (назад)
     const points = snapPoints();
     const cur = box.scrollLeft;
@@ -331,17 +345,7 @@ document.querySelectorAll('.phones--scroll').forEach((box) => {
       target = moved < 0 ? points.find((p) => p > cur + 1) : [...points].reverse().find((p) => p < cur - 1);
     }
     if (target === undefined) target = points.reduce((a, b) => (Math.abs(b - cur) < Math.abs(a - cur) ? b : a), points[0]);
-    box.scrollTo({ left: target, behavior: 'smooth' });
-    // привязку включаем обратно, когда карточка доехала
-    // (scrollend от самого перетаскивания может прийти раньше — его пропускаем)
-    const done = () => {
-      clearTimeout(timer);
-      box.classList.remove('is-dragging');
-      box.removeEventListener('scrollend', onEnd);
-    };
-    const onEnd = () => { if (Math.abs(box.scrollLeft - target) < 2) done(); };
-    box.addEventListener('scrollend', onEnd);
-    timer = setTimeout(done, 1000); // запасной вариант для браузеров без scrollend
+    glide(target);
   };
   box.addEventListener('pointerup', stop);
   box.addEventListener('pointercancel', stop);

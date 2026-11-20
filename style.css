@@ -825,6 +825,11 @@ body::before {
 .phones--scroll .phone { flex-shrink: 0; scroll-snap-align: start; }
 .phones--scroll img { -webkit-user-drag: none; user-select: none; }
 .phones--scroll.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+/* на компьютере (мышь, тачпад) привязку браузера выключаем: она дёргает карточку.
+   До телефона карточку плавно доводит script.js. На телефонах привязка остаётся */
+@media (hover: hover) and (pointer: fine) {
+  .phones--scroll { scroll-snap-type: none; }
+}
 
 /* галерея в ширину контейнера (фото с тестов) */
 .case-page__gallery { margin-top: 40px; }
