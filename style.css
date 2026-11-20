@@ -1737,6 +1737,4 @@ body::before {
     transition: opacity 0.2s ease, transform 0.2s ease;
   }
   .header .menu__item { padding: 12px 14px; }
-  /* у меню есть анимация появления шапки — на телефоне её заменяет раскрытие по кнопке */
-  .header .menu[data-reveal] { animation: none; }
 }
