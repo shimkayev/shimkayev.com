@@ -1755,3 +1755,13 @@ body::before {
   }
   .header .menu__item { padding: 12px 14px; font-size: 20px; line-height: 26px; }
 }
+
+/* Оптическая компенсация в кейсах: карточки с фоном стоят по краю колонки,
+   как скриншоты (текст раздела сдвинут на 4px, карточки — нет) */
+.case-page__section .case-brief,
+.case-page__section .metrics,
+.case-page__section .personas,
+.case-page__section .steps,
+.case-page__section .decisions { margin-left: -4px; margin-right: -4px; }
+/* график вне раздела: тексты сдвинуты на 4px, как у остальных графиков */
+.case-page > .mchart { margin-left: 4px; margin-right: 4px; }
