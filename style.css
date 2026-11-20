@@ -1,0 +1,1662 @@
+:root {
+  --container: 520px;
+  --gap: 16px;
+  --size: 56px;
+
+  --bg: #ffffff;
+  --bubble-bg: #f2f2f5;
+  --link: #2f6fd6;
+  --text: #111;
+  --text-muted: rgba(17, 17, 17, 0.5);
+
+  --glass-bg: rgba(255, 255, 255, 0.28);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --glass-stroke: rgba(0, 0, 0, 0.1); /* серая обводка меню */
+  --menu-stroke: rgba(0, 0, 0, 0.16); /* обводка стекла: меню, город, кнопка темы */
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --glass-highlight: rgba(255, 255, 255, 0.7);
+  --glass-sheen: rgba(255, 255, 255, 0.45);
+  --chart-bar: #2a78d6;
+  --chart-track: rgba(0, 0, 0, 0.05);
+  --chart-norm: #52514e;
+  --chart-muted: #c3c2b7;
+  --bad-text: #d9342b;
+  --bad-bg: rgba(229, 55, 43, 0.07);
+  --good-bar: #1f9d55;
+  --shot-bg: #f2f2f4;
+  --bad-bar: #e5372b;
+
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Контейнер ---------- */
+.container {
+  width: 100%;
+  max-width: calc(var(--container) + 32px); /* 520 + отступы по бокам */
+  margin: 0 auto;
+  padding: 20px 16px; /* шапка в 20px от верха экрана */
+}
+
+/* ---------- Шапка ---------- */
+.header {
+  position: sticky; /* шапка остаётся наверху при прокрутке */
+  top: 20px;
+  transition: top 0.6s cubic-bezier(0.4, 0, 0.2, 1); /* мягко уезжает вверх */
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+}
+
+.avatar {
+  display: block; /* без лишнего отступа под картинкой */
+  flex-shrink: 0;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* при прокрутке вниз шапка уезжает вверх, при прокрутке вверх — возвращается.
+   Двигаем top, а не transform, чтобы не сломать fixed-переключатель темы на телефоне */
+/* без opacity: полупрозрачный родитель отключает размытие стекла (backdrop-filter) у меню и кнопок,
+   и во время анимации они становились прозрачными. Поэтому шапка просто уезжает за край экрана */
+.header.is-hidden { top: -96px; pointer-events: none; }
+/* на телефоне кнопка темы закреплена внизу и остаётся на месте — она должна нажиматься */
+.header.is-hidden .header-side { pointer-events: auto; }
+@media (prefers-reduced-motion: reduce) { .header { transition: none; } }
+
+/* ---------- Liquid glass ---------- */
+.glass {
+  position: relative;
+  background: var(--glass-bg);
+  border: 0.5px solid var(--menu-stroke); /* тонкая обводка без дополнительных линий */
+}
+
+/* Слой с размытием того, что под меню */
+.glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+          backdrop-filter: blur(20px) saturate(180%);
+  pointer-events: none;
+}
+
+/* блик сверху */
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, var(--glass-sheen) 0%, rgba(255, 255, 255, 0) 55%);
+  pointer-events: none;
+}
+
+/* ---------- Меню ---------- */
+.menu {
+  flex: 1;
+  min-width: 0;
+  height: var(--size);
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 8px;
+}
+
+.menu__item {
+  position: relative; /* выше блика */
+  padding: 8px 10px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+
+a.menu__item:hover { color: var(--text-muted); }
+.menu__item--muted { color: var(--text-muted); }
+
+.icon { flex-shrink: 0; }
+
+/* ---------- Бабл ---------- */
+.hero { margin-top: 164px; }
+
+.bubble {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 10px 16px;
+  border-radius: 21px 21px 21px 6px;
+  background: var(--bubble-bg);
+  font-size: 17px;
+  line-height: 22px;
+  letter-spacing: -0.01em;
+  animation: bubble-in 0.35s cubic-bezier(.2, .9, .3, 1.2) both;
+  transform-origin: bottom left;
+}
+
+@keyframes bubble-in {
+  from { opacity: 0; transform: scale(0.6) translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* три точки «печатает…» */
+.bubble__typing { display: inline-flex; gap: 4px; }
+.bubble__typing i {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  animation: dot 1.2s infinite ease-in-out;
+}
+.bubble__typing i:nth-child(2) { animation-delay: 0.15s; }
+.bubble__typing i:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes dot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30%           { transform: translateY(-4px); opacity: 1; }
+}
+
+.bubble__text { white-space: pre; } /* сохраняем двойной пробел после эмодзи */
+.bubble.is-typing .bubble__typing { display: none; }
+
+/* мигающий курсор во время печати */
+.bubble.is-typing .bubble__text::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -0.12em;
+  background: currentColor;
+  animation: caret 0.8s steps(1) infinite;
+}
+@keyframes caret { 50% { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .bubble, .bubble__typing i { animation: none; }
+}
+
+/* ---------- Заголовок и описание ---------- */
+/* Оптическая компенсация: у бабла скруглённые углы, поэтому тексты под ним
+   сдвинуты на 4px, как в кейсах */
+.hero__title,
+.hero__text { margin-left: 4px; margin-right: 4px; }
+
+.hero__title {
+  margin-top: 24px;
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.hero__text {
+  margin-top: 16px;
+  font-size: 15px;
+  line-height: 24px;
+}
+
+/* ---------- Бегущая строка ---------- */
+.marquee {
+  margin-top: 64px;
+  overflow: hidden;
+  /* плавное исчезание по бокам, работает на любом фоне */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent);
+}
+
+.marquee__track {
+  display: flex;
+  width: max-content;
+  animation: marquee 20s linear infinite;
+}
+
+.marquee:hover .marquee__track { animation-play-state: paused; }
+
+.marquee__list {
+  display: flex;
+  gap: 40px;
+  padding-right: 40px; /* такой же отступ на стыке двух копий */
+  list-style: none;
+}
+
+.marquee__list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--text-muted);
+}
+
+/* логотип компании в круглом контейнере */
+.marquee__logo {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.marquee__logo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.marquee__logo img.logo-zoom { transform: scale(1.12); }
+
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee__track { animation: none; }
+}
+
+/* ---------- Карточка кейса ---------- */
+.cases {
+  margin-top: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 72px; /* расстояние между кейсами */
+}
+
+.case__cover {
+  display: block;
+  width: 100%;
+  height: 300px;
+  border-radius: 24px;
+  background: var(--bubble-bg);
+  overflow: hidden;
+  position: relative;
+}
+
+/* нажатие: карточка слегка уменьшается и плавно возвращается */
+.case__cover {
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+          user-select: none;
+}
+/* картинку и ссылку нельзя утащить мышкой при зажатии */
+.case__cover, .case__cover img { -webkit-user-drag: none; }
+.case__cover:active { transform: scale(0.97); transition-duration: 0.1s; }
+@media (prefers-reduced-motion: reduce) { .case__cover { transition: none; } }
+
+.case__cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* картинка заполняет карточку, лишнее обрезается */
+}
+
+/* Обложка Альфа-Банка: фирменный красный фон в обеих темах */
+.case__cover--alfa { background: #ef3124; }
+
+/* Обложка Tele2: светло-голубой фон в обеих темах */
+.case__cover--tele2 { background: #d4eafc; }
+
+/* декоративная картинка точно по центру карточки, позади основной */
+.case__cover img.case__deco {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: auto;
+  height: 75%; /* размер цифр относительно высоты карточки */
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+}
+.case__cover--tele2 img.fit-height { position: relative; } /* телефон поверх цифр */
+
+/* шейп-«бантик» за картинкой, на тон темнее фона */
+.case__shape {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 88%;
+  transform: translate(-50%, -50%);
+  fill: #d6241a;
+}
+.case__cover--alfa img { position: relative; } /* картинка поверх шейпа */
+
+/* картинка целиком по высоте карточки, по центру, без обрезки */
+.case__cover img.fit-height {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+/* Кроп для кейса Tele2: телефон крупно по центру, рука уходит за нижний край.
+   Значения в % от ширины карточки, поэтому кроп одинаковый на любом экране */
+.case__cover img.crop-tele2 {
+  position: absolute;
+  width: 138%;
+  height: auto;
+  max-width: none;
+  left: -19%;
+  top: 0;
+  margin-top: -5.8%;
+  object-fit: initial;
+}
+
+/* Крупный кроп: картинка увеличена, телефон по центру, низ уходит за край.
+   width — масштаб, left и margin-top — сдвиг (margin-top в % считается от ширины,
+   поэтому кроп одинаковый на любой ширине экрана) */
+.case__cover img.crop-zoom {
+  position: absolute;
+  width: 149%;
+  height: auto;
+  max-width: none;
+  left: -27%;
+  top: 0;
+  margin-top: calc(-2.5% - 24px);
+  object-fit: initial;
+}
+
+/* Оптическая компенсация: из-за скругления 24px край карточки визуально
+   начинается правее, поэтому тексты сдвинуты на 4px */
+.case__title,
+.case__text,
+.case__link { margin-left: 4px; margin-right: 4px; }
+
+.case__title {
+  margin-top: 20px;
+  font-size: 17px;
+  line-height: 22px;
+  font-weight: 600;
+}
+
+.case__text {
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: 24px;
+  /* не больше двух строк, дальше многоточие */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.case__link {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--link);
+  text-decoration: none;
+}
+.case__link:hover { text-decoration: underline; }
+
+/* ---------- Стекло внизу экрана ---------- */
+.bottom-glass {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 96px;
+  z-index: 9;
+  pointer-events: none; /* не мешает кликам */
+  /* плавный градиент в цвет фона: белый в светлой теме, чёрный в тёмной */
+  background: linear-gradient(to top, var(--bg) 0%, transparent 100%);
+}
+
+
+/* такой же градиент сверху экрана: контент плавно уходит под шапку */
+body::before {
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 96px;
+  z-index: 9; /* под шапкой (у неё 10) */
+  pointer-events: none;
+  background: linear-gradient(to bottom, var(--bg) 0%, transparent 100%);
+}
+
+/* чтобы последний кейс можно было докрутить выше стекла */
+.container { padding-bottom: 120px; }
+
+/* ---------- Плавное появление первого экрана ---------- */
+/* до запуска анимации элементы скрыты (класс .js ставится в <head>) */
+.js [data-reveal]:not(.is-shown) { opacity: 0; }
+.js .bubble:not(.reveal) { animation: none; }
+
+.reveal {
+  animation: reveal 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: var(--reveal-delay, 0s);
+}
+
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* у бабла своя анимация «выпрыгивания», просто запускаем её по очереди */
+.bubble.reveal {
+  animation: bubble-in 0.45s cubic-bezier(.2, .9, .3, 1.2) both;
+  animation-delay: var(--reveal-delay, 0s);
+}
+
+/* ---------- Ссылка на главную у аватара ---------- */
+.avatar-link { position: relative; flex-shrink: 0; display: block; border-radius: 50%; -webkit-user-drag: none; }
+
+/* при наведении на аватар — то же фото крупно, карточкой под аватаром */
+.avatar-preview {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 20;
+  width: 240px;
+  height: 240px;
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--bubble-bg);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  transform: translateY(-6px) scale(0.9);
+  transform-origin: top left;
+  transition: opacity 0.2s ease, transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+}
+.avatar-preview img { display: block; width: 100%; height: 100%; object-fit: cover; }
+@media (hover: hover) {
+  .avatar-link:hover .avatar-preview { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) { .avatar-preview { transition: none; } }
+/* на широком экране аватар прижат к левому краю экрана (как переключатель темы к правому),
+   а меню занимает всю ширину контейнера */
+@media (min-width: 721px) {
+  .avatar-link {
+    position: absolute;
+    top: 50%;
+    left: calc((100% - 100vw) / 2 + 24px);
+    margin-top: -28px; /* половина высоты аватара */
+  }
+}
+
+/* ---------- Страница «Обо мне» ---------- */
+.page__title {
+  margin: 164px 4px 0; /* 164px — как у бабла на главной; 4px — та же оптическая компенсация, что на главной */
+  font-size: 28px;
+  line-height: 34px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.jobs {
+  list-style: none;
+  margin: 40px 4px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 40px; /* расстояние между местами работы */
+}
+
+.job {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+/* логотип компании: круг; пока нет картинки — первая буква */
+.job__logo {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bubble-bg);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.job__logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.job__logo img.logo-zoom { transform: scale(1.12); }
+/* у Tele2 два бренда: Tele2 сверху и лежит поверх, Altel под ним заходит за него.
+   Обводка цветом фона отделяет логотипы друг от друга */
+.job__logos { flex-shrink: 0; display: flex; flex-direction: column; }
+.job__logos .job__logo:first-child {
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0 0 3px var(--bg);
+}
+.job__logos .job__logo + .job__logo { margin-top: -16px; }
+
+.job__body { flex: 1; min-width: 0; }
+
+/* верх блока: «Компания • Должность», под ним период словами */
+.job__company {
+  font-size: 17px;
+  line-height: 22px;
+  font-weight: 600;
+}
+.job__role { font-weight: 400; } /* должность в той же строке, обычным начертанием */
+
+.job__period {
+  margin-top: 4px;
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--text-muted);
+}
+
+.job__text {
+  margin-top: 12px;
+  font-size: 15px;
+  line-height: 24px;
+}
+.job__text p + p { margin-top: 8px; } /* отступ между абзацами */
+
+@media (max-width: 480px) {
+  .page__title { margin-top: 120px; }
+}
+
+/* ---------- Отзывы ---------- */
+.page__title--section { margin-top: 120px; }
+
+.reviews {
+  list-style: none;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 56px; /* расстояние между отзывами */
+}
+
+.review__author {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0 4px;
+}
+
+.review__photo {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.review__name {
+  font-size: 17px;
+  line-height: 22px;
+  font-weight: 600;
+}
+
+.review__role {
+  margin-top: 2px;
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--text-muted);
+}
+
+/* текст отзыва — как сообщение в чате: угол рядом с автором острее */
+.review__text {
+  margin-top: 12px;
+  padding: 20px 24px;
+  border-radius: 6px 24px 24px 24px;
+  background: var(--bubble-bg);
+  font-size: 15px;
+  line-height: 22px;
+}
+.review__text p + p { margin-top: 16px; }
+
+/* каждый второй отзыв — автор справа */
+.review--right .review__author { flex-direction: row-reverse; text-align: right; }
+.review--right .review__text { border-radius: 24px 6px 24px 24px; }
+
+/* ---------- Страница кейса ---------- */
+.case-page__meta {
+  margin: 12px 4px 0;
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--text-muted);
+}
+
+.case-page__cover {
+  margin-top: 40px;
+  height: 300px;
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--bubble-bg);
+}
+.case-page__cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* обложка кейса Tele2 про номера: голубой фон и цифры «+707» по центру, как на карточке */
+.case-page__cover--tele2 { display: flex; align-items: center; justify-content: center; background: #d4eafc; }
+.case-page__cover--tele2 img { width: auto; height: 75%; object-fit: contain; }
+
+.case-page__section { margin: 72px 4px 0; }
+
+.case-page__h2 {
+  font-size: 20px;
+  line-height: 26px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.case-page__h3 {
+  margin-top: 24px;
+  font-size: 17px;
+  line-height: 22px;
+  font-weight: 600;
+}
+
+.case-page__section p {
+  margin-top: 12px;
+  font-size: 15px;
+  line-height: 24px;
+}
+
+.case-page__list {
+  margin-top: 12px;
+  padding-left: 20px;
+  font-size: 15px;
+  line-height: 24px;
+}
+.case-page__list li + li { margin-top: 6px; }
+
+/* широкие картинки выходят за колонку текста, чтобы их было видно */
+.case-page__figure {
+  --figure-w: min(960px, 100vw - 32px);
+  width: var(--figure-w);
+  margin: 40px 0 0 calc(50% - var(--figure-w) / 2); /* по центру экрана */
+}
+.case-page__figure img { display: block; width: 100%; height: auto; border-radius: 24px; }
+/* светлый скриншот на светлом фоне — тонкая рамка, чтобы был виден край */
+.case-page__figure img.is-framed { border: 1px solid var(--glass-stroke); }
+/* вариант по ширине общего контейнера */
+.case-page__figure--contained { --figure-w: 100%; margin-left: 0; }
+
+/* подзаголовок-вывод под названием кейса */
+.case-page__lead {
+  margin: 16px 4px 0;
+  font-size: 17px;
+  line-height: 26px;
+}
+
+/* краткая сводка: компания, роль, период, платформа */
+.case-summary {
+  margin: 24px 4px 0;
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  justify-content: space-between;
+  gap: 16px;
+}
+.case-summary dt {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--text-muted);
+}
+.case-summary dd {
+  margin-top: 2px;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+/* логотип компании вместо названия — как в опыте работы на странице «Обо мне» */
+.case-summary__logo { display: block; width: 40px; height: 40px; border-radius: 12px; object-fit: cover; }
+.case-summary__logos { display: flex; align-items: center; gap: 8px; }
+
+/* маленькая подпись над разделом: «Контекст», «Процесс» */
+.case-page__section .case-page__label {
+  margin: 0 0 4px;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* подпись под картинкой */
+.case-page__figure figcaption {
+  margin-top: 12px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* скриншоты внутри раздела, по ширине контейнера */
+.case-page__shot { margin: 20px -4px 0; } /* -4px: компенсируем отступ текста, картинка во всю ширину */
+.case-page__shot img { display: block; width: 100%; height: auto; border-radius: 24px; background: var(--shot-bg); } /* фон под телефонами меняется с темой */
+.case-page__shot figcaption {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--text-muted);
+  text-align: center;
+}
+.case-page__shot + .case-page__h3,
+.case-page__shot + p { margin-top: 32px; }
+
+/* блок с двумя «живыми» телефонами: анимации проигрываются внутри рамок */
+/* Телефоны с записями экрана — те же пропорции, что у макетов в кейсе Альфа-Банка:
+   карточка 2000×1554, телефон занимает 84% высоты, рамка 11/397 ширины корпуса,
+   скругление корпуса 55/397, светлый контур по краю. Размеры в cqw — от ширины карточки */
+.phones {
+  container-type: inline-size;
+  margin: 20px -4px 0;
+  aspect-ratio: 2000 / 1554;
+  border-radius: 24px;
+  background: var(--shot-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 7.7%; /* 40px при ширине карточки 520px */
+}
+/* Рамка в стиле iPhone 17 Pro, как в картинках кейса Альфа-Банка: экран 402×874 pt,
+   металлический край 6 pt, чёрная рамка 8 pt, Dynamic Island и боковые кнопки.
+   1 pt = 0.07236cqw (корпус 430 pt занимает 31.1% ширины карточки) */
+.phone {
+  position: relative;
+  z-index: 0; /* кнопки (::after) лежат под корпусом, но над фоном карточки */
+  height: 84%;
+  aspect-ratio: 430 / 902;
+  border: 0.434cqw solid #c7c7c9;
+  border-radius: 5.5cqw;
+  padding: 0.579cqw;
+  background: #000;
+}
+.phone img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 4.49cqw;
+  background: #fff;
+}
+.phone::before { /* Dynamic Island */
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 1.375cqw;
+  left: 50%;
+  width: 9.12cqw;
+  height: 2.68cqw;
+  margin-left: -4.56cqw;
+  border-radius: 99px;
+  background: #000;
+}
+.phone::after { /* кнопки: слева Action и громкость, справа питание и Camera Control */
+  --c: #b0b0b4;
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -0.434cqw -0.651cqw;
+  background:
+    linear-gradient(to bottom, transparent 19%, var(--c) 19% 23.5%, transparent 23.5% 29%, var(--c) 29% 37%, transparent 37% 40%, var(--c) 40% 48%, transparent 48%) left top / 0.651cqw 100% no-repeat,
+    linear-gradient(to bottom, transparent 30%, var(--c) 30% 42%, transparent 42% 58%, var(--c) 58% 66%, transparent 66%) right top / 0.651cqw 100% no-repeat;
+}
+
+/* все экраны в одной карточке с горизонтальной прокруткой: размеры телефонов те же,
+   слева отступ как между телефонами, справа видно край следующего — понятно, что можно листать */
+.phones--scroll {
+  justify-content: flex-start;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 7.7%;
+  padding-inline: 7.7%;
+  scrollbar-width: none;
+  cursor: grab;
+}
+.phones--scroll::-webkit-scrollbar { display: none; }
+.phones--scroll .phone { flex-shrink: 0; scroll-snap-align: start; }
+.phones--scroll img { -webkit-user-drag: none; user-select: none; }
+.phones--scroll.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+
+/* галерея в ширину контейнера (фото с тестов) */
+.case-page__gallery { margin-top: 40px; }
+.case-page__gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.case-page__gallery-grid img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 24px;
+}
+.case-page__gallery figcaption {
+  margin-top: 12px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ключевые решения: номер, заголовок, проблема → решение */
+.decisions {
+  list-style: none;
+  counter-reset: decision;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.decision {
+  counter-increment: decision;
+  padding: 20px 20px 20px 60px;
+  position: relative;
+  border-radius: 24px;
+  background: var(--bubble-bg);
+}
+.decision::before {
+  content: counter(decision);
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 24px;
+  text-align: center;
+}
+.case-page__section .decision__title {
+  margin: 0;
+  font-size: 17px;
+  line-height: 24px;
+  font-weight: 600;
+}
+.case-page__section .decision__text {
+  margin-top: 6px;
+  font-size: 15px;
+  line-height: 22px;
+}
+
+/* ключевая персона — на всю ширину */
+.persona--key { margin-top: 20px; }
+.case-page__section .persona__text { margin-top: 8px; font-size: 15px; line-height: 22px; }
+.persona__text ul { margin-top: 8px; padding-left: 18px; }
+.persona__text li + li { margin-top: 4px; }
+/* в сетке из трёх карточек третья растягивается на всю ширину */
+.personas > .persona:nth-child(3):last-child { grid-column: 1 / -1; }
+/* карточки друг под другом, каждая на всю ширину */
+.personas.personas--stack { grid-template-columns: 1fr; }
+
+/* этапы проекта (роадмап) */
+.steps {
+  list-style: none;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.step {
+  padding: 20px;
+  border-radius: 24px;
+  background: var(--bubble-bg);
+}
+.step__tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--bg);
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+.case-page__section .step__title {
+  margin-top: 10px;
+  font-size: 17px;
+  line-height: 22px;
+  font-weight: 600;
+}
+.case-page__section .step__text {
+  margin-top: 4px;
+  font-size: 15px;
+  line-height: 22px;
+}
+
+/* таблица этапов исследования */
+.table-wrap { margin-top: 20px; overflow-x: auto; }
+.case-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  line-height: 20px;
+}
+.case-table th {
+  padding: 0 12px 10px 0;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--glass-stroke);
+}
+.case-table td {
+  padding: 12px 12px 12px 0;
+  vertical-align: top;
+  border-bottom: 1px solid var(--glass-stroke);
+}
+.case-table td:first-child { font-weight: 500; }
+.case-table td:nth-child(2) { white-space: nowrap; color: var(--text-muted); }
+.case-table td:last-child, .case-table th:last-child { padding-right: 0; color: var(--text-muted); }
+
+/* результаты заданий теста */
+.results { list-style: none; margin-top: 12px; }
+.results li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  font-size: 15px;
+  line-height: 20px;
+  border-bottom: 1px solid var(--glass-stroke);
+}
+.results b { flex-shrink: 0; font-weight: 600; }
+.results--good b { color: #1f9d55; }
+.results--bad b { color: #e5372b; }
+
+/* цитата респондента */
+.quote {
+  margin-top: 16px;
+  padding: 16px 20px;
+  border-radius: 6px 24px 24px 24px;
+  background: var(--bubble-bg);
+  font-size: 15px;
+  line-height: 22px;
+  font-style: italic;
+}
+.quote::before { content: "«"; }
+.quote::after { content: "»"; }
+/* цитата внутри карточки персоны — без своего фона */
+.quote--plain { margin-top: 8px; padding: 0; background: none; border-radius: 0; color: var(--text-muted); }
+
+/* таблица сравнения «было / стало» */
+.case-table--compare td:nth-child(2) { color: var(--text-muted); }
+.case-table--compare td:last-child { color: var(--text); font-weight: 600; }
+.case-table--compare td:first-child { font-weight: 400; }
+
+/* ссылка на доклад под сводкой */
+.case-page__talk {
+  margin: 20px 4px 0;
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--text-muted);
+}
+.case-page__talk a { color: var(--link); text-decoration: none; }
+.case-page__talk a:hover { text-decoration: underline; }
+
+/* ---------- Горизонтальный бар-чарт ---------- */
+.chart { margin-top: 24px; }
+.chart__title {
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+}
+.chart__note {
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--text-muted);
+}
+.chart__rows { list-style: none; margin-top: 12px; }
+.chart__row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 170px 1fr 64px;
+  align-items: center;
+  gap: 12px;
+  padding: 5px 0;
+  font-size: 13px;
+  line-height: 18px;
+}
+.chart__label { color: var(--text); }
+.chart__track {
+  position: relative;
+  height: 14px;
+  border-radius: 0 4px 4px 0;
+  background: var(--chart-track);
+}
+.chart__bar {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: var(--v);
+  min-width: 2px;
+  border-radius: 0 4px 4px 0;
+  background: var(--chart-bar);
+}
+/* норма или среднее — пунктирная отметка поверх всех рядов */
+.chart__norm {
+  position: absolute;
+  top: -5px; bottom: -5px;
+  left: var(--norm);
+  border-left: 1.5px dashed var(--chart-norm);
+}
+.chart__value { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+.chart__legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--text-muted);
+}
+.chart__legend i { width: 14px; border-top: 1.5px dashed var(--chart-norm); }
+/* подсказка при наведении */
+.chart__row:hover .chart__bar { filter: brightness(1.12); }
+.chart__row[data-tip]:hover::after {
+  content: attr(data-tip);
+  position: absolute;
+  right: 0; bottom: calc(100% - 2px);
+  z-index: 2;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 12px;
+  line-height: 16px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+@media (max-width: 480px) {
+  .chart__row { grid-template-columns: 1fr 56px; row-gap: 4px; }
+  .chart__label { grid-column: 1 / -1; }
+}
+
+/* таблица сценариев: проблемные строки — красным, некритичные — приглушённо */
+.scenario-table { font-size: 14px; }
+/* на телефоне таблица не сжимается, а листается вбок */
+@media (max-width: 600px) { .scenario-table { min-width: 520px; } }
+.scenario-table th:not(:first-child), .scenario-table td:not(:first-child) { text-align: right; white-space: nowrap; }
+.scenario-table th:last-child, .scenario-table td:last-child { text-align: left; padding-left: 16px; }
+.scenario-table td { padding: 10px 8px; color: var(--text); }
+.scenario-table td:first-child { padding-left: 12px; font-weight: 400; }
+.scenario-table th:first-child { padding-left: 12px; }
+.scenario-table td:nth-child(2), .scenario-table td:last-child { color: inherit; }
+.scenario-table tr.is-muted td { color: var(--text-muted); }
+.scenario-table tr.is-bad td { color: var(--bad-text); background: var(--bad-bg); }
+.scenario-table tr.is-bad td:last-child { color: var(--bad-text); }
+.scenario-table tr.is-muted td:last-child { color: var(--text-muted); }
+
+/* малые графики: у каждого сценария три мини-полосы со своей шкалой */
+.mchart__head, .mchart__row { display: grid; grid-template-columns: 150px repeat(3, 1fr); gap: 12px; align-items: center; }
+.mchart__head { margin-top: 12px; font-size: 12px; line-height: 16px; font-weight: 600; color: var(--text-muted); }
+.mchart__cell { display: grid; grid-template-columns: 1fr 44px; gap: 6px; align-items: center; }
+.mchart__val { font-size: 12px; font-weight: 600; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.mchart .chart__track { height: 10px; }
+/* относительно нормы: зелёный — норма и выше, красный — ниже */
+.chart__bar--good { background: var(--good-bar); }
+.chart__bar--bad { background: var(--bad-bar); }
+.mchart__badge {
+  display: inline-block;
+  margin-left: 4px;
+  padding: 0 6px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-stroke);
+  font-size: 11px;
+  line-height: 16px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.mchart__foot { margin-top: 4px; }
+@media (max-width: 480px) {
+  .mchart__head { grid-template-columns: repeat(3, 1fr); }
+  .mchart__head span:first-child { display: none; }
+  .mchart__row { grid-template-columns: repeat(3, 1fr); row-gap: 6px; }
+  .mchart__row .chart__label { grid-column: 1 / -1; }
+  .mchart__cell { grid-template-columns: 1fr; gap: 2px; }
+  .mchart__val { text-align: left; }
+}
+
+/* ---------- Столбчатый график по месяцам ---------- */
+.colchart__plot {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(var(--n), 1fr);
+  gap: 6px;
+  align-items: end;
+}
+.colchart__col { position: relative; display: flex; flex-direction: column; align-items: center; }
+.colchart__val {
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  margin-bottom: 4px;
+}
+.colchart__bar-wrap { width: 100%; height: 160px; display: flex; align-items: flex-end; justify-content: center; }
+.colchart__bar {
+  width: 100%;
+  max-width: 24px;
+  height: var(--v);
+  min-height: 2px;
+  border-radius: 4px 4px 0 0;
+  background: var(--chart-muted);
+}
+.colchart__col.is-after .colchart__bar { background: var(--chart-bar); }
+.colchart__month {
+  margin-top: 6px;
+  font-size: 11px;
+  line-height: 14px;
+  color: var(--text-muted);
+}
+/* пунктир после месяца релиза */
+.colchart__col.is-release::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 20px;
+  right: -4px;
+  border-right: 1.5px dashed var(--chart-norm);
+}
+.colchart__col:hover .colchart__bar { filter: brightness(1.12); }
+.colchart__col[data-tip]:hover::before {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 12px;
+  line-height: 16px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.colchart__legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 12px; font-size: 13px; line-height: 18px; color: var(--text-muted); }
+.colchart__legend span { display: inline-flex; align-items: center; gap: 6px; }
+.colchart__legend i { width: 10px; height: 10px; border-radius: 2px; background: var(--chart-muted); }
+.colchart__legend i.is-after { background: var(--chart-bar); }
+.colchart__legend i.is-line { width: 14px; height: 0; border-radius: 0; background: none; border-top: 1.5px dashed var(--chart-norm); }
+/* на телефоне подписываем только ключевые месяцы, остальные значения — по нажатию */
+@media (max-width: 480px) {
+  .colchart__plot { gap: 3px; }
+  .colchart__val { visibility: hidden; font-size: 10px; }
+  .colchart__col.is-key .colchart__val { visibility: visible; }
+  .colchart__month { font-size: 9px; }
+  .colchart__bar-wrap { height: 130px; }
+}
+
+/* персоны в кейсе */
+.personas {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.persona {
+  padding: 20px;
+  border-radius: 24px;
+  background: var(--bubble-bg);
+}
+.case-page__section .persona__name {
+  margin: 0;
+  font-size: 17px;
+  line-height: 22px;
+  font-weight: 600;
+}
+.case-page__section .persona__text {
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: 22px;
+}
+
+/* цифры результатов */
+.metrics {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.metric {
+  padding: 20px;
+  border-radius: 24px;
+  background: var(--bubble-bg);
+}
+.case-page__section .metric__value {
+  margin: 0;
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.case-page__section .metric__label {
+  margin-top: 4px;
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--text-muted);
+}
+
+/* ---------- Мобильные ---------- */
+@media (max-width: 480px) {
+  .menu { padding: 0 4px; }
+  .menu__item { font-size: 13px; padding: 8px 6px; }
+  .hero { margin-top: 120px; }
+  .br-desktop { display: none; } /* на узком экране текст переносится сам */
+  .personas { grid-template-columns: 1fr; }
+  .case-summary { grid-template-columns: 1fr 1fr; justify-content: stretch; }
+}
+
+/* ---------- Тёмная тема ----------
+   По умолчанию следует настройке системы. Переключатель ставит на <html>
+   атрибут data-theme="light" или "dark", и он важнее системной настройки. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #000000;
+    --bubble-bg: #1a1a1a;
+    --link: #5b9bff;
+    --text: #f5f5f5;
+    --text-muted: rgba(245, 245, 245, 0.5);
+    --glass-bg: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.18);
+    --glass-stroke: rgba(255, 255, 255, 0.15);
+    --menu-stroke: rgba(255, 255, 255, 0.15);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    --glass-highlight: rgba(255, 255, 255, 0.25);
+    --glass-sheen: rgba(255, 255, 255, 0); /* в тёмной теме без блика */
+    --chart-bar: #3987e5;
+    --chart-track: rgba(255, 255, 255, 0.07);
+    --chart-norm: #c3c2b7;
+    --chart-muted: #52514e;
+    --bad-text: #ff6b62;
+    --bad-bg: rgba(255, 107, 98, 0.1);
+    --good-bar: #2fbf6e;
+    --shot-bg: #1a1a1a; /* как остальные карточки в тёмной теме */
+    --bad-bar: #ff5c52;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #000000;
+  --bubble-bg: #1a1a1a;
+  --link: #5b9bff;
+  --text: #f5f5f5;
+  --text-muted: rgba(245, 245, 245, 0.5);
+  --glass-bg: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --glass-stroke: rgba(255, 255, 255, 0.15);
+  --menu-stroke: rgba(255, 255, 255, 0.15);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --glass-highlight: rgba(255, 255, 255, 0.25);
+  --glass-sheen: rgba(255, 255, 255, 0); /* в тёмной теме без блика */
+  --chart-bar: #3987e5;
+  --chart-track: rgba(255, 255, 255, 0.07);
+  --chart-norm: #c3c2b7;
+  --chart-muted: #52514e;
+  --bad-text: #ff6b62;
+  --bad-bg: rgba(255, 107, 98, 0.1);
+  --good-bar: #2fbf6e;
+  --shot-bg: #1a1a1a; /* как остальные карточки в тёмной теме */
+  --bad-bar: #ff5c52;
+  color-scheme: dark;
+}
+
+/* Плавная смена темы: браузер делает снимок страницы и плавно
+   проявляет новую тему поверх старой (View Transitions). Так все
+   элементы меняются одновременно, без мерцания. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.35s;
+  animation-timing-function: ease;
+}
+
+/* ---------- Переключатель темы ---------- */
+/* блок с переключателем темы: стоит в шапке, поэтому едет вместе с меню, но прижат к правому краю экрана */
+.header-side {
+  position: absolute;
+  top: 50%;
+  right: calc((100% - 100vw) / 2 + 24px);
+  margin-top: -28px; /* половина высоты: по центру меню */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+/* город — в своём стеклянном контейнере той же высоты, что меню, справа от аватара у левого края экрана.
+   На узком экране места нет — город скрыт */
+.location {
+  position: absolute;
+  top: 50%;
+  left: calc((100% - 100vw) / 2 + 24px + 56px + 8px);
+  margin-top: -28px;
+  height: 56px;
+  padding: 0 20px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+/* при наведении на город фото гор Алматы заполняет сам контейнер, текст становится белым */
+.location { cursor: default; overflow: hidden; }
+.location__photo {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+/* лёгкое затемнение поверх фото, чтобы белый текст читался */
+.location__photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+}
+.location__photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%; /* видны снежные вершины и зелёные склоны */
+  transform: scale(1.15);
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.location__text {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.3s ease;
+}
+.location:hover .location__photo { opacity: 1; }
+.location:hover .location__photo img { transform: none; }
+.location:hover .location__text { color: #fff; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35); }
+@media (prefers-reduced-motion: reduce) { .location__photo, .location__photo img, .location__text { transition: none; } }
+
+.theme-switch {
+  /* круглая кнопка той же высоты, что меню, и в том же стекле */
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border-radius: 50%;
+  border: 0.5px solid var(--menu-stroke);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+          backdrop-filter: blur(20px) saturate(180%);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.theme-switch:hover { background: var(--bubble-bg); }
+
+.theme-switch__knob {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  color: var(--text);
+}
+
+.theme-switch__knob svg { width: 22px; height: 22px; }
+/* кнопка показывает тему, на которую переключит: в светлой — синяя луна, в тёмной — жёлтое солнце */
+.theme-switch .icon-sun { color: #ffcc00; display: none; }
+.theme-switch .icon-moon { color: #2f6fd6; display: block; }
+
+.is-dark .theme-switch .icon-sun { display: block; }
+.is-dark .theme-switch .icon-moon { display: none; }
+
+.theme-switch:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+
+/* на телефоне тема — в правом нижнем углу, чтобы не перекрывать текст */
+@media (max-width: 720px) {
+  .location { display: none; }
+  .header-side { position: fixed; top: auto; bottom: 24px; right: 16px; margin-top: 0; z-index: 11; }
+}
+
+/* ---------- Сводка кейса слева от контента ----------
+   На широких экранах блок «Компания / Роль / Проект / Продукт» уходит
+   в левую колонку столбиком, на уровне заголовка кейса */
+@media (min-width: 1120px) {
+  .case-page { position: relative; }
+  .case-page .case-summary {
+    position: absolute;
+    top: 0;
+    right: calc(100% + 64px);
+    width: 200px;
+    margin: 0;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* заголовок кейса чуть меньше, чем на странице «Обо мне» */
+.case-page .page__title { font-size: 24px; line-height: 30px; }
+
+/* текст только для скринридеров — на экране не виден */
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* по клику бабл печатает приветствие заново, со звуком */
+.bubble { cursor: pointer; -webkit-user-select: none; user-select: none; }
+
+/* ---------- Стартовый экран «Напиши мне» ---------- */
+.intro { display: none; } /* без JS и при повторном заходе в рамках визита — сразу главная */
+.has-intro .intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background: var(--bg);
+}
+.has-intro body { overflow: hidden; } /* главная под стартовым экраном не прокручивается */
+
+.intro__inner {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  animation: reveal 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+/* имя в самом верху экрана, на высоте шапки главной (20px сверху, 56px высотой) */
+.intro__name {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  line-height: 56px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-muted);
+  animation: reveal 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@media (prefers-reduced-motion: reduce) { .intro__name { animation: none; } }
+.intro__composer { display: flex; gap: 8px; } /* только поле и кнопка, по центру экрана */
+/* приветствие нельзя менять — это не поле ввода, а готовое сообщение */
+.intro__input {
+  width: 240px;
+  display: flex;
+  align-items: center;
+  cursor: default;
+  -webkit-user-select: none;
+          user-select: none;
+  height: 56px;
+  padding: 0 22px;
+  border-radius: 999px;
+  border: 0;
+  background: var(--bubble-bg);
+  font: inherit;
+  font-size: 17px;
+  color: var(--text);
+  outline: none;
+}
+.intro__send {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border: 0;
+  border-radius: 50%;
+  background: #0a84ff;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.2s, transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.intro__send:hover { background: #0071e3; }
+.intro__send:active { transform: scale(0.92); transition-duration: 0.1s; }
+.intro__send:focus-visible { outline: 2px solid #0a84ff; outline-offset: 3px; }
+
+/* уход стартового экрана после «Отправить» */
+.intro.is-leaving { opacity: 0; transition: opacity 0.45s ease; }
+.intro.is-leaving .intro__inner { transform: translateY(-16px) scale(0.98); transition: transform 0.45s ease; }
+
+/* сообщение посетителя на главной — синий бабл справа, над моим ответом */
+.hero { position: relative; }
+.bubble-out { display: none; }
+.intro-sent .bubble-out {
+  position: absolute;
+  right: 4px;
+  bottom: calc(100% + 12px);
+  display: block;
+  max-width: 80%;
+  padding: 10px 16px;
+  border-radius: 21px 21px 6px 21px;
+  background: #0a84ff;
+  color: #fff;
+  font-size: 17px;
+  line-height: 22px;
+  letter-spacing: -0.01em;
+  white-space: pre-wrap;
+  transform-origin: bottom right;
+  animation: bubble-in 0.45s cubic-bezier(.2, .9, .3, 1.2) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro__inner, .intro-sent .bubble-out { animation: none; }
+  .intro.is-leaving, .intro.is-leaving .intro__inner { transition: none; }
+}
+
+/* ══ Eye tracker ═══════════════════════════════════════════
+   From Bencho (bencho.dev, MIT). See watcher.js. The frame holds
+   the largest ball the Size knob allows, so the wall never
+   rescales it.
+
+   Bencho's tokens are mapped here, on the component's own root,
+   onto what this site already uses for the same job — so nothing
+   new leaks out as a global:
+     --fill-slab → --bubble-bg  (the surface cards and bubbles sit on)
+     --fill-on   → --text       (the site's ink)
+     --card      → --bubble-bg  (the same surface)
+     --font-ui   → inherit      (the site's system UI font from body)
+   --ink and --bg were only read by Bencho's own logo and lock-screen
+   variants, which this site does not have, so those rules are left out. */
+.eyt {
+  --fill-slab: var(--bubble-bg);
+  --fill-on: var(--text);
+  --card: var(--bubble-bg);
+  --font-ui: inherit;
+  width: 200px;
+  height: 200px;
+  display: grid;
+  place-items: center;}
+
+.eyt-ball {
+  width: var(--eyt-size, 100px);
+  height: var(--eyt-size, 100px);
+  overflow: visible;}
+
+/* the ball is the Fill's own slab and the eyes its ink: white
+   with dark eyes on a light fill, near-black with light eyes on
+   a dark one */
+.eyt-body { fill: var(--fill-slab, #ffffff); }
+
+.eyt-eye { fill: var(--fill-on, #0b0b0d); }
+
+/* a press on the toy opens a chat bubble off its lower right: the
+   pet's bubble, its square corner pointing back at the face */
+.eyt { position: relative; }
+
+/* a press gives a little under the finger and springs back out */
+.eyt-ball[data-poke] {
+  cursor: pointer;
+  transform-origin: center;
+  transition: scale 420ms cubic-bezier(0.24, 1.34, 0.38, 1);
+  -webkit-tap-highlight-color: transparent;}
+
+.eyt-ball[data-poke]:active { scale: 0.96; transition-duration: 160ms; transition-timing-function: ease; }
+
+.eyt-say {
+  position: absolute;
+  left: calc(50% + var(--eyt-size, 100px) * 0.36);
+  top: calc(50% + var(--eyt-size, 100px) * 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 34px;
+  padding: 0 16px;
+  border-radius: 6px 14px 14px 14px;
+  background: var(--tint, #3b5bff);
+  box-shadow: inset 0 -1.5px 0 rgba(0, 0, 0, 0.1);
+  color: #ffffff;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 400;
+  white-space: nowrap;
+  transform-origin: top left;
+  opacity: 0;
+  scale: 0.85;
+  pointer-events: none;
+  transition: opacity 160ms ease, scale 220ms cubic-bezier(0.24, 1.34, 0.38, 1), background-color 220ms ease;
+  letter-spacing: 0em;}
+
+.eyt-say[data-on] { opacity: 1; scale: 1; }
+
+.eyt-caret {
+  width: 1.5px;
+  height: 13px;
+  border-radius: 1px;
+  background: var(--fill-slab, var(--card));
+  animation: pet-caret 1s steps(1) infinite;}
+
+@keyframes pet-caret {
+  50% { opacity: 0; }}
+
+/* ── на этом сайте: на стартовом экране, слева от приветствия ──
+   Размер по самому шарику (56px, как поле и кнопка), а не 200×200 */
+.intro__eyes.eyt { flex-shrink: 0; width: auto; height: auto; }
+
+
+/* ссылки внутри текста кейсов (например, отсылка к другому кейсу) */
+.case-page__section p a,
+.case-page__section li a { color: var(--link); text-decoration: none; }
+.case-page__section p a:hover,
+.case-page__section li a:hover { text-decoration: underline; }

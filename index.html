@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Портфолио</title>
+  <link rel="stylesheet" href="style.css?v=114">
+  <!-- Прячем элементы до анимации появления и сразу применяем сохранённую тему, чтобы не было мигания -->
+  <script>
+    (function () {
+      var root = document.documentElement;
+      root.classList.add('js');
+      var saved = null;
+      try { saved = localStorage.getItem('theme'); } catch (e) {}
+      if (saved === 'light' || saved === 'dark') root.dataset.theme = saved;
+      var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+      root.classList.toggle('is-dark', dark);
+      // стартовый экран «напиши мне» показываем один раз за визит
+      try { if (!sessionStorage.getItem('introDone')) root.classList.add('has-intro'); } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+
+  <!-- Стартовый экран: посетитель «отправляет» мне сообщение, а на главной я ему отвечаю.
+       Нажатие «Отправить» — действие человека, поэтому браузер разрешает звук печати -->
+  <div class="intro" role="dialog" aria-modal="true" aria-label="Начать диалог">
+    <p class="intro__name">Shimkayev Aman</p>
+    <div class="intro__inner">
+      <form class="intro__composer">
+        <!-- круглый с глазами (Eye tracker из Bencho): следит за курсором -->
+        <div class="intro__eyes" data-eye-tracker></div>
+        <span class="intro__input">Привет 👋</span>
+        <button class="intro__send" type="submit" aria-label="Отправить">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 19V5M5 12l7-7 7 7"/>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="container">
+    <header class="header">
+      <a class="avatar-link" href="index.html" aria-label="На главную">
+        <img class="avatar" data-reveal src="images/avatar.jpg?v=3" alt="Аман" width="56" height="56">
+        <span class="avatar-preview" aria-hidden="true"><img src="images/avatar-large.webp" alt="" width="240" height="240" draggable="false"></span>
+      </a>
+
+      <!-- Город — рядом с аватаром -->
+      <span class="location glass" data-reveal>
+        <span class="location__photo" aria-hidden="true"><img src="images/almaty.webp" alt="" draggable="false"></span>
+        <span class="location__text">
+          <svg class="icon" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+            <path fill="currentColor" d="M21 3 3 10.5l7.6 2.9L13.5 21 21 3Z"/>
+          </svg>
+          Алматы
+        </span>
+      </span>
+
+      <nav class="menu glass" data-reveal>
+        <a class="menu__item" href="about.html">Обо мне</a>
+        <a class="menu__item" href="https://t.me/shimkayev" target="_blank" rel="noopener">Telegram</a>
+        <a class="menu__item" href="https://www.linkedin.com/in/shimkayev/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="menu__item" href="#cv">CV</a>
+      </nav>
+
+      <!-- Справа у края экрана: переключатель темы -->
+      <div class="header-side">
+      <button class="theme-switch" data-reveal type="button" role="switch" aria-checked="false" aria-label="Тёмная тема">
+        <span class="theme-switch__knob">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/>
+          </svg>
+        </span>
+      </button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <!-- сообщение посетителя со стартового экрана -->
+      <p class="bubble-out" aria-live="polite"></p>
+      <p class="bubble" data-reveal data-text="Привет 👋  Я, Аман">
+        <span class="bubble__typing" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="bubble__text"></span>
+      </p>
+
+      <h1 class="hero__title" data-reveal>
+        Продуктовый дизайнер<br class="br-desktop">
+        с&nbsp;опытом в&nbsp;финтехе, телекоме<br class="br-desktop">
+        и&nbsp;дизайн-системах
+      </h1>
+
+      <p class="hero__text" data-reveal>
+        Провёл редизайн мобильного банка для бизнеса в&nbsp;Альфа-Банке и&nbsp;увеличил продажи номеров
+        в&nbsp;Tele2 на&nbsp;247%. Разработал дизайн-системы для Tele2,
+        X5&nbsp;Group и&nbsp;Jusan Bank. Сам провожу CustDev и&nbsp;юзабилити-тесты
+      </p>
+    </section>
+
+    <!-- Бегущая строка: список продублирован, чтобы лента шла без разрыва -->
+    <section class="marquee" data-reveal aria-label="Места работы">
+      <div class="marquee__track">
+        <ul class="marquee__list">
+          <li><span class="marquee__logo"><img src="images/logo-chulakov.png" alt=""></span>Chulakov Studio</li>
+          <li><span class="marquee__logo"><img src="images/logo-alfabank.png" alt=""></span>Alfa Bank</li>
+          <li><span class="marquee__logo"><img src="images/logo-tele2.png" alt=""></span>Tele2</li>
+          <li><span class="marquee__logo"><img src="images/logo-x5.png" alt=""></span>X5 Digital</li>
+          <li><span class="marquee__logo"><img class="logo-zoom" src="images/logo-jusan.png" alt=""></span>Jusan Bank</li>
+          <li><span class="marquee__logo"><img src="images/logo-redmadrobot.png" alt=""></span>Red Mad Robot</li>
+        </ul>
+        <ul class="marquee__list" aria-hidden="true">
+          <li><span class="marquee__logo"><img src="images/logo-chulakov.png" alt=""></span>Chulakov Studio</li>
+          <li><span class="marquee__logo"><img src="images/logo-alfabank.png" alt=""></span>Alfa Bank</li>
+          <li><span class="marquee__logo"><img src="images/logo-tele2.png" alt=""></span>Tele2</li>
+          <li><span class="marquee__logo"><img src="images/logo-x5.png" alt=""></span>X5 Digital</li>
+          <li><span class="marquee__logo"><img class="logo-zoom" src="images/logo-jusan.png" alt=""></span>Jusan Bank</li>
+          <li><span class="marquee__logo"><img src="images/logo-redmadrobot.png" alt=""></span>Red Mad Robot</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Кейсы -->
+    <section class="cases">
+      <article class="case" data-reveal>
+        <a draggable="false" class="case__cover" href="abusiness.html" aria-label="Приложение для бизнеса">
+          <img draggable="false" src="images/case-business-app-3.webp" alt="Рука держит iPhone с главным экраном приложения Alfa Business" loading="lazy">
+        </a>
+        <h3 class="case__title">Приложение для бизнеса</h3>
+        <p class="case__text">
+          Мы решили сделать редизайн приложения из-за устаревшей дизайн-системы,
+          медленного роста NPS и&nbsp;VoC, устаревших паттернов и…
+        </p>
+        <a class="case__link" href="abusiness.html">Подробнее</a>
+      </article>
+
+      <article class="case" data-reveal>
+        <a draggable="false" class="case__cover case__cover--tele2" href="tele2-number.html" aria-label="Покупка и перенос номера">
+          <!-- объёмные цифры «+707» по центру карточки -->
+          <img draggable="false" class="case__deco" src="images/case-tele2-707.png" alt="" aria-hidden="true" loading="lazy">
+        </a>
+        <h3 class="case__title">Покупка и&nbsp;перенос номера</h3>
+        <p class="case__text">
+          Короткое описание кейса: какая была задача, что сделали и&nbsp;какой получился результат.
+        </p>
+        <a class="case__link" href="tele2-number.html">Подробнее</a>
+      </article>
+
+      <article class="case" data-reveal>
+        <a draggable="false" class="case__cover" href="tele2-ds.html" aria-label="Адаптивная дизайн-система">
+          <img draggable="false" src="images/case-design-system-3.webp" alt="Токены в Tokens Studio для Figma и один экран приложения в двух темах: Tele2 и Altel" loading="lazy">
+        </a>
+        <h3 class="case__title">Адаптивная дизайн-система</h3>
+        <p class="case__text">
+          Взяв весь опыт с&nbsp;дизайн системой я&nbsp;решил сделать дизайн систему для
+          Tele&nbsp;2, так как командам не&nbsp;хватало скорости для разработки…
+        </p>
+        <a class="case__link" href="tele2-ds.html">Подробнее</a>
+      </article>
+    </section>
+  </div>
+
+  <!-- Градиент внизу экрана -->
+  <div class="bottom-glass" aria-hidden="true"></div>
+
+
+  <script src="script.js?v=20"></script>
+  <script src="watcher.js?v=4"></script>
+</body>
+</html>

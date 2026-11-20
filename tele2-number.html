@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Покупка и перенос номера — кейс</title>
+  <link rel="stylesheet" href="style.css?v=114">
+  <!-- Прячем элементы до анимации появления и сразу применяем сохранённую тему, чтобы не было мигания -->
+  <script>
+    (function () {
+      var root = document.documentElement;
+      root.classList.add('js');
+      var saved = null;
+      try { saved = localStorage.getItem('theme'); } catch (e) {}
+      if (saved === 'light' || saved === 'dark') root.dataset.theme = saved;
+      var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+      root.classList.toggle('is-dark', dark);
+    })();
+  </script>
+</head>
+<body>
+
+  <div class="container">
+    <header class="header">
+      <a class="avatar-link" href="index.html" aria-label="На главную">
+        <img class="avatar" data-reveal src="images/avatar.jpg?v=3" alt="Аман" width="56" height="56">
+        <span class="avatar-preview" aria-hidden="true"><img src="images/avatar-large.webp" alt="" width="240" height="240" draggable="false"></span>
+      </a>
+
+      <!-- Город — рядом с аватаром -->
+      <span class="location glass" data-reveal>
+        <span class="location__photo" aria-hidden="true"><img src="images/almaty.webp" alt="" draggable="false"></span>
+        <span class="location__text">
+          <svg class="icon" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+            <path fill="currentColor" d="M21 3 3 10.5l7.6 2.9L13.5 21 21 3Z"/>
+          </svg>
+          Алматы
+        </span>
+      </span>
+
+      <nav class="menu glass" data-reveal>
+        <a class="menu__item" href="about.html">Обо мне</a>
+        <a class="menu__item" href="https://t.me/shimkayev" target="_blank" rel="noopener">Telegram</a>
+        <a class="menu__item" href="https://www.linkedin.com/in/shimkayev/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="menu__item" href="#cv">CV</a>
+      </nav>
+
+      <!-- Справа у края экрана: переключатель темы -->
+      <div class="header-side">
+      <button class="theme-switch" data-reveal type="button" role="switch" aria-checked="false" aria-label="Тёмная тема">
+        <span class="theme-switch__knob">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/>
+          </svg>
+        </span>
+      </button>
+      </div>
+    </header>
+
+    <main class="case-page">
+      <h1 class="page__title" data-reveal>Покупка и&nbsp;перенос номера<br>в&nbsp;приложении Tele2</h1>
+      <p data-reveal class="case-page__lead">Перенёс покупку и&nbsp;перенос номера с&nbsp;веба в&nbsp;приложение и&nbsp;убрал барьеры на&nbsp;входе: время оформления сократилось с&nbsp;8 до&nbsp;2 минут.</p>
+
+      <dl class="case-summary" data-reveal>
+        <div><dt class="visually-hidden">Компания</dt><dd><img class="case-summary__logo" src="images/logo-tele2.png" alt="Tele2" title="Tele2"></dd></div>
+        <div><dt>Роль</dt><dd>Product Designer</dd></div>
+        <div><dt>Период</dt><dd>2022–2023</dd></div>
+        <div><dt>Продукт</dt><dd>Мобильное приложение</dd></div>
+      </dl>
+
+      <figure class="case-page__cover case-page__cover--tele2" data-reveal>
+        <img src="images/case-tele2-707.png" alt="">
+      </figure>
+
+
+      <section class="case-page__section" data-reveal>
+        <p class="case-page__label">Контекст</p>
+        <h2 class="case-page__h2">Проблема</h2>
+        <p>Покупка и&nbsp;перенос номера в&nbsp;Tele2 работали только на&nbsp;вебе. Разработка как раз перешла с&nbsp;аутсорса в&nbsp;инхаус и&nbsp;получила легаси с&nbsp;огромным количеством ошибок на&nbsp;фронте, бэкенде и&nbsp;в&nbsp;дизайне.</p>
+        <p>Старый процесс терял пользователей: обязательные регистрация и&nbsp;оплата отсекали людей ещё до&nbsp;того, как они становились клиентами.</p>
+        <div class="metrics">
+          <div class="metric">
+            <p class="metric__value">8 минут</p>
+            <p class="metric__label">Time on&nbsp;Task</p>
+          </div>
+          <div class="metric">
+            <p class="metric__value">3%</p>
+            <p class="metric__label">пользователей оплачивали и&nbsp;оформляли покупку</p>
+          </div>
+        </div>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Цель</h2>
+        <p>Основная цель бизнеса — повысить конверсию продажи и&nbsp;переноса номеров. Задачи от&nbsp;заинтересованных лиц:</p>
+        <ul class="case-page__list">
+          <li>Перенести покупку и&nbsp;перенос номера в&nbsp;приложение</li>
+          <li>Сделать удобный и&nbsp;понятный пользовательский путь</li>
+        </ul>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Моя роль</h2>
+        <p>Как продуктовый дизайнер тесно работал с&nbsp;продакт-оунером, ходил на&nbsp;встречи со&nbsp;стейкхолдерами, чтобы понимать бизнес-цели, и&nbsp;работал напрямую с&nbsp;аналитиком и&nbsp;разработчиками.</p>
+        <p>Для консистентности развивал и&nbsp;поддерживал дизайн-систему, рассказывал коллегам о&nbsp;её&nbsp;принципах и&nbsp;обучал работать с&nbsp;ней.</p>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Как было: мобильная версия сайта</h2>
+        <p>Старый флоу покупки и&nbsp;переноса номера работал в&nbsp;мобильном адаптиве сайта.</p>
+        <!-- все экраны старого флоу в одной карточке, листаются по горизонтали -->
+        <div class="phones phones--scroll">
+          <div class="phone"><img src="images/tele2/number-flow-1.webp" alt="Запись экрана: старый флоу в мобильной версии сайта, сценарий 1" loading="lazy"></div>
+          <div class="phone"><img src="images/tele2/number-flow-2.webp" alt="Запись экрана: старый флоу в мобильной версии сайта, сценарий 2" loading="lazy"></div>
+          <div class="phone"><img src="images/tele2/number-flow-3.webp" alt="Запись экрана: старый флоу в мобильной версии сайта, сценарий 3" loading="lazy"></div>
+          <div class="phone"><img src="images/tele2/number-flow-4.webp" alt="Запись экрана: старый флоу в мобильной версии сайта, сценарий 4" loading="lazy"></div>
+          <div class="phone"><img src="images/tele2/number-flow-5.webp" alt="Запись экрана: старый флоу в мобильной версии сайта, сценарий 5" loading="lazy"></div>
+          <div class="phone"><img src="images/tele2/number-flow-6.webp" alt="Запись экрана: старый флоу в мобильной версии сайта, сценарий 6" loading="lazy"></div>
+          <div class="phone"><img src="images/tele2/number-flow-7.webp" alt="Запись экрана: старый флоу в мобильной версии сайта, сценарий 7" loading="lazy"></div>
+          <div class="phone"><img src="images/tele2/number-flow-8.webp" alt="Старый флоу: оплата на стороннем платёжном сайте — номер телефона, сумма и данные карты" loading="lazy"></div>
+          <div class="phone"><img src="images/tele2/number-flow-9.webp" alt="Старый флоу: экран заказа eSIM на сайте Tele2 с тарифом, доп. услугами и кнопкой «Оформить номер»" loading="lazy"></div>
+        </div>
+        <h3 class="case-page__h3">Что было не так</h3>
+        <ul class="case-page__list">
+          <li>Фронтенд-баги. Например, пользователь листал страницу, чтобы проверить, поддерживает ли&nbsp;его телефон eSIM, и&nbsp;его отбрасывало наверх.</li>
+          <li>Огромные карточки тарифов, а&nbsp;выбрать тариф можно было только нажатием на&nbsp;маленькую радиокнопку.</li>
+          <li>Лишний шаг с&nbsp;подключением дополнительных услуг — по&nbsp;аналитике их&nbsp;подключали менее 5% пользователей.</li>
+          <li>Путь ломался при возврате в&nbsp;корзину. Чтобы сменить тип SIM-карты или номер, пользователь уходил из&nbsp;корзины на&nbsp;выбор, а&nbsp;потом пытался вернуться нативным свайпом назад — и&nbsp;попадал на&nbsp;самый первый шаг с&nbsp;выбором номера.</li>
+          <li>Обязательная регистрация: после нажатия «Оформить» в&nbsp;корзине просили ввести ФИО, почту и&nbsp;номер телефона.</li>
+          <li>Оплата с&nbsp;ручным вводом данных карты.</li>
+        </ul>
+        <p>В&nbsp;итоге до&nbsp;корзины доходили 70,4% пользователей, регистрацию проходили только 15%, а&nbsp;оплачивали и&nbsp;оформляли покупку — 3%.</p>
+        <figure class="chart">
+          <figcaption>
+            <p class="chart__title">Воронка старого флоу</p>
+            <p class="chart__note">Доля пользователей, дошедших до&nbsp;каждого шага</p>
+          </figcaption>
+          <ul class="chart__rows">
+            <li class="chart__row" data-tip="Начали оформление: 100% пользователей"><span class="chart__label">Начали оформление</span><span class="chart__track"><span class="chart__bar" style="--v:100%"></span></span><span class="chart__value">100%</span></li>
+            <li class="chart__row" data-tip="Дошли до корзины: 70,4% пользователей"><span class="chart__label">Дошли до&nbsp;корзины</span><span class="chart__track"><span class="chart__bar" style="--v:70.4%"></span></span><span class="chart__value">70,4%</span></li>
+            <li class="chart__row" data-tip="Прошли регистрацию: 15% пользователей"><span class="chart__label">Прошли регистрацию</span><span class="chart__track"><span class="chart__bar" style="--v:15%"></span></span><span class="chart__value">15%</span></li>
+            <li class="chart__row" data-tip="Оплатили и оформили: 3% пользователей"><span class="chart__label">Оплатили и&nbsp;оформили</span><span class="chart__track"><span class="chart__bar" style="--v:3%"></span></span><span class="chart__value">3%</span></li>
+          </ul>
+        </figure>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <p class="case-page__label">Процесс</p>
+        <h2 class="case-page__h2">Discovery</h2>
+        <p>Начал с&nbsp;бизнес-требований и&nbsp;анализа технических возможностей. Провёл конкурентный анализ и&nbsp;построил Service Blueprint, чтобы увидеть весь процесс целиком — включая менеджеров, которые обрабатывают заказы, и&nbsp;курьеров, которые доставляют SIM-карты.</p>
+        <figure class="case-page__shot">
+          <img src="images/tele2/competitors.webp" alt="Конкурентный анализ: экраны покупки номера, переноса и заказа SIM-карты у МТС, Тинькофф, Билайн, izi и других операторов" loading="lazy">
+          <figcaption>Конкурентный анализ: как покупку и&nbsp;перенос номера устроили МТС, Тинькофф, Билайн, izi и&nbsp;другие</figcaption>
+        </figure>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Design</h2>
+        <p>Собрал вайрфреймы и&nbsp;провёл несколько итераций по&nbsp;обратной связи. Затем сделал high-fidelity макеты на&nbsp;дизайн-системе, собрал прототип пользовательских сценариев и&nbsp;подготовил скрипт с&nbsp;заданиями для юзабилити-тестирования.</p>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Юзабилити-тест</h2>
+        <p>Продуктовый подход в&nbsp;компании только развивался, поэтому я&nbsp;взял исследования на&nbsp;себя и&nbsp;организовал небольшую комнату для пользовательских интервью и&nbsp;юзабилити-тестов.</p>
+        <div class="metrics">
+          <div class="metric">
+            <p class="metric__value">8</p>
+            <p class="metric__label">респондентов</p>
+          </div>
+          <div class="metric">
+            <p class="metric__value">>30</p>
+            <p class="metric__label">заданных вопросов</p>
+          </div>
+          <div class="metric">
+            <p class="metric__value">21</p>
+            <p class="metric__label">проверенная гипотеза</p>
+          </div>
+        </div>
+        <h3 class="case-page__h3">Методы тестирования</h3>
+        <ul class="case-page__list">
+          <li>качественный модерируемый тест</li>
+          <li>тест 5 секунд</li>
+          <li>тест первого клика</li>
+        </ul>
+        <figure class="case-page__shot">
+          <img src="images/tele2/tests-1.webp" alt="Участники юзабилити-тестов в комнате для исследований, лица скрыты" loading="lazy">
+        </figure>
+        <figure class="case-page__shot">
+          <img src="images/tele2/tests-2.webp" alt="Ещё четыре участника юзабилити-тестов, лица скрыты" loading="lazy">
+          <figcaption>Интервью и&nbsp;юзабилити-тесты в&nbsp;комнате для исследований. Лица участников скрыты</figcaption>
+        </figure>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <p class="case-page__label">Решение</p>
+        <h2 class="case-page__h2">Решения по&nbsp;улучшению CJM</h2>
+        <ol class="decisions">
+          <li class="decision">
+            <p class="decision__title">Лендинги с&nbsp;переходом в&nbsp;приложение</p>
+            <p class="decision__text">Сделали лендинги для контрактных смартфонов, покупки и&nbsp;переноса номера — по&nbsp;QR-коду они вели на&nbsp;скачивание приложения.</p>
+          </li>
+          <li class="decision">
+            <p class="decision__title">Автоматическая проверка eSIM</p>
+            <p class="decision__text">В&nbsp;новом концепте добавил индикатор, который автоматически определял, поддерживает ли&nbsp;телефон eSIM.</p>
+          </li>
+          <li class="decision">
+            <p class="decision__title">Оплата после подключения</p>
+            <p class="decision__text">Убрали обязательную оплату: пользователь мог оплатить уже после того, как становился клиентом.</p>
+          </li>
+          <li class="decision">
+            <p class="decision__title">Без обязательной регистрации</p>
+            <p class="decision__text">Пользователь начинал процесс без создания учётной записи.</p>
+          </li>
+          <li class="decision">
+            <p class="decision__title">FAQ на&nbsp;экранах продуктов</p>
+            <p class="decision__text">Собрали частые вопросы прямо на&nbsp;экранах продуктов, чтобы снизить нагрузку на&nbsp;колл-центр.</p>
+          </li>
+        </ol>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">CMS для менеджеров</h2>
+        <p>Вместе с&nbsp;новым флоу разработали CMS для обработки заявок:</p>
+        <ul class="case-page__list">
+          <li>автоматизировали ручную работу</li>
+          <li>собрали все заявки в&nbsp;одном окне</li>
+          <li>сделали удобную навигацию по&nbsp;данным клиента</li>
+        </ul>
+        <p>CMS собрана на&nbsp;open-source решении Ant Design. Внедрить его для админок предложил&nbsp;я, чтобы разрабатывать их&nbsp;быстрее: таблицы, фильтры и&nbsp;формы берутся готовыми, а&nbsp;не&nbsp;собираются с&nbsp;нуля.</p>
+      </section>
+      <figure class="case-page__figure case-page__figure--contained" data-reveal>
+        <img class="is-framed" src="images/tele2/cms-orders.webp" alt="CMS для менеджеров на Ant Design: таблица заказов с поиском, фильтром по датам, городом, типом заказа, способом получения и статусом" loading="lazy">
+        <figcaption>Раздел «Заказы» в&nbsp;CMS: все заявки в&nbsp;одной таблице с&nbsp;поиском, фильтрами и&nbsp;статусами</figcaption>
+      </figure>
+      <section class="case-page__section" data-reveal>
+        <p class="case-page__label">Итог</p>
+        <h2 class="case-page__h2">Результат</h2>
+        <div class="metrics">
+          <div class="metric">
+            <p class="metric__value">3% → ≈12%</p>
+            <p class="metric__label">конверсия в&nbsp;покупку, оценка при&nbsp;среднем числе начатых оформлений ≈33&nbsp;тыс. в&nbsp;месяц</p>
+          </div>
+          <div class="metric">
+            <p class="metric__value">8 → 2 мин</p>
+            <p class="metric__label">Time on&nbsp;Task</p>
+          </div>
+          <div class="metric">
+            <p class="metric__value">−74%</p>
+            <p class="metric__label">обращений в&nbsp;колл-центр по&nbsp;покупке и&nbsp;переносу номера после релиза</p>
+          </div>
+        </div>
+        <h3 class="case-page__h3">Покупки и&nbsp;переносы до&nbsp;и&nbsp;после релиза</h3>
+        <p>Новый флоу не&nbsp;продвигали рекламными кампаниями. После релиза выросли и&nbsp;покупки нового номера, и&nbsp;переносы.</p>
+        <div class="metrics">
+          <div class="metric">
+            <p class="metric__value">+420%</p>
+            <p class="metric__label">покупок нового номера: 1&nbsp;137 в&nbsp;июне → 5&nbsp;917 в&nbsp;январе</p>
+          </div>
+          <div class="metric">
+            <p class="metric__value">+213%</p>
+            <p class="metric__label">переносов номера: 372 в&nbsp;июне → 1&nbsp;166 в&nbsp;январе</p>
+          </div>
+        </div>
+        <figure class="chart colchart">
+          <figcaption>
+            <p class="chart__title">Покупки нового номера в&nbsp;месяц</p>
+            <p class="chart__note">С&nbsp;января по&nbsp;январь, релиз нового флоу — в&nbsp;июне</p>
+          </figcaption>
+          <div class="colchart__plot" style="--n:13">
+            <div class="colchart__col is-key" data-tip="Январь: 981 покупок"><span class="colchart__val">981</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:16.6%"></span></span><span class="colchart__month">Янв</span></div>
+            <div class="colchart__col" data-tip="Февраль: 928 покупок"><span class="colchart__val">928</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:15.7%"></span></span><span class="colchart__month">Фев</span></div>
+            <div class="colchart__col" data-tip="Март: 1043 покупок"><span class="colchart__val">1043</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:17.6%"></span></span><span class="colchart__month">Мар</span></div>
+            <div class="colchart__col" data-tip="Апрель: 1078 покупок"><span class="colchart__val">1078</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:18.2%"></span></span><span class="colchart__month">Апр</span></div>
+            <div class="colchart__col" data-tip="Май: 998 покупок"><span class="colchart__val">998</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:16.9%"></span></span><span class="colchart__month">Май</span></div>
+            <div class="colchart__col is-release is-key" data-tip="Июнь: 1137 покупок"><span class="colchart__val">1137</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:19.2%"></span></span><span class="colchart__month">Июн</span></div>
+            <div class="colchart__col is-after" data-tip="Июль: 2594 покупок"><span class="colchart__val">2594</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:43.8%"></span></span><span class="colchart__month">Июл</span></div>
+            <div class="colchart__col is-after" data-tip="Август: 3591 покупок"><span class="colchart__val">3591</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:60.7%"></span></span><span class="colchart__month">Авг</span></div>
+            <div class="colchart__col is-after" data-tip="Сентябрь: 3970 покупок"><span class="colchart__val">3970</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:67.1%"></span></span><span class="colchart__month">Сен</span></div>
+            <div class="colchart__col is-after" data-tip="Октябрь: 3944 покупок"><span class="colchart__val">3944</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:66.7%"></span></span><span class="colchart__month">Окт</span></div>
+            <div class="colchart__col is-after" data-tip="Ноябрь: 4634 покупок"><span class="colchart__val">4634</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:78.3%"></span></span><span class="colchart__month">Ноя</span></div>
+            <div class="colchart__col is-after" data-tip="Декабрь: 5008 покупок"><span class="colchart__val">5008</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:84.6%"></span></span><span class="colchart__month">Дек</span></div>
+            <div class="colchart__col is-after is-key" data-tip="Январь: 5917 покупок"><span class="colchart__val">5917</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:100.0%"></span></span><span class="colchart__month">Янв</span></div>
+          </div>
+          <p class="colchart__legend"><span><i></i>до релиза</span><span><i class="is-after"></i>после релиза</span><span><i class="is-line"></i>релиз в июне</span></p>
+        </figure>
+        <figure class="chart colchart">
+          <figcaption>
+            <p class="chart__title">Переносы номера в&nbsp;месяц</p>
+            <p class="chart__note">С&nbsp;января по&nbsp;январь, релиз нового флоу — в&nbsp;июне</p>
+          </figcaption>
+          <div class="colchart__plot" style="--n:13">
+            <div class="colchart__col is-key" data-tip="Январь: 173 переносов"><span class="colchart__val">173</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:14.8%"></span></span><span class="colchart__month">Янв</span></div>
+            <div class="colchart__col" data-tip="Февраль: 129 переносов"><span class="colchart__val">129</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:11.1%"></span></span><span class="colchart__month">Фев</span></div>
+            <div class="colchart__col" data-tip="Март: 239 переносов"><span class="colchart__val">239</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:20.5%"></span></span><span class="colchart__month">Мар</span></div>
+            <div class="colchart__col" data-tip="Апрель: 406 переносов"><span class="colchart__val">406</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:34.8%"></span></span><span class="colchart__month">Апр</span></div>
+            <div class="colchart__col" data-tip="Май: 388 переносов"><span class="colchart__val">388</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:33.3%"></span></span><span class="colchart__month">Май</span></div>
+            <div class="colchart__col is-release is-key" data-tip="Июнь: 372 переносов"><span class="colchart__val">372</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:31.9%"></span></span><span class="colchart__month">Июн</span></div>
+            <div class="colchart__col is-after" data-tip="Июль: 492 переносов"><span class="colchart__val">492</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:42.2%"></span></span><span class="colchart__month">Июл</span></div>
+            <div class="colchart__col is-after" data-tip="Август: 504 переносов"><span class="colchart__val">504</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:43.2%"></span></span><span class="colchart__month">Авг</span></div>
+            <div class="colchart__col is-after" data-tip="Сентябрь: 557 переносов"><span class="colchart__val">557</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:47.8%"></span></span><span class="colchart__month">Сен</span></div>
+            <div class="colchart__col is-after" data-tip="Октябрь: 496 переносов"><span class="colchart__val">496</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:42.5%"></span></span><span class="colchart__month">Окт</span></div>
+            <div class="colchart__col is-after" data-tip="Ноябрь: 553 переносов"><span class="colchart__val">553</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:47.4%"></span></span><span class="colchart__month">Ноя</span></div>
+            <div class="colchart__col is-after" data-tip="Декабрь: 707 переносов"><span class="colchart__val">707</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:60.6%"></span></span><span class="colchart__month">Дек</span></div>
+            <div class="colchart__col is-after is-key" data-tip="Январь: 1166 переносов"><span class="colchart__val">1166</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:100.0%"></span></span><span class="colchart__month">Янв</span></div>
+          </div>
+          <p class="colchart__legend"><span><i></i>до релиза</span><span><i class="is-after"></i>после релиза</span><span><i class="is-line"></i>релиз в июне</span></p>
+        </figure>
+        <h3 class="case-page__h3">Тот же&nbsp;флоу в&nbsp;Altel</h3>
+        <p>Благодаря единой дизайн-системе на&nbsp;токенах флоу не&nbsp;пришлось проектировать заново: мы&nbsp;переключили макеты на&nbsp;тему Altel и&nbsp;передали их&nbsp;команде Altel. После релиза метрики пошли вверх и&nbsp;у&nbsp;второго бренда. Как устроена дизайн-система — в&nbsp;кейсе <a href="tele2-ds.html">«Дизайн-система на&nbsp;токенах для двух брендов»</a>.</p>
+        <div class="phones">
+          <div class="phone"><img src="images/tele2/altel-1.webp" alt="Приложение Altel: экран «Стать клиентом» с покупкой и переносом номера и частыми вопросами" loading="lazy"></div>
+          <div class="phone"><img src="images/tele2/altel-2.webp" alt="Приложение Altel: выбор типа SIM-карты с автоматической проверкой поддержки eSIM" loading="lazy"></div>
+        </div>
+        <div class="metrics">
+          <div class="metric">
+            <p class="metric__value">+428%</p>
+            <p class="metric__label">покупок нового номера в&nbsp;Altel: 562 в&nbsp;ноябре → 2&nbsp;969 в&nbsp;январе</p>
+          </div>
+          <div class="metric">
+            <p class="metric__value">×10</p>
+            <p class="metric__label">переносов номера в&nbsp;Altel: 48 в&nbsp;ноябре → 479 в&nbsp;январе</p>
+          </div>
+        </div>
+        <figure class="chart colchart">
+          <figcaption>
+            <p class="chart__title">Покупки нового номера в&nbsp;Altel в&nbsp;месяц</p>
+            <p class="chart__note">Altel, с&nbsp;января по&nbsp;январь, флоу запустили в&nbsp;конце ноября</p>
+          </figcaption>
+          <div class="colchart__plot" style="--n:13">
+            <div class="colchart__col is-key" data-tip="Январь: 457 покупок"><span class="colchart__val">457</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:15.4%"></span></span><span class="colchart__month">Янв</span></div>
+            <div class="colchart__col" data-tip="Февраль: 414 покупок"><span class="colchart__val">414</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:13.9%"></span></span><span class="colchart__month">Фев</span></div>
+            <div class="colchart__col" data-tip="Март: 427 покупок"><span class="colchart__val">427</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:14.4%"></span></span><span class="colchart__month">Мар</span></div>
+            <div class="colchart__col" data-tip="Апрель: 374 покупок"><span class="colchart__val">374</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:12.6%"></span></span><span class="colchart__month">Апр</span></div>
+            <div class="colchart__col" data-tip="Май: 348 покупок"><span class="colchart__val">348</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:11.7%"></span></span><span class="colchart__month">Май</span></div>
+            <div class="colchart__col" data-tip="Июнь: 447 покупок"><span class="colchart__val">447</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:15.1%"></span></span><span class="colchart__month">Июн</span></div>
+            <div class="colchart__col" data-tip="Июль: 480 покупок"><span class="colchart__val">480</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:16.2%"></span></span><span class="colchart__month">Июл</span></div>
+            <div class="colchart__col" data-tip="Август: 495 покупок"><span class="colchart__val">495</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:16.7%"></span></span><span class="colchart__month">Авг</span></div>
+            <div class="colchart__col" data-tip="Сентябрь: 548 покупок"><span class="colchart__val">548</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:18.5%"></span></span><span class="colchart__month">Сен</span></div>
+            <div class="colchart__col" data-tip="Октябрь: 541 покупок"><span class="colchart__val">541</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:18.2%"></span></span><span class="colchart__month">Окт</span></div>
+            <div class="colchart__col is-release is-key" data-tip="Ноябрь: 562 покупок"><span class="colchart__val">562</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:18.9%"></span></span><span class="colchart__month">Ноя</span></div>
+            <div class="colchart__col is-after" data-tip="Декабрь: 1849 покупок"><span class="colchart__val">1849</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:62.3%"></span></span><span class="colchart__month">Дек</span></div>
+            <div class="colchart__col is-after is-key" data-tip="Январь: 2969 покупок"><span class="colchart__val">2969</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:100.0%"></span></span><span class="colchart__month">Янв</span></div>
+          </div>
+          <p class="colchart__legend"><span><i></i>до релиза</span><span><i class="is-after"></i>после релиза</span><span><i class="is-line"></i>релиз в конце ноября</span></p>
+        </figure>
+        <figure class="chart colchart">
+          <figcaption>
+            <p class="chart__title">Переносы номера в&nbsp;Altel в&nbsp;месяц</p>
+            <p class="chart__note">Altel, с&nbsp;января по&nbsp;январь, флоу запустили в&nbsp;конце ноября</p>
+          </figcaption>
+          <div class="colchart__plot" style="--n:13">
+            <div class="colchart__col is-key" data-tip="Январь: 47 переносов"><span class="colchart__val">47</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:9.8%"></span></span><span class="colchart__month">Янв</span></div>
+            <div class="colchart__col" data-tip="Февраль: 50 переносов"><span class="colchart__val">50</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:10.4%"></span></span><span class="colchart__month">Фев</span></div>
+            <div class="colchart__col" data-tip="Март: 44 переносов"><span class="colchart__val">44</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:9.2%"></span></span><span class="colchart__month">Мар</span></div>
+            <div class="colchart__col" data-tip="Апрель: 45 переносов"><span class="colchart__val">45</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:9.4%"></span></span><span class="colchart__month">Апр</span></div>
+            <div class="colchart__col" data-tip="Май: 43 переносов"><span class="colchart__val">43</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:9.0%"></span></span><span class="colchart__month">Май</span></div>
+            <div class="colchart__col" data-tip="Июнь: 32 переносов"><span class="colchart__val">32</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:6.7%"></span></span><span class="colchart__month">Июн</span></div>
+            <div class="colchart__col" data-tip="Июль: 35 переносов"><span class="colchart__val">35</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:7.3%"></span></span><span class="colchart__month">Июл</span></div>
+            <div class="colchart__col" data-tip="Август: 40 переносов"><span class="colchart__val">40</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:8.4%"></span></span><span class="colchart__month">Авг</span></div>
+            <div class="colchart__col" data-tip="Сентябрь: 44 переносов"><span class="colchart__val">44</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:9.2%"></span></span><span class="colchart__month">Сен</span></div>
+            <div class="colchart__col" data-tip="Октябрь: 36 переносов"><span class="colchart__val">36</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:7.5%"></span></span><span class="colchart__month">Окт</span></div>
+            <div class="colchart__col is-release is-key" data-tip="Ноябрь: 48 переносов"><span class="colchart__val">48</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:10.0%"></span></span><span class="colchart__month">Ноя</span></div>
+            <div class="colchart__col is-after" data-tip="Декабрь: 244 переносов"><span class="colchart__val">244</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:50.9%"></span></span><span class="colchart__month">Дек</span></div>
+            <div class="colchart__col is-after is-key" data-tip="Январь: 479 переносов"><span class="colchart__val">479</span><span class="colchart__bar-wrap"><span class="colchart__bar" style="--v:100.0%"></span></span><span class="colchart__month">Янв</span></div>
+          </div>
+          <p class="colchart__legend"><span><i></i>до релиза</span><span><i class="is-after"></i>после релиза</span><span><i class="is-line"></i>релиз в конце ноября</span></p>
+        </figure>
+        <h3 class="case-page__h3">Что осталось нерешённым</h3>
+        <p>Биометрия в&nbsp;новом флоу работала через сторонний сервис, и&nbsp;он&nbsp;иногда ломался. Эти сбои били по&nbsp;флоу и&nbsp;конверсии, а&nbsp;на&nbsp;момент моего ухода проблема оставалась открытой.</p>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Документация</h2>
+        <p>Вёл подробную документацию по&nbsp;продукту в&nbsp;Notion: фиксировал результаты исследований и&nbsp;артефакты, собирал и&nbsp;анализировал обратную связь от&nbsp;контакт-центра и&nbsp;других стейкхолдеров. Это помогало структурировать информацию и&nbsp;держать процессы прозрачными.</p>
+      </section>
+    </main>
+  </div>
+
+  <!-- Градиент внизу экрана -->
+  <div class="bottom-glass" aria-hidden="true"></div>
+
+
+  <script src="script.js?v=20"></script>
+</body>
+</html>

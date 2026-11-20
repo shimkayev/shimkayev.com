@@ -1,0 +1,319 @@
+// Стартовый экран «Напиши мне»: пока посетитель не нажал «Отправить», анимации главной ждут
+const introEl = document.querySelector('.intro');
+const introPending = !!introEl && document.documentElement.classList.contains('has-intro');
+const whenReady = (fn) => {
+  if (introPending) document.addEventListener('intro:done', fn, { once: true });
+  else fn();
+};
+
+// Плавное появление: элементы, видимые при открытии страницы, появляются по очереди.
+// Всё, что ниже первого экрана, показывается сразу, без анимации.
+whenReady(function () {
+  const items = document.querySelectorAll('[data-reveal]');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const STEP = 0.1; // задержка между элементами, сек
+  let i = 0;
+
+  items.forEach((el) => {
+    const visible = el.getBoundingClientRect().top < window.innerHeight;
+    if (reduce || !visible) {
+      el.classList.add('is-shown');
+      return;
+    }
+    el.style.setProperty('--reveal-delay', (i++ * STEP) + 's');
+    el.classList.add('reveal');
+    el.addEventListener('animationend', function done(e) {
+      if (e.target !== el) return; // игнорируем анимации внутри элемента
+      el.classList.add('is-shown');
+      el.classList.remove('reveal');
+      el.removeEventListener('animationend', done);
+    });
+  });
+});
+
+// Звук печати: короткий щелчок клавиши, синтезируется на лету (без аудиофайла).
+// Браузеры не дают играть звук, пока человек не кликнул или не нажал клавишу на странице,
+// поэтому до первого действия щелчков не слышно
+const sound = (function () {
+  const AC = window.AudioContext || window.webkitAudioContext;
+  let ctx = null;
+  const unlock = () => {
+    if (!AC) return;
+    if (!ctx) ctx = new AC();
+    if (ctx.state === 'suspended') ctx.resume().catch(() => {});
+  };
+  ['pointerdown', 'keydown', 'touchstart'].forEach((e) =>
+    window.addEventListener(e, unlock, { passive: true }));
+  // Chrome разрешает звук сразу, если человек уже кликал на этом сайте
+  // (например, вернулся на главную по клику на аватар) — пробуем включить при загрузке
+  unlock();
+
+  // глухой короткий «ток», как у клавиатуры iPhone: приглушённый шум + низкий тональный щелчок
+  function click() {
+    if (!ctx || ctx.state !== 'running') return;
+    const t = ctx.currentTime;
+
+    // 1) шумовой щелчок, срезаем высокие частоты — звук становится мягким и глухим
+    const len = 0.025; // 25 мс
+    const buf = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * len), ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < data.length; i++) {
+      data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / data.length, 6);
+    }
+    const noise = ctx.createBufferSource();
+    noise.buffer = buf;
+    const lowpass = ctx.createBiquadFilter();
+    lowpass.type = 'lowpass';
+    lowpass.frequency.value = 550 + Math.random() * 100; // ещё глуше: оставляем только низ
+    lowpass.Q.value = 0.7;
+    const noiseGain = ctx.createGain();
+    noiseGain.gain.value = 0.7;
+    noise.connect(lowpass).connect(noiseGain).connect(ctx.destination);
+
+    // 2) короткий низкий тон — «тело» щелчка
+    const osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(220 + Math.random() * 30, t);
+    osc.frequency.exponentialRampToValueAtTime(110, t + 0.03);
+    const oscGain = ctx.createGain();
+    oscGain.gain.setValueAtTime(0.45, t); // больше низкого «тела»
+    oscGain.gain.exponentialRampToValueAtTime(0.001, t + 0.035);
+    osc.connect(oscGain).connect(ctx.destination);
+
+    noise.start(t);
+    osc.start(t);
+    osc.stop(t + 0.04);
+  }
+
+  // запускаем звук, как только браузер разрешит (клик по кнопке темы — это действие человека)
+  const play = (fn) => {
+    unlock();
+    if (!ctx) return;
+    if (ctx.state === 'running') fn(ctx.currentTime + 0.02);
+    else ctx.resume().then(() => fn(ctx.currentTime + 0.02)).catch(() => {});
+  };
+
+  // один короткий звуковой импульс: тон с плавной атакой и затуханием
+  const blip = (t, freq, dur, vol, type) => {
+    const osc = ctx.createOscillator();
+    osc.type = type || 'sine';
+    osc.frequency.setValueAtTime(freq, t);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + 0.004);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    osc.connect(g).connect(ctx.destination);
+    osc.start(t);
+    osc.stop(t + dur + 0.01);
+    return osc;
+  };
+
+  // сверчок (тёмная тема): три стрекотания, каждое — 4 быстрых импульса около 4.5 кГц
+  function cricket() {
+    play((t0) => {
+      for (let c = 0; c < 3; c++) {
+        for (let p = 0; p < 4; p++) {
+          const t = t0 + c * 0.32 + p * 0.032;
+          blip(t, 4400 + Math.random() * 120, 0.022, 0.06);
+        }
+      }
+    });
+  }
+
+  // птичка (светлая тема): два коротких «чирик» и плавный «чиу» в конце
+  function bird() {
+    play((t0) => {
+      const tweet = (t, base, vol) => {
+        const osc = blip(t, base, 0.13, vol);
+        osc.frequency.setValueAtTime(base, t);
+        osc.frequency.exponentialRampToValueAtTime(base * 1.6, t + 0.05);
+        osc.frequency.exponentialRampToValueAtTime(base * 1.1, t + 0.12);
+      };
+      tweet(t0, 2600, 0.09);
+      tweet(t0 + 0.17, 2900, 0.08);
+      // в конце — мягкий «чиу» с плавным спуском тона (без коротких импульсов, чтобы не путать со сверчком)
+      const osc = blip(t0 + 0.36, 3400, 0.18, 0.07);
+      osc.frequency.setValueAtTime(3400, t0 + 0.36);
+      osc.frequency.exponentialRampToValueAtTime(2200, t0 + 0.52);
+    });
+  }
+
+  return { click, cricket, bird };
+})();
+
+// Бабл: сначала «печатает…» (три точки), потом текст набирается по буквам со звуком клавиш.
+// По клику на бабл текст набирается заново — так звук можно услышать, даже если при загрузке
+// браузер его заблокировал
+(function () {
+  const bubble = document.querySelector('.bubble');
+  if (!bubble) return;
+
+  const out = bubble.querySelector('.bubble__text');
+  const text = bubble.dataset.text;
+  // Array.from корректно делит эмодзи, а не режет их пополам
+  const chars = Array.from(text);
+
+  const DOTS_DELAY = 1200; // сколько показываем точки, мс
+  const CHAR_DELAY = 70;   // скорость печати, мс на символ
+
+  bubble.setAttribute('aria-label', text);
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    bubble.classList.add('is-done');
+    bubble.querySelector('.bubble__typing').remove();
+    out.textContent = text;
+    return;
+  }
+
+  let typing = false;
+  const type = () => {
+    typing = true;
+    out.textContent = '';
+    bubble.classList.add('is-typing');
+    let i = 0;
+    const tick = () => {
+      const ch = chars[i++];
+      out.textContent += ch;
+      if (ch.trim()) sound.click(); // на пробелах — тишина
+      if (i < chars.length) {
+        setTimeout(tick, CHAR_DELAY + Math.random() * 40); // живой, неровный ритм
+      } else {
+        // курсор ещё немного мигает и исчезает
+        setTimeout(() => {
+          bubble.classList.remove('is-typing');
+          const dots = bubble.querySelector('.bubble__typing');
+          if (dots) dots.remove();
+          typing = false;
+        }, 1200);
+      }
+    };
+    tick();
+  };
+
+  // после стартового экрана отвечаю чуть позже — сначала появляется сообщение посетителя
+  whenReady(() => setTimeout(type, DOTS_DELAY + (introPending ? 500 : 0)));
+  const replay = () => { if (!typing) setTimeout(type, 50); };
+  bubble.addEventListener('click', replay);
+
+  // клик по аватару на главной: не перезагружаем страницу, а поднимаемся наверх
+  // и печатаем приветствие заново — со звуком, ведь это нажатие человека
+  const avatar = document.querySelector('.avatar-link');
+  if (avatar) avatar.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    replay();
+  });
+})();
+
+// Переключатель темы: запоминает выбор, иначе следует настройке системы
+(function () {
+  const root = document.documentElement;
+  const btn = document.querySelector('.theme-switch');
+  if (!btn) return;
+  const media = window.matchMedia('(prefers-color-scheme: dark)');
+
+  const isDark = () => root.dataset.theme
+    ? root.dataset.theme === 'dark'
+    : media.matches;
+
+  const sync = () => {
+    const dark = isDark();
+    root.classList.toggle('is-dark', dark);
+    btn.setAttribute('aria-checked', String(dark));
+  };
+
+  btn.addEventListener('click', () => {
+    const next = isDark() ? 'light' : 'dark';
+    // звук смены темы: ночью стрекочет сверчок, днём поёт птичка
+    if (next === 'dark') sound.cricket(); else sound.bird();
+    const apply = () => {
+      root.dataset.theme = next;
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      sync();
+    };
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // плавный переход там, где браузер умеет; иначе мгновенно, без мерцания
+    if (document.startViewTransition && !reduce) {
+      document.startViewTransition(apply);
+    } else {
+      apply();
+    }
+  });
+
+  // если тема не выбрана вручную, реагируем на смену системной
+  media.addEventListener('change', () => { if (!root.dataset.theme) sync(); });
+  sync();
+})();
+
+// Шапка прячется при прокрутке вниз и появляется при прокрутке вверх
+(function () {
+  const header = document.querySelector('.header');
+  if (!header) return;
+  let lastY = window.scrollY;
+  const update = () => {
+    const y = window.scrollY;
+    const delta = y - lastY;
+    if (y < 120) header.classList.remove('is-hidden');          // у самого верха — всегда видна
+    else if (delta > 6) header.classList.add('is-hidden');      // листаем вниз
+    else if (delta < -6) header.classList.remove('is-hidden');  // листаем вверх
+    if (y < 120 || Math.abs(delta) > 6) lastY = y;
+  };
+  window.addEventListener('scroll', update, { passive: true });
+})();
+
+// В Safari на iPhone :active срабатывает, только если на странице есть обработчик касаний —
+// нужен для эффекта нажатия на карточки кейсов
+document.addEventListener('touchstart', function () {}, { passive: true });
+
+// Отправка сообщения со стартового экрана
+(function () {
+  if (!introPending) return;
+  const root = document.documentElement;
+  const form = introEl.querySelector('.intro__composer');
+  const out = document.querySelector('.bubble-out');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let sent = false;
+
+  // Enter тоже отправляет приветствие
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !sent) { e.preventDefault(); form.requestSubmit ? form.requestSubmit() : form.dispatchEvent(new Event('submit', { cancelable: true })); }
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (sent) return;
+    sent = true;
+    if (out) out.textContent = 'Привет 👋';
+    try { sessionStorage.setItem('introDone', '1'); } catch (err) {}
+    introEl.classList.add('is-leaving');
+    setTimeout(() => {
+      root.classList.remove('has-intro');
+      root.classList.add('intro-sent');
+      introEl.remove();
+      window.scrollTo(0, 0);
+      document.dispatchEvent(new Event('intro:done'));
+    }, reduce ? 0 : 450);
+  });
+})();
+
+
+// Карточка с экранами старого флоу: на компьютере листается перетаскиванием мышью
+document.querySelectorAll('.phones--scroll').forEach((box) => {
+  let startX = 0, startLeft = 0, down = false;
+  box.addEventListener('pointerdown', (e) => {
+    if (e.pointerType !== 'mouse') return; // на тачскрине работает обычная прокрутка
+    down = true; startX = e.clientX; startLeft = box.scrollLeft;
+    box.classList.add('is-dragging');
+    box.setPointerCapture(e.pointerId);
+  });
+  box.addEventListener('pointermove', (e) => {
+    if (down) box.scrollLeft = startLeft - (e.clientX - startX);
+  });
+  const stop = () => {
+    if (!down) return;
+    down = false;
+    box.classList.remove('is-dragging'); // снова включается привязка — карточка доезжает до ближайшего телефона
+  };
+  box.addEventListener('pointerup', stop);
+  box.addEventListener('pointercancel', stop);
+});

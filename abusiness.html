@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Приложение для бизнеса — кейс</title>
+  <link rel="stylesheet" href="style.css?v=114">
+  <!-- Прячем элементы до анимации появления и сразу применяем сохранённую тему, чтобы не было мигания -->
+  <script>
+    (function () {
+      var root = document.documentElement;
+      root.classList.add('js');
+      var saved = null;
+      try { saved = localStorage.getItem('theme'); } catch (e) {}
+      if (saved === 'light' || saved === 'dark') root.dataset.theme = saved;
+      var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+      root.classList.toggle('is-dark', dark);
+    })();
+  </script>
+</head>
+<body>
+
+  <div class="container">
+    <header class="header">
+      <a class="avatar-link" href="index.html" aria-label="На главную">
+        <img class="avatar" data-reveal src="images/avatar.jpg?v=3" alt="Аман" width="56" height="56">
+        <span class="avatar-preview" aria-hidden="true"><img src="images/avatar-large.webp" alt="" width="240" height="240" draggable="false"></span>
+      </a>
+
+      <!-- Город — рядом с аватаром -->
+      <span class="location glass" data-reveal>
+        <span class="location__photo" aria-hidden="true"><img src="images/almaty.webp" alt="" draggable="false"></span>
+        <span class="location__text">
+          <svg class="icon" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+            <path fill="currentColor" d="M21 3 3 10.5l7.6 2.9L13.5 21 21 3Z"/>
+          </svg>
+          Алматы
+        </span>
+      </span>
+
+      <nav class="menu glass" data-reveal>
+        <a class="menu__item" href="about.html">Обо мне</a>
+        <a class="menu__item" href="https://t.me/shimkayev" target="_blank" rel="noopener">Telegram</a>
+        <a class="menu__item" href="https://www.linkedin.com/in/shimkayev/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="menu__item" href="#cv">CV</a>
+      </nav>
+
+      <!-- Справа у края экрана: переключатель темы -->
+      <div class="header-side">
+      <button class="theme-switch" data-reveal type="button" role="switch" aria-checked="false" aria-label="Тёмная тема">
+        <span class="theme-switch__knob">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/>
+          </svg>
+        </span>
+      </button>
+      </div>
+    </header>
+
+    <main class="case-page">
+      <h1 class="page__title" data-reveal>Редизайн мобильного банка<br>для&nbsp;малого и&nbsp;среднего бизнеса</h1>
+        <p data-reveal class="case-page__lead">Вместе с&nbsp;командой выяснил, почему предприниматели не&nbsp;справляются с&nbsp;базовыми задачами в&nbsp;приложении, и&nbsp;переделал ключевые сценарии и&nbsp;навигацию под их&nbsp;реальное поведение.</p>
+
+      <dl class="case-summary" data-reveal>
+        <div><dt class="visually-hidden">Компания</dt><dd><img class="case-summary__logo" src="images/logo-alfabank.png" alt="Альфа Банк Казахстан" title="Альфа Банк Казахстан"></dd></div>
+        <div><dt>Роль</dt><dd>Product Designer</dd></div>
+        <div><dt>Проект</dt><dd>Q3 2021 – весна 2022</dd></div>
+        <div><dt>Продукт</dt><dd>Мобильный банк</dd></div>
+      </dl>
+
+      <figure class="case-page__cover" data-reveal>
+        <img src="images/case-business-app-3.webp" alt="Рука держит iPhone с главным экраном приложения Alfa Business">
+      </figure>
+
+      <section class="case-page__section" data-reveal>
+        <p class="case-page__label">Контекст</p>
+        <h2 class="case-page__h2">Проблема</h2>
+        <p>Приложение для бизнеса (АБМ) устарело: старая дизайн-система, немасштабируемые экраны, устаревшие user flow. NPS и&nbsp;VoC росли медленно, а&nbsp;клиенты часто обращались в&nbsp;колл-центр с&nbsp;вопросами по&nbsp;приложению.</p>
+        <div class="metrics">
+          <div class="metric">
+            <p class="metric__value">54%</p>
+            <p class="metric__label">SUS ключевых сценариев при норме 70%</p>
+          </div>
+          <div class="metric">
+            <p class="metric__value">65%</p>
+            <p class="metric__label">SUM ключевых сценариев при норме 68%</p>
+          </div>
+          <div class="metric">
+            <p class="metric__value">12 773</p>
+            <p class="metric__label">обращения в&nbsp;колл-центр по&nbsp;приложению (данные на&nbsp;октябрь 2021)</p>
+          </div>
+          <div class="metric">
+            <p class="metric__value">10%</p>
+            <p class="metric__label">SUM конвертации и&nbsp;создания шаблона — худшие сценарии</p>
+          </div>
+        </div>
+        <figure class="chart">
+          <figcaption>
+            <p class="chart__title">С&nbsp;чем клиенты звонили в&nbsp;колл-центр</p>
+            <p class="chart__note">Темы обращений по&nbsp;приложению, данные на&nbsp;октябрь 2021</p>
+          </figcaption>
+          <ul class="chart__rows">
+            <li class="chart__row" data-tip="Сброс пароля: 6 253 обращений"><span class="chart__label">Сброс пароля</span><span class="chart__track"><span class="chart__bar" style="--v:100.0%"></span></span><span class="chart__value">6 253</span></li>
+            <li class="chart__row" data-tip="Регистрация: 2 194 обращений"><span class="chart__label">Регистрация</span><span class="chart__track"><span class="chart__bar" style="--v:35.1%"></span></span><span class="chart__value">2 194</span></li>
+            <li class="chart__row" data-tip="Как заполнить платёж: 1 375 обращений"><span class="chart__label">Как заполнить платёж</span><span class="chart__track"><span class="chart__bar" style="--v:22.0%"></span></span><span class="chart__value">1 375</span></li>
+            <li class="chart__row" data-tip="Информация: 981 обращений"><span class="chart__label">Информация</span><span class="chart__track"><span class="chart__bar" style="--v:15.7%"></span></span><span class="chart__value">981</span></li>
+            <li class="chart__row" data-tip="Состояние платежа: 733 обращений"><span class="chart__label">Состояние платежа</span><span class="chart__track"><span class="chart__bar" style="--v:11.7%"></span></span><span class="chart__value">733</span></li>
+            <li class="chart__row" data-tip="Справки: 199 обращений"><span class="chart__label">Справки</span><span class="chart__track"><span class="chart__bar" style="--v:3.2%"></span></span><span class="chart__value">199</span></li>
+            <li class="chart__row" data-tip="Как провести конвертацию: 156 обращений"><span class="chart__label">Как провести конвертацию</span><span class="chart__track"><span class="chart__bar" style="--v:2.5%"></span></span><span class="chart__value">156</span></li>
+          </ul>
+        </figure>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Цель</h2>
+        <p>Бизнесу нужно было увеличить долю рынка и&nbsp;лояльность клиентов за&nbsp;счёт удобства приложения. В&nbsp;бизнес-кейс редизайна заложили измеримые цели:</p>
+        <div class="metrics">
+          <div class="metric">
+            <p class="metric__value">−35%</p>
+            <p class="metric__label">обращений в&nbsp;колл-центр по&nbsp;приложению за&nbsp;месяц</p>
+          </div>
+          <div class="metric">
+            <p class="metric__value">−30</p>
+            <p class="metric__label">рабочих дней колл-центра</p>
+          </div>
+          <div class="metric">
+            <p class="metric__value">−31,1%</p>
+            <p class="metric__label">болей клиентов из&nbsp;VoC</p>
+          </div>
+          <div class="metric">
+            <p class="metric__value">−28,5%</p>
+            <p class="metric__label">причин не&nbsp;рекомендовать банк из&nbsp;NPS</p>
+          </div>
+        </div>
+        <p>А&nbsp;также поднять SUS и&nbsp;SUM ключевых сценариев до&nbsp;нормы и&nbsp;собрать интерфейс на&nbsp;дизайн-системе Альфа-Банка России, чтобы ускорить разработку.</p>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Моя роль</h2>
+        <p>Я&nbsp;был продуктовым дизайнером в&nbsp;рабочей группе редизайна: вместе с&nbsp;исследователем прорабатывал гипотезы и&nbsp;проводил аудит, участвовал в&nbsp;CustDev и&nbsp;замерах SUS и&nbsp;SUM, проектировал новую архитектуру и&nbsp;экраны, собирал прототипы для тестов.</p>
+        <p>Также адаптировал дизайн-систему Альфа-Банка России под наше приложение, добавлял недостающие компоненты и&nbsp;обучал коллег работать с&nbsp;ней.</p>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <p class="case-page__label">Процесс</p>
+        <h2 class="case-page__h2">Как шёл проект</h2>
+        <ol class="steps">
+          <li class="step">
+            <span class="step__tag">Q3–Q4 2021</span>
+            <p class="step__title">UX-аудит и&nbsp;discovery</p>
+            <p class="step__text">Дизайн-аудит, разбор обращений в&nbsp;колл-центр, отчёты VoC, NPS, Markswebb и&nbsp;Google Analytics, замер SUS и&nbsp;SUM</p>
+          </li>
+          <li class="step">
+            <span class="step__tag">Q4 2021</span>
+            <p class="step__title">Проектирование</p>
+            <p class="step__text">Google Design Sprint, воркшоп с&nbsp;Red Mad Robot, гайды и&nbsp;паттерны, 20 воркшопов рабочей группы, UX-тесты</p>
+          </li>
+          <li class="step">
+            <span class="step__tag">Q1 2022</span>
+            <p class="step__title">Презентация и&nbsp;kick-off</p>
+            <p class="step__text">Демо стейкхолдерам и&nbsp;разработке, оценка и&nbsp;планирование</p>
+          </li>
+          <li class="step">
+            <span class="step__tag">Q1–Q3 2022 (план)</span>
+            <p class="step__title">Передача в&nbsp;разработку</p>
+            <p class="step__text">План: детализация макетов, оценка, планирование и&nbsp;старт реализации. Не&nbsp;реализован — банк закрылся весной 2022</p>
+          </li>
+        </ol>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Пользователи</h2>
+        <p>За&nbsp;2 месяца вместе с&nbsp;usabilitylab.ru&nbsp;построили карту персон. Ключевой стала одна:</p>
+        <div class="persona persona--key">
+            <p class="persona__name">Работяга 24/7 — ключевая персона</p>
+            <blockquote class="quote quote--plain">Чтобы всё было сделано хорошо — сделай это сам</blockquote>
+            <div class="persona__text">Директор небольшого бизнеса, который сам ведёт дела компании.<ul><li>выставляет счета и&nbsp;формирует платежи</li><li>ищет контрагентов и&nbsp;работает с&nbsp;ними</li><li>управляет сотрудниками</li><li>контролирует расходы и&nbsp;прибыль</li></ul></div>
+          </div>
+        <p>Второстепенные персоны:</p>
+        <div class="personas personas--stack">
+          <div class="persona">
+            <p class="persona__name">Бухгалтер</p>
+            <div class="persona__text">Аутстафер, отвечает за&nbsp;финансовую операционку. Работает в&nbsp;веб-банкинге, приложением почти не&nbsp;пользуется.</div>
+          </div>
+          <div class="persona">
+            <p class="persona__name">Волк-одиночка</p>
+            <div class="persona__text">Работает один, часто начинал как самозанятый. Выводит деньги на&nbsp;личный счёт, выставляет счета, платит налоги.</div>
+          </div>
+          <div class="persona">
+            <p class="persona__name">Важный босс</p>
+            <div class="persona__text">Руководитель: привлекает инвестиции, планирует, распределяет роли в&nbsp;компании и&nbsp;контролирует источники дохода.</div>
+          </div>
+        </div>
+        <p>Вывод для продукта: бухгалтер работает в&nbsp;вебе, поэтому приложение проектируем и&nbsp;упрощаем под предпринимателя.</p>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <p class="case-page__label">Процесс</p>
+        <h2 class="case-page__h2">Исследование</h2>
+        <p>Исследование шло в&nbsp;несколько этапов, и&nbsp;у&nbsp;каждого была своя команда и&nbsp;срок:</p>
+        <div class="table-wrap">
+          <table class="case-table">
+            <thead><tr><th>Этап</th><th>Срок</th><th>Команда</th></tr></thead>
+            <tbody>
+              <tr><td>Дизайн-аудит IA&nbsp;и&nbsp;текущего дизайна</td><td>2 недели</td><td>5 дизайнеров</td></tr>
+              <tr><td>Персоны пользователей с&nbsp;usabilitylab.ru</td><td>2 месяца</td><td>коуч, исследователь, 2 менеджера КЦ</td></tr>
+              <tr><td>Карта сценариев и&nbsp;оценка критичности</td><td>1 неделя</td><td>2 дизайнера</td></tr>
+              <tr><td>Redesign-sprint: конкуренты, USM, CJM, прототип</td><td>10 дней</td><td>12 дизайнеров</td></tr>
+              <tr><td>UX-тесты первого прототипа</td><td>1 неделя</td><td>исследователь</td></tr>
+              <tr><td>Дизайн-критика с&nbsp;Red Mad Robot</td><td>3 дня</td><td>18 дизайнеров</td></tr>
+              <tr><td>Замер SUS и&nbsp;SUM старого приложения</td><td>3 недели</td><td>2 исследователя, рекрутинговое агентство</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>В&nbsp;приложении нашлось более 100 сценариев для 16 видов работ. Из&nbsp;них выделили 14 ключевых и&nbsp;приоритизировали по&nbsp;RICE и&nbsp;критичности для ключевой персоны и&nbsp;банка.</p>
+      </section>
+      <figure class="chart mchart" data-reveal>
+        <figcaption>
+          <p class="chart__title">Удобство частых сценариев в&nbsp;старом приложении</p>
+          <p class="chart__note">SUS и&nbsp;SUM: зелёный — норма и&nbsp;выше, красный — ниже нормы. Время — чем короче, тем лучше</p>
+        </figcaption>
+        <div class="mchart__head"><span></span><span>SUS</span><span>SUM</span><span>Время</span></div>
+        <ul class="chart__rows">
+          <li class="chart__row mchart__row" data-tip="Получение реквизитов счёта: SUS 48 (норма 70), SUM 40% (норма 68%), время 3 мин, NPS 60"><span class="chart__label">Получение реквизитов счёта <span class="mchart__badge">критичный</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar chart__bar--bad" style="--v:48.0%"></span><span class="chart__norm" style="--norm:70.0%"></span></span><span class="mchart__val">48</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar chart__bar--bad" style="--v:40.0%"></span><span class="chart__norm" style="--norm:68.0%"></span></span><span class="mchart__val">40%</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar" style="--v:50.0%"></span></span><span class="mchart__val">3 мин</span></span></li>
+          <li class="chart__row mchart__row" data-tip="Конвертация: SUS 43 (норма 70), SUM 10% (норма 68%), время 6 мин, NPS −70"><span class="chart__label">Конвертация <span class="mchart__badge">критичный</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar chart__bar--bad" style="--v:43.0%"></span><span class="chart__norm" style="--norm:70.0%"></span></span><span class="mchart__val">43</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar chart__bar--bad" style="--v:10.0%"></span><span class="chart__norm" style="--norm:68.0%"></span></span><span class="mchart__val">10%</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar" style="--v:100.0%"></span></span><span class="mchart__val">6 мин</span></span></li>
+          <li class="chart__row mchart__row" data-tip="Платёж в тенге: SUS 52 (норма 70), SUM 70% (норма 68%), время 3 мин, NPS 60"><span class="chart__label">Платёж в&nbsp;тенге <span class="mchart__badge">критичный</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar chart__bar--bad" style="--v:52.0%"></span><span class="chart__norm" style="--norm:70.0%"></span></span><span class="mchart__val">52</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar chart__bar--good" style="--v:70.0%"></span><span class="chart__norm" style="--norm:68.0%"></span></span><span class="mchart__val">70%</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar" style="--v:50.0%"></span></span><span class="mchart__val">3 мин</span></span></li>
+          <li class="chart__row mchart__row" data-tip="Сохранение выписки: SUS 50 (норма 70), SUM 40% (норма 68%), время 3 мин, NPS 40"><span class="chart__label">Сохранение выписки <span class="mchart__badge">критичный</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar chart__bar--bad" style="--v:50.0%"></span><span class="chart__norm" style="--norm:70.0%"></span></span><span class="mchart__val">50</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar chart__bar--bad" style="--v:40.0%"></span><span class="chart__norm" style="--norm:68.0%"></span></span><span class="mchart__val">40%</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar" style="--v:50.0%"></span></span><span class="mchart__val">3 мин</span></span></li>
+          <li class="chart__row mchart__row" data-tip="Открытие карты: SUS 55 (норма 70), SUM 90% (норма 68%), время 1,5 мин, NPS 80"><span class="chart__label">Открытие карты <span class="mchart__badge">критичный</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar chart__bar--bad" style="--v:55.0%"></span><span class="chart__norm" style="--norm:70.0%"></span></span><span class="mchart__val">55</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar chart__bar--good" style="--v:90.0%"></span><span class="chart__norm" style="--norm:68.0%"></span></span><span class="mchart__val">90%</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar" style="--v:25.0%"></span></span><span class="mchart__val">1,5 мин</span></span></li>
+          <li class="chart__row mchart__row" data-tip="Подключение AlfaSmart: SUS 86 (норма 70), SUM 75% (норма 68%), время 3 мин, NPS 75"><span class="chart__label">Подключение AlfaSmart <span class="mchart__badge">критичный</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar chart__bar--good" style="--v:86.0%"></span><span class="chart__norm" style="--norm:70.0%"></span></span><span class="mchart__val">86</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar chart__bar--good" style="--v:75.0%"></span><span class="chart__norm" style="--norm:68.0%"></span></span><span class="mchart__val">75%</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar" style="--v:50.0%"></span></span><span class="mchart__val">3 мин</span></span></li>
+          <li class="chart__row mchart__row" data-tip="Отправка деталей платежа: SUS 53 (норма 70), SUM 80% (норма 68%), время 59 с, NPS 90"><span class="chart__label">Отправка деталей платежа</span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar chart__bar--bad" style="--v:53.0%"></span><span class="chart__norm" style="--norm:70.0%"></span></span><span class="mchart__val">53</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar chart__bar--good" style="--v:80.0%"></span><span class="chart__norm" style="--norm:68.0%"></span></span><span class="mchart__val">80%</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar" style="--v:16.4%"></span></span><span class="mchart__val">59 с</span></span></li>
+          <li class="chart__row mchart__row" data-tip="Создание шаблона: SUS 39 (норма 70), SUM 10% (норма 68%), время 5 мин, NPS 10"><span class="chart__label">Создание шаблона</span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar chart__bar--bad" style="--v:39.0%"></span><span class="chart__norm" style="--norm:70.0%"></span></span><span class="mchart__val">39</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar chart__bar--bad" style="--v:10.0%"></span><span class="chart__norm" style="--norm:68.0%"></span></span><span class="mchart__val">10%</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar" style="--v:83.3%"></span></span><span class="mchart__val">5 мин</span></span></li>
+          <li class="chart__row mchart__row" data-tip="Поиск шаблона: SUS 58 (норма 70), SUM 90% (норма 68%), время 12 с, NPS 80"><span class="chart__label">Поиск шаблона</span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar chart__bar--bad" style="--v:58.0%"></span><span class="chart__norm" style="--norm:70.0%"></span></span><span class="mchart__val">58</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar chart__bar--good" style="--v:90.0%"></span><span class="chart__norm" style="--norm:68.0%"></span></span><span class="mchart__val">90%</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar" style="--v:3.3%"></span></span><span class="mchart__val">12 с</span></span></li>
+          <li class="chart__row mchart__row" data-tip="Заявка на снятие наличных: SUS 59 (норма 70), SUM 100% (норма 68%), время 1,5 мин, NPS 100"><span class="chart__label">Заявка на&nbsp;снятие наличных</span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar chart__bar--bad" style="--v:59.0%"></span><span class="chart__norm" style="--norm:70.0%"></span></span><span class="mchart__val">59</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar chart__bar--good" style="--v:100.0%"></span><span class="chart__norm" style="--norm:68.0%"></span></span><span class="mchart__val">100%</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar" style="--v:25.0%"></span></span><span class="mchart__val">1,5 мин</span></span></li>
+          <li class="chart__row mchart__row" data-tip="Запрос и отправка справки: SUS 54 (норма 70), SUM 75% (норма 68%), время 55 с, NPS 87"><span class="chart__label">Запрос и&nbsp;отправка справки</span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar chart__bar--bad" style="--v:54.0%"></span><span class="chart__norm" style="--norm:70.0%"></span></span><span class="mchart__val">54</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar chart__bar--good" style="--v:75.0%"></span><span class="chart__norm" style="--norm:68.0%"></span></span><span class="mchart__val">75%</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar" style="--v:15.3%"></span></span><span class="mchart__val">55 с</span></span></li>
+          <li class="chart__row mchart__row" data-tip="Выход из приложения: SUS 58 (норма 70), SUM 100% (норма 68%), время 15 с, NPS 100"><span class="chart__label">Выход из&nbsp;приложения</span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar chart__bar--bad" style="--v:58.0%"></span><span class="chart__norm" style="--norm:70.0%"></span></span><span class="mchart__val">58</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar chart__bar--good" style="--v:100.0%"></span><span class="chart__norm" style="--norm:68.0%"></span></span><span class="mchart__val">100%</span></span><span class="mchart__cell"><span class="chart__track"><span class="chart__bar" style="--v:4.2%"></span></span><span class="mchart__val">15 с</span></span></li>
+        </ul>
+        <p class="chart__legend"><i></i>норма: SUS — 70, SUM — 68%</p>
+        <p class="chart__note mchart__foot">NPS по&nbsp;каждому сценарию — в&nbsp;подсказке при наведении</p>
+      </figure>
+      <figure class="case-page__gallery" data-reveal>
+        <div class="case-page__gallery-grid">
+          <img src="images/abusiness/test-1.jpg?v=2" alt="Участница юзабилити-теста в лаборатории" loading="lazy">
+          <img src="images/abusiness/test-2.jpg?v=2" alt="Участник проходит сценарий на телефоне" loading="lazy">
+          <img src="images/abusiness/test-3.jpg?v=2" alt="Участник выполняет задачу на прототипе" loading="lazy">
+        </div>
+        <figcaption>Замер SUS и&nbsp;SUM старого приложения в&nbsp;лаборатории</figcaption>
+      </figure>
+      <figure class="case-page__figure case-page__figure--contained" data-reveal>
+        <img src="images/abusiness/problems-table.webp" alt="Таблица проблем из юзабилити-тестов, замеров SUS/SUM и отзывов клиентов VoC" loading="lazy">
+        <figcaption>Проблемы, найденные на&nbsp;юзабилити-тестах, при замерах SUS/SUM и&nbsp;в&nbsp;отзывах клиентов (VoC)</figcaption>
+      </figure>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Что мешало пользователям</h2>
+        <p>Замеры и&nbsp;тесты показали три группы критических проблем — из-за них клиенты не&nbsp;могли выполнить задачу и&nbsp;ставили низкие оценки:</p>
+        <div class="personas personas--stack">
+          <div class="persona">
+            <p class="persona__name">Навигация</p>
+            <div class="persona__text">Не&nbsp;находили конвертацию, реквизиты счёта, создание шаблона и&nbsp;даже выход из&nbsp;приложения. Реквизиты вытаскивали неполными через справку по&nbsp;счетам.</div>
+          </div>
+          <div class="persona">
+            <p class="persona__name">Тексты</p>
+            <div class="persona__text">Не&nbsp;понимали, что «Конвертация» — это перевод между своими счетами, а&nbsp;«Скачать» — это «Поделиться». Путались в&nbsp;аббревиатурах КБе, КНП, КБК.</div>
+          </div>
+          <div class="persona">
+            <p class="persona__name">Понимание процесса</p>
+            <div class="persona__text">Не&nbsp;знали, что после создания платёжки нужна отдельная подпись и&nbsp;что платёж после 18:00 и&nbsp;в&nbsp;выходные висит в&nbsp;обработке.</div>
+          </div>
+        </div>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Проектирование и&nbsp;проверка</h2>
+        <p>На&nbsp;10-дневном redesign-sprint с&nbsp;12 дизайнерами разобрали конкурентов, построили USM и&nbsp;CJM и&nbsp;собрали первый прототип. Его проверили UX-тестом, а&nbsp;результаты разобрали на&nbsp;дизайн-критике с&nbsp;Red Mad Robot.</p>
+        <p>Дальше работали итерациями: проектировали, проверяли UX-тестом на&nbsp;задачах из&nbsp;критических сценариев и&nbsp;дорабатывали, пока результаты не&nbsp;улучшались. Тесты проводили в&nbsp;оборудованной лаборатории. Методы:</p>
+        <ul class="case-page__list">
+          <li>решенческое интервью</li>
+          <li>качественный модерируемый тест</li>
+          <li>тест 5 секунд</li>
+          <li>тест ожидания</li>
+          <li>тест первого клика</li>
+        </ul>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <p class="case-page__label">Решение</p>
+        <h2 class="case-page__h2">Принципы нового приложения</h2>
+        <p>Сформулировали принципы, на&nbsp;которые опирается новое приложение:</p>
+        <ul class="case-page__list">
+          <li>Ясность важнее минимализма, эффективность важнее красоты</li>
+          <li>До&nbsp;нужной функции — 1–3 перехода</li>
+          <li>Сначала важное для пользователя, упор на&nbsp;ключевую персону</li>
+          <li>Текст — это 50% интерфейса, но&nbsp;если понятно без текста, он&nbsp;не&nbsp;нужен</li>
+          <li>Максимум автозаполнения и&nbsp;консистентность с&nbsp;веб-банкингом</li>
+          <li>Приложение подсказывает частые и&nbsp;подходящие по&nbsp;контексту действия</li>
+        </ul>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Новая информационная архитектура</h2>
+        <p>Основная идея — разгрузить архитектуру приложения и&nbsp;вывести основные функции и&nbsp;сервисы на&nbsp;расстояние 1–3 кликов. В&nbsp;первую очередь разделили приложение на&nbsp;три раздела, каждый под свою задачу предпринимателя.</p>
+        <h3 class="case-page__h3">1. Мой бизнес</h3>
+        <p>Я&nbsp;как предприниматель управляю денежными потоками и&nbsp;слежу за&nbsp;ними, отслеживаю события и&nbsp;KPI своего бизнеса. Оперативно реагирую на&nbsp;изменения и&nbsp;принимаю решения.</p>
+        <figure class="case-page__shot">
+          <img src="images/abusiness/ia-my-business.webp?v=8" alt="Главный экран «Мой бизнес»: счета, Alfa Smart, быстрые действия, платежи в работе, тариф и напоминания" loading="lazy">
+        </figure>
+        <h3 class="case-page__h3">2. Развитие бизнеса</h3>
+        <p>Я&nbsp;как предприниматель получаю релевантные рекомендации по&nbsp;развитию, полезные бизнес-сводки и&nbsp;советы, вовремя узнаю об&nbsp;изменениях в&nbsp;законодательстве.</p>
+        <figure class="case-page__shot">
+          <img src="images/abusiness/ia-growth.webp?v=8" alt="Раздел «Развитие»: персональные продукты, полезные материалы, «Хороший старт» и «Развитие бизнеса»" loading="lazy">
+        </figure>
+        <h3 class="case-page__h3">3. Чат с&nbsp;банком</h3>
+        <p>Я&nbsp;как предприниматель мгновенно получаю ответы на&nbsp;вопросы и&nbsp;помощь, когда она нужна. Слежу за&nbsp;статусами заявок, обращений и&nbsp;заказов.</p>
+        <figure class="case-page__shot">
+          <img src="images/abusiness/ia-chat.webp?v=8" alt="Раздел чата с банком с быстрыми вопросами: открыть счёт, оформить кредит, бизнес-карта" loading="lazy">
+        </figure>
+        <h3 class="case-page__h3">Action Bar</h3>
+        <p>Для быстрого доступа к&nbsp;основным сценариям, которые мы&nbsp;выявили на&nbsp;CustDev, сделали гибкий Action Bar, где собраны все основные функции и&nbsp;сервисы.</p>
+        <figure class="case-page__shot">
+          <img src="images/abusiness/ia-action-bar.webp?v=8" alt="Action Bar на главном экране: платежи и переводы, история операций, реквизиты, выписка, контрагенты и «Ещё»" loading="lazy">
+        </figure>
+        <p>По&nbsp;кнопке «Ещё» открывается окно с&nbsp;менее частыми функциями — по&nbsp;статистике использования. Его можно настроить под себя и&nbsp;вывести нужные действия на&nbsp;главный экран.</p>
+        <figure class="case-page__shot">
+          <img src="images/abusiness/ia-more.webp?v=8" alt="Окно «Ещё» с дополнительными функциями и экран настройки быстрых действий на главном экране" loading="lazy">
+        </figure>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Ключевые решения</h2>
+        <ol class="decisions">
+          <li class="decision">
+            <p class="decision__title">Понятные названия вместо банковских терминов</p>
+            <p class="decision__text">Респонденты не&nbsp;понимали слово «Конвертация» и&nbsp;искали «Перевод». В&nbsp;новом дизайне вместо него — «Обмен валют» и&nbsp;«Валютный перевод».</p>
+          </li>
+          <li class="decision">
+            <p class="decision__title">Частые действия — на&nbsp;главном экране</p>
+            <p class="decision__text">Реквизиты клиенты искали в&nbsp;«Личном кабинете» в&nbsp;разделе «Ещё», а&nbsp;выписку по&nbsp;отдельному счёту не&nbsp;могли выгрузить. Вынесли «Мои реквизиты», «Скачать выписку», «Платежи и&nbsp;переводы» и&nbsp;«Историю операций» в&nbsp;Action Bar на&nbsp;главном экране.</p>
+          </li>
+          <li class="decision">
+            <p class="decision__title">Шаблоны там, где их&nbsp;ждут</p>
+            <p class="decision__text">Все респонденты искали создание шаблона в&nbsp;разделе «Шаблоны» с&nbsp;кнопкой «+». Шаблоны заменили «Избранными» в&nbsp;разделе платежей. На&nbsp;первом тесте прототипа их&nbsp;нашли 0 из&nbsp;6 — это одна из&nbsp;задач следующей итерации.</p>
+          </li>
+          <li class="decision">
+            <p class="decision__title">Помощь без звонка в&nbsp;банк</p>
+            <p class="decision__text">Сделали отдельный раздел чата с&nbsp;банком и&nbsp;быстрое обращение в&nbsp;колл-центр, добавили подсказки в&nbsp;критических сценариях. Пересмотрели tone of&nbsp;voice: тексты объясняют проблему и&nbsp;предлагают решение.</p>
+          </li>
+        </ol>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Ключевые флоу</h2>
+        <p>Главные сценарии ключевой персоны — от&nbsp;входа в&nbsp;приложение до&nbsp;подписи платежей.</p>
+        <h3 class="case-page__h3">Платёж в&nbsp;тенге</h3>
+        <p>Все платежи и&nbsp;переводы собраны в&nbsp;одном разделе, а&nbsp;частые — в&nbsp;«Избранных». Получателя можно выбрать из&nbsp;контрагентов или ввести вручную.</p>
+        <figure class="case-page__shot">
+          <img src="images/abusiness/flow-payment.webp?v=7" alt="Экраны «Платежи и переводы» с избранными и форма платежа в тенге с выбором получателя из списка" loading="lazy">
+        </figure>
+        <h3 class="case-page__h3">Платежи в&nbsp;работе и&nbsp;подпись</h3>
+        <p>Платежи разложены по&nbsp;статусам: на&nbsp;подпись, в&nbsp;обработке, к&nbsp;зачислению — со&nbsp;счётчиками. Можно выбрать несколько и&nbsp;подписать пачкой, а&nbsp;не&nbsp;по&nbsp;одному.</p>
+        <figure class="case-page__shot">
+          <img src="images/abusiness/flow-sign.webp?v=7" alt="Экран «Платежи в работе» со статусами и экран подписи нескольких платежей сразу" loading="lazy">
+        </figure>
+        <h3 class="case-page__h3">Компании и&nbsp;выход</h3>
+        <p>Переключение между компаниями, настройки и&nbsp;выход собраны в&nbsp;шторке «Мои компании» — именно там пользователи искали выход на&nbsp;тесте прототипа.</p>
+        <figure class="case-page__shot">
+          <img src="images/abusiness/flow-companies.webp?v=7" alt="Шторка «Мои компании» с кнопками «Настройки» и «Выход» и экран настроек с компаниями и личными данными" loading="lazy">
+        </figure>
+        <h3 class="case-page__h3">До&nbsp;авторизации</h3>
+        <p>Открыть ИП&nbsp;можно прямо из&nbsp;приложения по&nbsp;номеру телефона и&nbsp;ИИН, а&nbsp;задать вопрос банку — в&nbsp;чате ещё до&nbsp;входа.</p>
+        <figure class="case-page__shot">
+          <img src="images/abusiness/flow-onboarding.webp?v=7" alt="Экран открытия ИП по номеру телефона и ИИН и чат с банком до авторизации" loading="lazy">
+        </figure>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Тексты интерфейса</h2>
+        <p>В&nbsp;старом приложении нашли 50+ проблем с&nbsp;текстами. Пересмотрели tone of&nbsp;voice:</p>
+        <div class="personas">
+          <div class="persona">
+            <p class="persona__name">Было</p>
+            <div class="persona__text"><ul><li>нет конкретной пользы</li><li>обезличенный текст, голос робота</li><li>ставим перед фактом, не&nbsp;решаем проблему</li></ul></div>
+          </div>
+          <div class="persona">
+            <p class="persona__name">Стало</p>
+            <div class="persona__text"><ul><li>пишем полезно и&nbsp;понятно</li><li>уважаем пользователя</li><li>объясняем проблему и&nbsp;предлагаем решение</li></ul></div>
+          </div>
+        </div>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">UX-тест первого прототипа</h2>
+        <p>Новую архитектуру собрали в&nbsp;первый прототип и&nbsp;проверили на&nbsp;8 респондентах. К&nbsp;сценариям заранее ставили гипотезы о&nbsp;том, где пользователь ошибётся, и&nbsp;смотрели, подтвердятся ли&nbsp;они.</p>
+        <div class="metrics">
+          <div class="metric">
+            <p class="metric__value">8</p>
+            <p class="metric__label">респондентов — по&nbsp;модели Нильсена этого хватает, чтобы найти около 83% проблем</p>
+          </div>
+          <div class="metric">
+            <p class="metric__value">26</p>
+            <p class="metric__label">сценариев в&nbsp;19 эпиках</p>
+          </div>
+          <div class="metric">
+            <p class="metric__value">21 из 25</p>
+            <p class="metric__label">гипотез удалось проверить</p>
+          </div>
+          <div class="metric">
+            <p class="metric__value">≈52%</p>
+            <p class="metric__label">заданий выполнено успешно: 82 попытки из&nbsp;158</p>
+          </div>
+        </div>
+        <figure class="chart">
+          <figcaption>
+            <p class="chart__title">Успешность заданий на&nbsp;тесте первого прототипа</p>
+            <p class="chart__note">22 задания. Справа — сколько респондентов справились из&nbsp;тех, кто проходил задание</p>
+          </figcaption>
+          <ul class="chart__rows">
+            <li class="chart__row" data-tip="Оплата налога: 8 из 8 (100%)"><span class="chart__label">Оплата налога</span><span class="chart__track"><span class="chart__bar" style="--v:100.0%"></span><span class="chart__norm" style="--norm:52.0%"></span></span><span class="chart__value">8 из 8</span></li>
+            <li class="chart__row" data-tip="Восстановление пароля: 6 из 6 (100%)"><span class="chart__label">Восстановление пароля</span><span class="chart__track"><span class="chart__bar" style="--v:100.0%"></span><span class="chart__norm" style="--norm:52.0%"></span></span><span class="chart__value">6 из 6</span></li>
+            <li class="chart__row" data-tip="Подключение продукта в чате: 7 из 8 (88%)"><span class="chart__label">Подключение продукта в&nbsp;чате</span><span class="chart__track"><span class="chart__bar" style="--v:87.5%"></span><span class="chart__norm" style="--norm:52.0%"></span></span><span class="chart__value">7 из 8</span></li>
+            <li class="chart__row" data-tip="Выписка по всем счетам: 7 из 8 (88%)"><span class="chart__label">Выписка по&nbsp;всем счетам</span><span class="chart__track"><span class="chart__bar" style="--v:87.5%"></span><span class="chart__norm" style="--norm:52.0%"></span></span><span class="chart__value">7 из 8</span></li>
+            <li class="chart__row" data-tip="Поиск подключённых продуктов: 4 из 5 (80%)"><span class="chart__label">Поиск подключённых продуктов</span><span class="chart__track"><span class="chart__bar" style="--v:80.0%"></span><span class="chart__norm" style="--norm:52.0%"></span></span><span class="chart__value">4 из 5</span></li>
+            <li class="chart__row" data-tip="Налоговый платёж: 6 из 8 (75%)"><span class="chart__label">Налоговый платёж</span><span class="chart__track"><span class="chart__bar" style="--v:75.0%"></span><span class="chart__norm" style="--norm:52.0%"></span></span><span class="chart__value">6 из 8</span></li>
+            <li class="chart__row" data-tip="Подписать платежи пачкой: 3 из 5 (60%)"><span class="chart__label">Подписать платежи пачкой</span><span class="chart__track"><span class="chart__bar" style="--v:60.0%"></span><span class="chart__norm" style="--norm:52.0%"></span></span><span class="chart__value">3 из 5</span></li>
+            <li class="chart__row" data-tip="Получение реквизитов: 5 из 8 (62%)"><span class="chart__label">Получение реквизитов</span><span class="chart__track"><span class="chart__bar" style="--v:62.5%"></span><span class="chart__norm" style="--norm:52.0%"></span></span><span class="chart__value">5 из 8</span></li>
+            <li class="chart__row" data-tip="Переключение между компаниями: 5 из 8 (62%)"><span class="chart__label">Переключение между компаниями</span><span class="chart__track"><span class="chart__bar" style="--v:62.5%"></span><span class="chart__norm" style="--norm:52.0%"></span></span><span class="chart__value">5 из 8</span></li>
+            <li class="chart__row" data-tip="Погасить платёж по кредиту: 5 из 8 (62%)"><span class="chart__label">Погасить платёж по&nbsp;кредиту</span><span class="chart__track"><span class="chart__bar" style="--v:62.5%"></span><span class="chart__norm" style="--norm:52.0%"></span></span><span class="chart__value">5 из 8</span></li>
+            <li class="chart__row" data-tip="Переход в кабинет Альфа Смарт: 3 из 6 (50%)"><span class="chart__label">Переход в&nbsp;кабинет Альфа Смарт</span><span class="chart__track"><span class="chart__bar" style="--v:50.0%"></span><span class="chart__norm" style="--norm:52.0%"></span></span><span class="chart__value">3 из 6</span></li>
+            <li class="chart__row" data-tip="Регистрация ИП: 4 из 8 (50%)"><span class="chart__label">Регистрация ИП</span><span class="chart__track"><span class="chart__bar" style="--v:50.0%"></span><span class="chart__norm" style="--norm:52.0%"></span></span><span class="chart__value">4 из 8</span></li>
+            <li class="chart__row" data-tip="Проверка контрагента: 4 из 8 (50%)"><span class="chart__label">Проверка контрагента</span><span class="chart__track"><span class="chart__bar" style="--v:50.0%"></span><span class="chart__norm" style="--norm:52.0%"></span></span><span class="chart__value">4 из 8</span></li>
+            <li class="chart__row" data-tip="Валютный перевод: 4 из 8 (50%)"><span class="chart__label">Валютный перевод</span><span class="chart__track"><span class="chart__bar" style="--v:50.0%"></span><span class="chart__norm" style="--norm:52.0%"></span></span><span class="chart__value">4 из 8</span></li>
+            <li class="chart__row" data-tip="Справка по всем счетам: 3 из 7 (43%)"><span class="chart__label">Справка по&nbsp;всем счетам</span><span class="chart__track"><span class="chart__bar" style="--v:42.9%"></span><span class="chart__norm" style="--norm:52.0%"></span></span><span class="chart__value">3 из 7</span></li>
+            <li class="chart__row" data-tip="Выписка по торговой точке: 2 из 8 (25%)"><span class="chart__label">Выписка по&nbsp;торговой точке</span><span class="chart__track"><span class="chart__bar" style="--v:25.0%"></span><span class="chart__norm" style="--norm:52.0%"></span></span><span class="chart__value">2 из 8</span></li>
+            <li class="chart__row" data-tip="Ссылка на покупку: 2 из 8 (25%)"><span class="chart__label">Ссылка на&nbsp;покупку</span><span class="chart__track"><span class="chart__bar" style="--v:25.0%"></span><span class="chart__norm" style="--norm:52.0%"></span></span><span class="chart__value">2 из 8</span></li>
+            <li class="chart__row" data-tip="Заявка на снятие наличных: 1 из 5 (20%)"><span class="chart__label">Заявка на&nbsp;снятие наличных</span><span class="chart__track"><span class="chart__bar" style="--v:20.0%"></span><span class="chart__norm" style="--norm:52.0%"></span></span><span class="chart__value">1 из 5</span></li>
+            <li class="chart__row" data-tip="Статусы платежей: 1 из 7 (14%)"><span class="chart__label">Статусы платежей</span><span class="chart__track"><span class="chart__bar" style="--v:14.3%"></span><span class="chart__norm" style="--norm:52.0%"></span></span><span class="chart__value">1 из 7</span></li>
+            <li class="chart__row" data-tip="Редактирование отклонённого платежа: 1 из 7 (14%)"><span class="chart__label">Редактирование отклонённого платежа</span><span class="chart__track"><span class="chart__bar" style="--v:14.3%"></span><span class="chart__norm" style="--norm:52.0%"></span></span><span class="chart__value">1 из 7</span></li>
+            <li class="chart__row" data-tip="Выход из аккаунта: 1 из 8 (12%)"><span class="chart__label">Выход из&nbsp;аккаунта</span><span class="chart__track"><span class="chart__bar" style="--v:12.5%"></span><span class="chart__norm" style="--norm:52.0%"></span></span><span class="chart__value">1 из 8</span></li>
+            <li class="chart__row" data-tip="Поиск избранных платежей: 0 из 6 (0%)"><span class="chart__label">Поиск избранных платежей</span><span class="chart__track"><span class="chart__bar" style="--v:0.0%"></span><span class="chart__norm" style="--norm:52.0%"></span></span><span class="chart__value">0 из 6</span></li>
+          </ul>
+          <p class="chart__legend"><i></i>в&nbsp;среднем — 52% (82 из&nbsp;158 попыток)</p>
+        </figure>
+        <p>Все респонденты отметили важность проверки контрагентов. Одна из&nbsp;участниц сказала: «функция проверки крутая, не&nbsp;видела её&nbsp;в&nbsp;других банках».</p>
+        <h3 class="case-page__h3">Почему</h3>
+        <blockquote class="quote">Контрагенты для меня — это те, кто сохранены, как контакты.</blockquote>
+        <blockquote class="quote">Кнопка регистрации выглядела как рекламный баннер, поэтому я&nbsp;её&nbsp;проигнорировал.</blockquote>
+        <p>Пользователи не&nbsp;понимали, что статусы операций нужно листать горизонтально, не&nbsp;связывали слово «продукты» с&nbsp;картами, кредитами и&nbsp;Альфа Смарт и&nbsp;искали выход из&nbsp;аккаунта в&nbsp;переключателе компаний. По&nbsp;итогам теста сформулировали рекомендации для следующей итерации — например, перенести платежи в&nbsp;работе внутрь истории операций.</p>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">План внедрения</h2>
+        <p>В&nbsp;драфте плана внедрения сравнили три стратегии запуска, чтобы найти баланс между скоростью и&nbsp;риском:</p>
+        <div class="personas personas--stack">
+          <div class="persona">
+            <p class="persona__name">Плавно</p>
+            <div class="persona__text">Тестируем порциями и&nbsp;снижаем риски, но&nbsp;запуск растягивается, растёт техдолг и&nbsp;конфликты старой и&nbsp;новой ДС.</div>
+          </div>
+          <div class="persona">
+            <p class="persona__name">Крупными релизами</p>
+            <div class="persona__text">Быстрее улучшаем UX&nbsp;и&nbsp;меньше техдолга, но&nbsp;сложнее планирование и&nbsp;сильнее перемены для клиентов.</div>
+          </div>
+          <div class="persona">
+            <p class="persona__name">Новое приложение</p>
+            <div class="persona__text">Мгновенное улучшение и&nbsp;сильный инфоповод, но&nbsp;дорого, рискованная миграция и&nbsp;нужна отдельная команда.</div>
+          </div>
+        </div>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Результат</h2>
+        <ul class="case-page__list">
+          <li>Проект прошёл путь от&nbsp;discovery до&nbsp;проверенного прототипа: аудит, исследование, персоны, новая архитектура и&nbsp;UX-тесты</li>
+          <li>UX-тест первого прототипа на&nbsp;8 клиентах проверил 26 сценариев и&nbsp;показал, какие из&nbsp;них доработать в&nbsp;следующей итерации</li>
+          <li>Собран gap list из&nbsp;90+ пунктов UX-долга</li>
+          <li>Информационная архитектура перестроена под ключевую персону, тексты переписаны по&nbsp;новому tone of&nbsp;voice</li>
+        </ul>
+        <p>Весной 2022 года Альфа Банк Казахстан закрылся, и&nbsp;редизайн не&nbsp;успел выйти в&nbsp;релиз. Поэтому цели бизнес-кейса остались прогнозом, а&nbsp;продуктовых метрик после запуска нет.</p>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Выводы</h2>
+        <p>Главный урок проекта — начинать с&nbsp;замеров, а&nbsp;не&nbsp;с&nbsp;визуала. Цифры SUS и&nbsp;SUM по&nbsp;конкретным сценариям и&nbsp;обращения в&nbsp;колл-центр помогли договориться со&nbsp;стейкхолдерами о&nbsp;приоритетах и&nbsp;проверять каждую итерацию объективно, а&nbsp;не&nbsp;на&nbsp;вкус.</p>
+        <p>Ключевая персона дала фокус: вместо того чтобы переносить в&nbsp;приложение всё из&nbsp;веба, мы&nbsp;сделали его удобным для того, кто им&nbsp;действительно пользуется.</p>
+      </section>
+    </main>
+  </div>
+
+  <!-- Градиент внизу экрана -->
+  <div class="bottom-glass" aria-hidden="true"></div>
+
+
+  <script src="script.js?v=20"></script>
+</body>
+</html>

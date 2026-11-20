@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Дизайн-система Tele2 и Altel — кейс</title>
+  <link rel="stylesheet" href="style.css?v=114">
+  <!-- Прячем элементы до анимации появления и сразу применяем сохранённую тему, чтобы не было мигания -->
+  <script>
+    (function () {
+      var root = document.documentElement;
+      root.classList.add('js');
+      var saved = null;
+      try { saved = localStorage.getItem('theme'); } catch (e) {}
+      if (saved === 'light' || saved === 'dark') root.dataset.theme = saved;
+      var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+      root.classList.toggle('is-dark', dark);
+    })();
+  </script>
+</head>
+<body>
+
+  <div class="container">
+    <header class="header">
+      <a class="avatar-link" href="index.html" aria-label="На главную">
+        <img class="avatar" data-reveal src="images/avatar.jpg?v=3" alt="Аман" width="56" height="56">
+        <span class="avatar-preview" aria-hidden="true"><img src="images/avatar-large.webp" alt="" width="240" height="240" draggable="false"></span>
+      </a>
+
+      <!-- Город — рядом с аватаром -->
+      <span class="location glass" data-reveal>
+        <span class="location__photo" aria-hidden="true"><img src="images/almaty.webp" alt="" draggable="false"></span>
+        <span class="location__text">
+          <svg class="icon" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+            <path fill="currentColor" d="M21 3 3 10.5l7.6 2.9L13.5 21 21 3Z"/>
+          </svg>
+          Алматы
+        </span>
+      </span>
+
+      <nav class="menu glass" data-reveal>
+        <a class="menu__item" href="about.html">Обо мне</a>
+        <a class="menu__item" href="https://t.me/shimkayev" target="_blank" rel="noopener">Telegram</a>
+        <a class="menu__item" href="https://www.linkedin.com/in/shimkayev/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="menu__item" href="#cv">CV</a>
+      </nav>
+
+      <!-- Справа у края экрана: переключатель темы -->
+      <div class="header-side">
+      <button class="theme-switch" data-reveal type="button" role="switch" aria-checked="false" aria-label="Тёмная тема">
+        <span class="theme-switch__knob">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/>
+          </svg>
+        </span>
+      </button>
+      </div>
+    </header>
+
+    <main class="case-page">
+      <h1 class="page__title" data-reveal>Дизайн-система на&nbsp;токенах<br>для&nbsp;двух брендов: Tele2 и&nbsp;Altel</h1>
+        <p data-reveal class="case-page__lead">Собрали одну библиотеку компонентов на&nbsp;дизайн-токенах, которая переключает интерфейс с&nbsp;одного бренда на&nbsp;другой в&nbsp;один клик — в&nbsp;дизайне и&nbsp;в&nbsp;коде.</p>
+
+      <dl class="case-summary" data-reveal>
+        <div><dt class="visually-hidden">Компания</dt><dd class="case-summary__logos"><img class="case-summary__logo" src="images/logo-tele2.png" alt="Tele2" title="Tele2"><img class="case-summary__logo" src="images/logo-altel.png" alt="Altel" title="Altel"></dd></div>
+        <div><dt>Роль</dt><dd>Product Designer</dd></div>
+        <div><dt>Период</dt><dd>2022–2023</dd></div>
+        <div><dt>Продукт</dt><dd>Дизайн-система</dd></div>
+      </dl>
+      <p class="case-page__talk" data-reveal>Рассказывал об&nbsp;этом проекте на&nbsp;конференции UsabilityLab: <a href="https://www.youtube.com/watch?v=hidl-D2Wdzc" target="_blank" rel="noopener">смотреть доклад «Дизайн-токены: адаптация интерфейса под любой бренд»</a></p>
+
+      <figure class="case-page__cover" data-reveal>
+        <img src="images/case-design-system.webp" alt="Розовые и чёрно-белые ленты с надписью DIGITAL">
+      </figure>
+
+      <section class="case-page__section" data-reveal>
+        <p class="case-page__label">Контекст</p>
+        <h2 class="case-page__h2">Проблема</h2>
+        <p>Altel и&nbsp;Tele2 объединились в&nbsp;одну компанию, но&nbsp;остались двумя брендами со&nbsp;своей аудиторией: в&nbsp;Altel — конструктор тарифа, в&nbsp;Tele2 — фиксированные тарифы с&nbsp;абонентской платой. Дизайн и&nbsp;разработку приходилось вести для каждого бренда отдельно.</p>
+        <p>При этом компания перешла с&nbsp;аутсорс-разработки на&nbsp;собственную и&nbsp;получила тяжёлое легаси:</p>
+        <ul class="case-page__list">
+          <li>у&nbsp;компонентов не&nbsp;было вариантов — базовой гигиены дизайн-системы</li>
+          <li>системные компоненты были только для iOS: на&nbsp;Android пользователи видели iOS-кнопки, навбары и&nbsp;модалки</li>
+          <li>кроме хедера, компонентов почти не&nbsp;было — основные карточки лежали просто во&nbsp;фреймах</li>
+        </ul>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Цель</h2>
+        <p>Ускорить изменения дизайна и&nbsp;в&nbsp;дизайне, и&nbsp;в&nbsp;разработке: поддерживать одну библиотеку компонентов для обоих брендов, а&nbsp;не&nbsp;дублировать её&nbsp;под каждый, и&nbsp;сделать интерфейс нативным на&nbsp;обеих платформах.</p>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Моя роль</h2>
+        <p>Инициатива дизайн-системы шла от&nbsp;дизайна. Вместе с&nbsp;фронтенд-разработчиками выбирал основу, внедрял Ant Design, проектировал структуру токенов для мобильной разработки и&nbsp;собирал библиотеку компонентов.</p>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <p class="case-page__label">Решение</p>
+        <h2 class="case-page__h2">Основа — Ant Design 5</h2>
+        <p>Вместе с&nbsp;фронтендерами сравнивали разные Storybook и&nbsp;Material и&nbsp;выбрали Ant Design:</p>
+        <ul class="case-page__list">
+          <li>open-source и&nbsp;бесплатный, с&nbsp;большим сообществом</li>
+          <li>в&nbsp;разработке даёт полную кастомизацию — под любые цвета и&nbsp;скругления</li>
+          <li>в&nbsp;дизайне есть полный набор компонентов, синхронизированный с&nbsp;плагином токенов</li>
+        </ul>
+        <figure class="case-page__shot">
+          <img src="images/tele2/antd-customize.jpg" alt="Страница Ant Design о кастомизации: шрифты, цвета и отступы меняются через Figma Tokens для всего UI-кита" loading="lazy">
+          <figcaption>Ant Design кастомизируется через токены: шрифты, цвета и&nbsp;отступы для всего UI-кита. Иллюстрация с&nbsp;сайта Ant Design</figcaption>
+        </figure>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Токены в&nbsp;Tokens Studio</h2>
+        <p>В&nbsp;пятой версии Ant Design токенизация работает через плагин Tokens Studio для Figma. В&nbsp;нём хранятся все токены — цвета, шрифты, отступы, скругления, — и&nbsp;он&nbsp;переключает макет или целый флоу с&nbsp;одного бренда на&nbsp;другой или со&nbsp;светлой темы на&nbsp;тёмную.</p>
+        <p>Для разработки токены выгружаются кодом в&nbsp;репозиторий: разработчики забирают JSON-файлы и&nbsp;парсят их&nbsp;в&nbsp;проекте.</p>
+        <figure class="case-page__shot">
+          <img src="images/tele2/tokens-studio.webp" alt="Плагин Tokens Studio для Figma: палитра цветов Ant Design, тёмная тема и те же токены в виде JSON" loading="lazy">
+          <figcaption>Tokens Studio: слева токены цветов и&nbsp;темы, справа те&nbsp;же токены в&nbsp;JSON, который уходит разработчикам</figcaption>
+        </figure>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Структура токенов для мобилки</h2>
+        <p>Сначала я&nbsp;принёс мобильным разработчикам JSON с&nbsp;токенами Ant Design&nbsp;— и&nbsp;они поругались на&nbsp;его структуру: она сделана под веб и&nbsp;неудобна для парсинга в&nbsp;мобильном приложении.</p>
+        <p>Тогда я&nbsp;сделал для мобильной разработки свою, упрощённую структуру из&nbsp;четырёх групп:</p>
+        <div class="personas personas--stack">
+          <div class="persona">
+            <p class="persona__name">tele2Colors</p>
+            <div class="persona__text">Палитра: все цвета бренда от&nbsp;тёмных оттенков до&nbsp;светлых.</div>
+          </div>
+          <div class="persona">
+            <p class="persona__name">tele2Map</p>
+            <div class="persona__text">Семантика: цвет под конкретный контекст, например text primary или цвет кнопки. Берётся из&nbsp;палитры.</div>
+          </div>
+          <div class="persona">
+            <p class="persona__name">tele2Typo</p>
+            <div class="persona__text">Только брендовый шрифт: у&nbsp;Tele2 и&nbsp;Altel разные шрифты в&nbsp;заголовках.</div>
+          </div>
+          <div class="persona">
+            <p class="persona__name">tele2Other</p>
+            <div class="persona__text">Отступы, паддинги, маргины и&nbsp;скругления.</div>
+          </div>
+        </div>
+        <figure class="case-page__shot">
+          <img src="images/case-design-system-2.webp" alt="Наборы токенов в Tokens Studio: tele2Colors, tele2Map, tele2Typo, tele2Other, такие же для Altel и отдельно SF, и экран приложения, собранный на них" loading="lazy">
+          <figcaption>Наборы tele2Colors, Map, Typo и&nbsp;Other, такие&nbsp;же для Altel и&nbsp;отдельный набор SF&nbsp;— и&nbsp;экран, собранный на&nbsp;этих токенах</figcaption>
+        </figure>
+        <p>Для Altel структура полностью повторяется — меняются только значения. Системные шрифты вынесли в&nbsp;отдельные файлы SF&nbsp;и&nbsp;Roboto: в&nbsp;одном файле плагин не&nbsp;различал, где San Francisco, а&nbsp;где Roboto.</p>
+        <h3 class="case-page__h3">Почему палитра отдельно от&nbsp;семантики</h3>
+        <p>Один и&nbsp;тот же&nbsp;цвет используется в&nbsp;разных местах. Без семантического слоя в&nbsp;tele2Map пришлось бы&nbsp;дублировать одинаковые цвета, а&nbsp;так компонент ссылается на&nbsp;смысл, а&nbsp;не&nbsp;на&nbsp;конкретный оттенок.</p>
+        <h3 class="case-page__h3">Нейминг</h3>
+        <p>Отдельную многоуровневую систему нейминга не&nbsp;строили: взяли токены Ant Design и&nbsp;упростили структуру под мобильный парсинг. Цель — одинаковые названия токенов на&nbsp;вебе и&nbsp;в&nbsp;мобилке.</p>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Нативно на&nbsp;каждой платформе</h2>
+        <p>Вместо iOS-компонентов на&nbsp;Android решили делать интерфейс нативным под обе платформы, без единого кастомного вида и&nbsp;без нарушения платформенных паттернов: на&nbsp;iOS — Segmented Control, на&nbsp;Android — табы.</p>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Библиотека «Телепорт»</h2>
+        <p>Библиотеку назвали «Телепорт» — по&nbsp;созвучию с&nbsp;Tele2 и&nbsp;потому, что она телепортирует интерфейс с&nbsp;одного бренда на&nbsp;другой. В&nbsp;плагине меняешь тему «Tele2 iOS» на&nbsp;«Altel iOS» — и&nbsp;весь макет перестраивается под второй бренд. Флоу на&nbsp;50 экранов переключается за&nbsp;секунду, в&nbsp;один клик.</p>
+        <figure class="case-page__shot">
+          <img src="images/case-design-system-3.webp" alt="Токены в Tokens Studio и один экран приложения в двух темах: Tele2 и Altel" loading="lazy">
+        </figure>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Нативные переменные Figma и&nbsp;Dev Mode</h2>
+        <p>Когда в&nbsp;Tokens Studio появилась синхронизация с&nbsp;нативными переменными Figma, мы&nbsp;перенесли токены в&nbsp;Variables одной кнопкой Sync. В&nbsp;коллекции Brand — 166 переменных в&nbsp;группах Map, Other и&nbsp;Color, а&nbsp;бренды Tele2 и&nbsp;Altel — это режимы одной коллекции: у&nbsp;одного и&nbsp;того же&nbsp;токена для каждого бренда своё значение.</p>
+        <figure class="case-page__shot">
+          <img src="images/tele2/variables.webp" alt="Коллекция переменных Brand в Figma: 166 переменных, группы Map, Other и Color, режимы Tele2 и Altel для семантических цветов текста" loading="lazy">
+        </figure>
+        <p>Ограничение — в&nbsp;Variables нет шрифтов, поэтому задать брендам разные шрифты через переменные нельзя. Брендовые шрифты остались в&nbsp;Tokens Studio.</p>
+        <h3 class="case-page__h3">Dev Mode вместо техдокументации</h3>
+        <p>Раньше на&nbsp;каждый компонент писали техническую документацию: какие токены в&nbsp;нём используются. С&nbsp;нативными переменными эту работу взял на&nbsp;себя Dev Mode — разработчик кликает на&nbsp;объект и&nbsp;сразу видит отступы, маргины и&nbsp;цвета с&nbsp;названиями токенов, например Other/paddingM или paddingL. Писать техдокументацию по&nbsp;токенам для каждого компонента мы&nbsp;перестали.</p>
+        <figure class="case-page__shot">
+          <img src="images/tele2/devmode.webp" alt="Компонент DataView в Dev Mode: отступы подписаны названиями токенов Other/paddingM, paddingL и marginL" loading="lazy">
+        </figure>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <p class="case-page__label">Итог</p>
+        <h2 class="case-page__h2">Результат</h2>
+        <p>Продуктовых метрик нет: нулевой замер до&nbsp;внедрения никто не&nbsp;делал, поэтому ROI дизайн-системы посчитать нельзя. Но&nbsp;можно сравнить трудозатраты на&nbsp;реальном продукте — «Перенос номера», около 20 экранов. Это очень грубая оценка, без формул:</p>
+        <div class="table-wrap">
+          <table class="case-table case-table--compare">
+            <thead><tr><th></th><th>Без дизайн-системы</th><th>С&nbsp;дизайн-системой на&nbsp;токенах</th></tr></thead>
+            <tbody>
+              <tr><td>Дизайн 20 экранов</td><td>≈30 ч</td><td>≈4 ч</td></tr>
+              <tr><td>Перерисовка под второй бренд</td><td>≈4 ч</td><td>≈10 мин</td></tr>
+              <tr><td>Вёрстка экранов на&nbsp;iOS и&nbsp;Android, без логики и&nbsp;бэкенда</td><td>≈200 ч</td><td>≈50 ч</td></tr>
+              <tr><td>Переключение бренда и&nbsp;проверка в&nbsp;разработке</td><td>—</td><td>≈1 ч</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3 class="case-page__h3">Что ещё это даёт</h3>
+        <ul class="case-page__list">
+          <li>Второй бренд получает готовый флоу быстрее: если продукт «взлетел» в&nbsp;одном бренде, дизайнер переключает тему и&nbsp;отдаёт его в&nbsp;разработку. Так случилось с&nbsp;покупкой и&nbsp;переносом номера: флоу взлетел в&nbsp;Tele2, его переключили на&nbsp;тему Altel и&nbsp;передали команде Altel. После релиза покупки нового номера в&nbsp;Altel выросли с&nbsp;562 в&nbsp;ноябре до&nbsp;2&nbsp;969 в&nbsp;январе, а&nbsp;переносы&nbsp;— с&nbsp;48 до&nbsp;479. Подробнее&nbsp;— в&nbsp;кейсе <a href="tele2-number.html">«Покупка и&nbsp;перенос номера»</a></li>
+          <li>Разработчик берёт JSON нужного бренда — и&nbsp;экраны перерисовываются в&nbsp;коде</li>
+          <li>Появляется возможность дешёвых A/B-тестов между брендами: один бренд запускает базовую версию процесса, второй — с&nbsp;изменением. Культуры A/B-тестов пока нет, в&nbsp;связке с&nbsp;токенами их&nbsp;ещё не&nbsp;проводили</li>
+          <li>Dev Mode заменил ручную техдокументацию по&nbsp;токенам</li>
+        </ul>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Минусы</h2>
+        <p>У&nbsp;подхода есть цена, и&nbsp;её&nbsp;важно проговорить:</p>
+        <ul class="case-page__list">
+          <li>Дизайн-долг: легаси-экраны, собранные на&nbsp;локальных компонентах команд, ещё предстоит перевести на&nbsp;новую систему</li>
+          <li>Каждый компонент нужно собирать на&nbsp;токенах и&nbsp;постоянно применять их&nbsp;через плагин — «собрал и&nbsp;забыл» больше не&nbsp;работает</li>
+          <li>Две структуры токенов — для веба на&nbsp;Ant Design и&nbsp;для мобилки. В&nbsp;идеале нужна одна структура и&nbsp;один источник правды</li>
+        </ul>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Что дальше</h2>
+        <ul class="case-page__list">
+          <li>Инструкция для дизайнеров по&nbsp;работе с&nbsp;плагином и&nbsp;применению токенов</li>
+          <li>Плагин как источник правды: JSON-файлы уже заливаются в&nbsp;Git, цель — чтобы правка токена автоматически уходила разработчикам и&nbsp;попадала на&nbsp;прод</li>
+          <li>Синхронизировать токены с&nbsp;backend-driven UI, который уже внедрён в&nbsp;одном из&nbsp;продуктов</li>
+        </ul>
+      </section>
+      <section class="case-page__section" data-reveal>
+        <h2 class="case-page__h2">Выводы</h2>
+        <p>Самое важное в&nbsp;токенизации — нейминг и&nbsp;семантика цветов. Именно они определяют, будет ли&nbsp;одна библиотека работать для нескольких брендов или превратится в&nbsp;набор дублей.</p>
+        <p>И&nbsp;второй урок — делать нулевой замер до&nbsp;внедрения. Без него эффект дизайн-системы можно показать только грубой оценкой, а&nbsp;не&nbsp;цифрами.</p>
+      </section>
+    </main>
+  </div>
+
+  <!-- Градиент внизу экрана -->
+  <div class="bottom-glass" aria-hidden="true"></div>
+
+
+  <script src="script.js?v=20"></script>
+</body>
+</html>
