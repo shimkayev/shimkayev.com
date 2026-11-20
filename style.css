@@ -1765,3 +1765,12 @@ body::before {
 .case-page__section .decisions { margin-left: -4px; margin-right: -4px; }
 /* график вне раздела: тексты сдвинуты на 4px, как у остальных графиков */
 .case-page > .mchart { margin-left: 4px; margin-right: 4px; }
+
+/* подпись под блоком с телефонами */
+.case-page__section .phones__caption {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--text-muted);
+  text-align: center;
+}
