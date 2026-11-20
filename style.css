@@ -1717,7 +1717,7 @@ body::before {
     top: calc(100% + 8px);
     right: 0;
     flex: none;
-    width: 200px;
+    width: 220px;
     height: auto;
     padding: 8px;
     border-radius: 24px;
@@ -1736,5 +1736,5 @@ body::before {
     transform: none;
     transition: opacity 0.2s ease, transform 0.2s ease;
   }
-  .header .menu__item { padding: 12px 14px; }
+  .header .menu__item { padding: 12px 14px; font-size: 20px; line-height: 26px; }
 }
