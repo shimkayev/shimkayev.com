@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Редизайн мобильного банка для бизнеса — кейс</title>
-  <link rel="stylesheet" href="style.css?v=127">
+  <link rel="stylesheet" href="style.css?v=128">
   <!-- Прячем элементы до анимации появления и сразу применяем сохранённую тему, чтобы не было мигания -->
   <script>
     (function () {
@@ -399,7 +399,42 @@
           </ul>
           <p class="chart__legend"><i></i>в&nbsp;среднем — 52% (82 из&nbsp;158 попыток)</p>
         </figure>
-        <p>По&nbsp;итогам теста сформулировали рекомендации для следующей итерации.</p>
+        <h3 class="case-page__h3">Гипотезы: где мы&nbsp;ошиблись</h3>
+        <p>Из&nbsp;проверенных гипотез подтвердились только 3, ещё 2&nbsp;— наполовину, а&nbsp;16 опровергли. Пользователи чаще ошибались не&nbsp;там, где мы&nbsp;ждали, и&nbsp;без теста эти проблемы ушли&nbsp;бы в&nbsp;разработку.</p>
+        <div class="table-wrap">
+          <table class="case-table case-table--hypo">
+            <thead><tr><th>Гипотеза</th><th>Итог</th><th>Что оказалось</th></tr></thead>
+            <tbody>
+              <tr><td>Выход из&nbsp;аккаунта будут искать в&nbsp;списке компаний в&nbsp;шапке</td><td class="verdict verdict--yes">Подтвердилась</td><td>Туда выход и&nbsp;перенесли&nbsp;— в&nbsp;шторку «Мои компании»</td></tr>
+              <tr><td>Увидят только 2&nbsp;статуса платежей и&nbsp;не&nbsp;поймут, что вкладки статусов листаются</td><td class="verdict verdict--yes">Подтвердилась</td><td>Статусы нашёл 1&nbsp;из&nbsp;7: все статусы нужно показывать сразу, без горизонтального скролла</td></tr>
+              <tr><td>Реквизиты будут искать в&nbsp;деталях счёта</td><td class="verdict verdict--no">Опровергнута</td><td>Искали в&nbsp;платежах, профиле и&nbsp;выписке и&nbsp;просили вынести реквизиты на&nbsp;главную</td></tr>
+              <tr><td>Чтобы добавить платёж в&nbsp;избранное, создадут новый</td><td class="verdict verdict--no">Опровергнута</td><td>Ждали кнопку «Повторить» в&nbsp;исполненном платеже, а&nbsp;иконку избранного не&nbsp;узнали&nbsp;— 0&nbsp;из&nbsp;6</td></tr>
+              <tr><td>Отклонённый платёж отредактируют и&nbsp;отправят повторно</td><td class="verdict verdict--no">Опровергнута</td><td>Не&nbsp;нашли сам платёж: не&nbsp;поняли, что вкладки статусов листаются&nbsp;— 1&nbsp;из&nbsp;7</td></tr>
+              <tr><td>Под «Продуктами» поймут счета и&nbsp;карты из&nbsp;виджета на&nbsp;главной</td><td class="verdict verdict--no">Опровергнута</td><td>Слово «Продукты» не&nbsp;связали ни&nbsp;с&nbsp;картами, ни&nbsp;с&nbsp;кредитами, ни&nbsp;с&nbsp;Альфа Смарт</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3 class="case-page__h3">Что узнали</h3>
+        <div class="personas personas--stack">
+          <div class="persona">
+            <p class="persona__name">Чат&nbsp;— для вопросов, а&nbsp;не&nbsp;для действий</p>
+            <blockquote class="quote quote--plain">Точно не&nbsp;стал&nbsp;бы искать открытие карты через чат. Чат&nbsp;— чтобы задавать непонятные вопросы</blockquote>
+            <div class="persona__text">Действия оставляем в&nbsp;интерфейсе, а&nbsp;чат&nbsp;— для вопросов и&nbsp;статусов заявок.</div>
+          </div>
+          <div class="persona">
+            <p class="persona__name">Важное не&nbsp;должно выглядеть как реклама</p>
+            <div class="persona__text">Кнопку регистрации ИП&nbsp;приняли за&nbsp;рекламный баннер и&nbsp;пропустили: 3&nbsp;из&nbsp;4 сразу шли ко&nbsp;входу по&nbsp;номеру телефона. Так&nbsp;же не&nbsp;замечали мелкую ссылку «Отправить в&nbsp;виде ссылки» и&nbsp;нажимали «Поделиться» на&nbsp;экране с&nbsp;QR.</div>
+          </div>
+          <div class="persona">
+            <p class="persona__name">Банковские слова всё ещё мешают</p>
+            <div class="persona__text">«Контрагенты» понимали как сохранённые контакты и&nbsp;предлагали написать «Проверка поставщиков». «Продукты» не&nbsp;связывали с&nbsp;картами и&nbsp;кредитами. Словарь интерфейса нужно было пересмотреть ещё раз.</div>
+          </div>
+          <div class="persona">
+            <p class="persona__name">Читаемость важнее стиля</p>
+            <div class="persona__text">2&nbsp;из&nbsp;8 назвали тёмную палитру некомфортной, а&nbsp;серый мелкий текст условий по&nbsp;карте читали с&nbsp;трудом.</div>
+          </div>
+        </div>
+        <p>Были и&nbsp;находки, которые стоило развивать: проверку контрагента по&nbsp;ИИН/БИН отметили как функцию, которой нет в&nbsp;других банках. По&nbsp;итогам теста сформулировали рекомендации для следующей итерации.</p>
       </section>
       <section class="case-page__section" data-reveal>
         <h2 class="case-page__h2">План внедрения</h2>

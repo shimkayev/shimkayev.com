@@ -996,6 +996,12 @@ body::before {
 /* цитата внутри карточки персоны — без своего фона */
 .quote--plain { margin-top: 8px; padding: 0; background: none; border-radius: 0; color: var(--text-muted); }
 
+/* таблица гипотез UX-теста */
+.case-table--hypo td:first-child { font-weight: 400; }
+.case-table--hypo td.verdict { font-weight: 500; }
+.verdict--yes { color: var(--good-bar) !important; }
+.verdict--no { color: var(--bad-text) !important; }
+
 /* таблица сравнения «было / стало» */
 .case-table--compare td:nth-child(2) { color: var(--text-muted); }
 .case-table--compare td:last-child { color: var(--text); font-weight: 600; }
