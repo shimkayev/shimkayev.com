@@ -515,7 +515,12 @@ body::before {
 }
 /* картинка проекта под текстом места работы — по ширине текста */
 .job__media { margin: 24px 0 0; }
-.job__media img { display: block; width: 100%; height: auto; }
+/* у картинок прозрачный фон, цвет подложки задаём здесь: светлый в светлой теме, тёмный в тёмной */
+.job__media img { display: block; width: 100%; height: auto; background: #F2F2F4; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .job__media img { background: #1A1A1A; }
+}
+:root[data-theme="dark"] .job__media img { background: #1A1A1A; }
 
 /* логотип компании: круг; пока нет картинки — первая буква */
 .job__logo {
