@@ -1704,6 +1704,10 @@ body::before {
 .case-page__section p a:hover,
 .case-page__section li a:hover { text-decoration: underline; }
 
+/* CV: по клику скачивается PDF, рядом иконка скачивания */
+.menu__item--cv { display: inline-flex; align-items: center; gap: 4px; }
+.menu__item--cv svg { flex-shrink: 0; }
+
 /* в мобильной версии пункт CV в меню не показываем */
 @media (max-width: 720px) {
   .menu__item--cv { display: none; }
