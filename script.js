@@ -371,3 +371,40 @@ document.querySelectorAll('.phones--scroll').forEach((box) => {
   new MutationObserver(() => { if (header.classList.contains('is-hidden')) set(false); })
     .observe(header, { attributes: true, attributeFilter: ['class'] });
 })();
+
+/* ---------- Модалка для картинок: клик по картинке открывает её на весь экран ----------
+   Закрывается кликом в любом месте, крестиком или Esc */
+(function () {
+  var imgs = document.querySelectorAll('.job__media img');
+  if (!imgs.length || typeof HTMLDialogElement === 'undefined') return;
+
+  var dlg = document.createElement('dialog');
+  dlg.className = 'lightbox';
+  dlg.innerHTML = '<img class="lightbox__img" alt="" draggable="false">' +
+    '<button class="lightbox__close" type="button" aria-label="Закрыть">&times;</button>';
+  document.body.appendChild(dlg);
+  var big = dlg.querySelector('.lightbox__img');
+
+  function open(img) {
+    big.src = img.currentSrc || img.src;
+    big.alt = img.alt;
+    dlg.showModal();
+    document.documentElement.classList.add('lightbox-open');
+  }
+
+  imgs.forEach(function (img) {
+    img.classList.add('zoomable');
+    img.setAttribute('tabindex', '0');
+    img.setAttribute('role', 'button');
+    img.setAttribute('aria-label', 'Открыть картинку: ' + img.alt);
+    img.addEventListener('click', function () { open(img); });
+    img.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(img); }
+    });
+  });
+
+  dlg.addEventListener('click', function () { dlg.close(); });
+  dlg.addEventListener('close', function () {
+    document.documentElement.classList.remove('lightbox-open');
+  });
+})();

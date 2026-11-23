@@ -1787,3 +1787,48 @@ body::before {
   color: var(--text-muted);
   text-align: center;
 }
+
+/* ---------- Модалка для картинок ---------- */
+.zoomable { cursor: zoom-in; }
+html.lightbox-open { overflow: hidden; }
+.lightbox {
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 24px;
+  border: 0;
+  background: transparent;
+  cursor: zoom-out;
+}
+.lightbox[open] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: lightbox-in .2s ease;
+}
+.lightbox::backdrop { background: rgba(0, 0, 0, .85); }
+.lightbox__img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.lightbox__close {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .16);
+  color: #fff;
+  font-size: 26px;
+  line-height: 40px;
+  cursor: pointer;
+}
+.lightbox__close:hover { background: rgba(255, 255, 255, .28); }
+@keyframes lightbox-in { from { opacity: 0; } to { opacity: 1; } }
+@media (max-width: 480px) { .lightbox { padding: 8px; } }
