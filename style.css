@@ -564,7 +564,7 @@ body::before {
 }
 
 .job__text {
-  margin-top: 12px;
+  margin-top: 24px;
   font-size: 15px;
   line-height: 24px;
 }
