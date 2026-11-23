@@ -506,10 +506,12 @@ body::before {
   gap: 40px; /* расстояние между местами работы */
 }
 
+/* логотип и «компания • период» в одной строке, текст и картинка под ними — на всю ширину контейнера */
 .job {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  column-gap: 16px;
+  align-items: start;
 }
 /* картинка проекта под текстом места работы — по ширине текста */
 .job__media { margin: 16px 0 0; }
@@ -542,7 +544,9 @@ body::before {
 }
 .job__logos .job__logo + .job__logo { margin-top: -16px; }
 
-.job__body { flex: 1; min-width: 0; }
+.job__body { display: contents; }
+.job__head { grid-column: 2; }
+.job__text, .job__media { grid-column: 1 / -1; }
 
 /* верх блока: «Компания • Должность», под ним период словами */
 .job__company {
