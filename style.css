@@ -1706,7 +1706,7 @@ body::before {
 
 /* CV: по клику скачивается PDF, рядом иконка скачивания */
 .menu__item--cv { display: inline-flex; align-items: center; gap: 4px; }
-.menu__item--cv svg { flex-shrink: 0; }
+.menu__item--cv svg { flex-shrink: 0; color: var(--text-muted); } /* иконка серая */
 
 /* в мобильной версии пункт CV в меню не показываем */
 @media (max-width: 720px) {
