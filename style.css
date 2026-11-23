@@ -514,7 +514,7 @@ body::before {
   align-items: start;
 }
 /* картинка проекта под текстом места работы — по ширине текста */
-.job__media { margin: 16px 0 0; }
+.job__media { margin: 24px 0 0; }
 .job__media img { display: block; width: 100%; height: auto; }
 
 /* логотип компании: круг; пока нет картинки — первая буква */
