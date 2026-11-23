@@ -508,9 +508,13 @@ body::before {
 
 .job {
   display: flex;
+  flex-wrap: wrap; /* чтобы картинка .job__media встала отдельной строкой на всю ширину */
   align-items: flex-start;
   gap: 16px;
 }
+/* картинка проекта под местом работы — на всю ширину контейнера */
+.job__media { flex-basis: 100%; margin: 4px 0 0; }
+.job__media img { display: block; width: 100%; height: auto; border-radius: 24px; }
 
 /* логотип компании: круг; пока нет картинки — первая буква */
 .job__logo {
