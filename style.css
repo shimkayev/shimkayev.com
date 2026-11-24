@@ -1437,39 +1437,99 @@ body::before {
 .location:hover .location__text { color: #fff; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35); }
 @media (prefers-reduced-motion: reduce) { .location__photo, .location__photo img, .location__text { transition: none; } }
 
+/* Переключатель темы — как настоящий клавишный выключатель, только горизонтальный:
+   клавиша-качелька в рамке. Нажатая половина утоплена (темнее), другая приподнята и отбрасывает тень.
+   Слева солнце (светлая тема), справа луна (тёмная) */
 .theme-switch {
-  /* круглая кнопка той же высоты, что меню, и в том же стекле */
+  --rk-frame: #e4e4e9;
+  --rk-up-1: #fbfbfc;      /* приподнятая половина: светлый край */
+  --rk-up-2: #ececf0;
+  --rk-down-1: #d2d2d8;    /* утопленная половина */
+  --rk-down-2: #dcdce1;
+  --rk-icon-off: #a5a5ad;
+  --rk-shadow: rgba(0, 0, 0, 0.22);
+  --rk-hi: rgba(255, 255, 255, 0.9);
   flex-shrink: 0;
-  width: 56px;
+  width: 100px;
   height: 56px;
-  padding: 0;
-  border-radius: 50%;
-  border: 0.5px solid var(--menu-stroke);
-  background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-          backdrop-filter: blur(20px) saturate(180%);
+  padding: 6px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--rk-frame);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.12),
+    inset 0 -1px 0 var(--rk-hi),
+    0 1px 2px rgba(0, 0, 0, 0.06);
+  perspective: 260px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  -webkit-tap-highlight-color: transparent;
 }
-.theme-switch:hover { background: var(--bubble-bg); }
+.is-dark .theme-switch {
+  --rk-frame: #0e0e10;
+  --rk-up-1: #3a3a3e;
+  --rk-up-2: #2b2b2f;
+  --rk-down-1: #19191b;
+  --rk-down-2: #1f1f22;
+  --rk-icon-off: #5c5c63;
+  --rk-shadow: rgba(0, 0, 0, 0.7);
+  --rk-hi: rgba(255, 255, 255, 0.06);
+}
 
-.theme-switch__knob {
+/* сама клавиша: наклоняется в сторону нажатой половины */
+.theme-switch__rocker {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  overflow: hidden;
+  transform: rotateY(-9deg);            /* светлая тема: нажата левая половина */
+  box-shadow: 5px 3px 8px var(--rk-shadow), inset 0 1px 0 var(--rk-hi);
+  transition: transform 0.28s cubic-bezier(0.3, 1.4, 0.4, 1), box-shadow 0.28s ease;
+}
+.is-dark .theme-switch__rocker {
+  transform: rotateY(9deg);             /* тёмная тема: нажата правая половина */
+  box-shadow: -5px 3px 8px var(--rk-shadow), inset 0 1px 0 var(--rk-hi);
+}
+
+.theme-switch__half {
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  color: var(--text);
+  color: var(--rk-icon-off);
+  transition: background 0.28s ease, color 0.28s ease;
+}
+.theme-switch__half svg { width: 20px; height: 20px; }
+
+/* светлая тема: солнце нажато, луна приподнята */
+.theme-switch__half--light {
+  background: linear-gradient(90deg, var(--rk-down-1), var(--rk-down-2));
+  box-shadow: inset -6px 0 8px -6px rgba(0, 0, 0, 0.18);
+  color: #f2a900;
+}
+.theme-switch__half--dark {
+  background: linear-gradient(90deg, var(--rk-up-2), var(--rk-up-1));
+}
+/* тёмная тема: луна нажата, солнце приподнято */
+.is-dark .theme-switch__half--light {
+  background: linear-gradient(90deg, var(--rk-up-1), var(--rk-up-2));
+  box-shadow: none;
+  color: var(--rk-icon-off);
+}
+.is-dark .theme-switch__half--dark {
+  background: linear-gradient(90deg, var(--rk-down-2), var(--rk-down-1));
+  box-shadow: inset 6px 0 8px -6px rgba(0, 0, 0, 0.5);
+  color: #6ea1ff;
 }
 
-.theme-switch__knob svg { width: 22px; height: 22px; }
-/* кнопка показывает тему, на которую переключит: в светлой — синяя луна, в тёмной — жёлтое солнце */
-.theme-switch .icon-sun { color: #ffcc00; display: none; }
-.theme-switch .icon-moon { color: #2f6fd6; display: block; }
-
-.is-dark .theme-switch .icon-sun { display: block; }
-.is-dark .theme-switch .icon-moon { display: none; }
+.theme-switch:active .theme-switch__rocker { transform: rotateY(0deg); }
+@media (prefers-reduced-motion: reduce) {
+  .theme-switch__rocker, .theme-switch__half { transition: none; }
+}
+@media (max-width: 720px) {
+  .theme-switch { width: 88px; height: 48px; padding: 5px; }
+  .theme-switch__half svg { width: 18px; height: 18px; }
+}
 
 .theme-switch:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 
