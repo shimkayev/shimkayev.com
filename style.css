@@ -1475,56 +1475,48 @@ body::before {
   --rk-hi: rgba(255, 255, 255, 0.06);
 }
 
-/* сама клавиша: наклоняется в сторону нажатой половины */
+/* сама клавиша: включённая половина лежит ровно, выключенная приподнята и даёт тень вниз */
 .theme-switch__rocker {
+  position: relative;
   display: flex;
   width: 100%;
   height: 100%;
-  border-radius: 999px;
-  overflow: hidden;
-  transform: rotateY(-9deg);            /* светлая тема: нажата левая половина */
-  box-shadow: 5px 3px 8px var(--rk-shadow), inset 0 1px 0 var(--rk-hi);
-  transition: transform 0.28s cubic-bezier(0.3, 1.4, 0.4, 1), box-shadow 0.28s ease;
-}
-.is-dark .theme-switch__rocker {
-  transform: rotateY(9deg);             /* тёмная тема: нажата правая половина */
-  box-shadow: -5px 3px 8px var(--rk-shadow), inset 0 1px 0 var(--rk-hi);
 }
 
 .theme-switch__half {
+  position: relative;
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--rk-icon-off);
-  transition: background 0.28s ease, color 0.28s ease;
+  transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.25s cubic-bezier(0.3, 1.4, 0.4, 1), color 0.25s ease;
 }
+.theme-switch__half--light { border-radius: 999px 0 0 999px; }
+.theme-switch__half--dark  { border-radius: 0 999px 999px 0; }
 .theme-switch__half svg { width: 20px; height: 20px; }
 
-/* светлая тема: солнце нажато, луна приподнята */
-.theme-switch__half--light {
-  background: linear-gradient(90deg, var(--rk-down-1), var(--rk-down-2));
-  box-shadow: inset -6px 0 8px -6px rgba(0, 0, 0, 0.18);
-  color: #f2a900;
+/* включённая половина (по теме) лежит ровно, вровень с рамкой; выключенная приподнята, сверху светлее, снизу тень */
+.theme-switch__half--light { color: #f2a900; }
+:root:not(.is-dark) .theme-switch__half--light,
+.is-dark .theme-switch__half--dark {
+  z-index: 0;
+  transform: none;
+  background: var(--rk-down-1);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
-.theme-switch__half--dark {
-  background: linear-gradient(90deg, var(--rk-up-2), var(--rk-up-1));
-}
-/* тёмная тема: луна нажата, солнце приподнято */
+:root:not(.is-dark) .theme-switch__half--dark,
 .is-dark .theme-switch__half--light {
-  background: linear-gradient(90deg, var(--rk-up-1), var(--rk-up-2));
-  box-shadow: none;
+  z-index: 1;
+  transform: translateY(-2px);
+  background: linear-gradient(180deg, var(--rk-up-1), var(--rk-up-2));
+  box-shadow: 0 5px 7px -2px var(--rk-shadow), inset 0 1px 0 var(--rk-hi);
   color: var(--rk-icon-off);
 }
-.is-dark .theme-switch__half--dark {
-  background: linear-gradient(90deg, var(--rk-down-2), var(--rk-down-1));
-  box-shadow: inset 6px 0 8px -6px rgba(0, 0, 0, 0.5);
-  color: #6ea1ff;
-}
+.is-dark .theme-switch__half--dark { color: #6ea1ff; }
 
-.theme-switch:active .theme-switch__rocker { transform: rotateY(0deg); }
 @media (prefers-reduced-motion: reduce) {
-  .theme-switch__rocker, .theme-switch__half { transition: none; }
+  .theme-switch__half { transition: none; }
 }
 @media (max-width: 720px) {
   .theme-switch { width: 88px; height: 48px; padding: 5px; }
