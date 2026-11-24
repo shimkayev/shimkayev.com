@@ -48,41 +48,45 @@ const sound = (function () {
   // (например, вернулся на главную по клику на аватар) — пробуем включить при загрузке
   unlock();
 
-  // глухой короткий «ток», как у клавиатуры iPhone: приглушённый шум + низкий тональный щелчок
+  // глубокий тихий «ток»: приглушённый шум + низкий тон. Оба нарастают плавно —
+  // без этого звук стартует «ступенькой» и на каждой букве слышен грубый хлопок
   function click() {
     if (!ctx || ctx.state !== 'running') return;
     const t = ctx.currentTime;
 
-    // 1) шумовой щелчок, срезаем высокие частоты — звук становится мягким и глухим
+    // 1) шумовой щелчок, срезаем высокие частоты — звук мягкий и глухой
     const len = 0.025; // 25 мс
     const buf = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * len), ctx.sampleRate);
     const data = buf.getChannelData(0);
+    const attack = Math.floor(ctx.sampleRate * 0.002); // 2 мс плавного нарастания
     for (let i = 0; i < data.length; i++) {
-      data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / data.length, 6);
+      const fadeIn = i < attack ? i / attack : 1;
+      data[i] = (Math.random() * 2 - 1) * fadeIn * Math.pow(1 - i / data.length, 6);
     }
     const noise = ctx.createBufferSource();
     noise.buffer = buf;
     const lowpass = ctx.createBiquadFilter();
     lowpass.type = 'lowpass';
-    lowpass.frequency.value = 550 + Math.random() * 100; // ещё глуше: оставляем только низ
+    lowpass.frequency.value = 360 + Math.random() * 80; // оставляем только низ
     lowpass.Q.value = 0.7;
     const noiseGain = ctx.createGain();
-    noiseGain.gain.value = 0.7;
+    noiseGain.gain.value = 0.28;
     noise.connect(lowpass).connect(noiseGain).connect(ctx.destination);
 
     // 2) короткий низкий тон — «тело» щелчка
     const osc = ctx.createOscillator();
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(220 + Math.random() * 30, t);
-    osc.frequency.exponentialRampToValueAtTime(110, t + 0.03);
+    osc.frequency.setValueAtTime(160 + Math.random() * 20, t);
+    osc.frequency.exponentialRampToValueAtTime(95, t + 0.038);
     const oscGain = ctx.createGain();
-    oscGain.gain.setValueAtTime(0.45, t); // больше низкого «тела»
-    oscGain.gain.exponentialRampToValueAtTime(0.001, t + 0.035);
+    oscGain.gain.setValueAtTime(0.0001, t);
+    oscGain.gain.exponentialRampToValueAtTime(0.2, t + 0.004);
+    oscGain.gain.exponentialRampToValueAtTime(0.0001, t + 0.045);
     osc.connect(oscGain).connect(ctx.destination);
 
     noise.start(t);
     osc.start(t);
-    osc.stop(t + 0.04);
+    osc.stop(t + 0.055);
   }
 
   // запускаем звук, как только браузер разрешит (клик по кнопке темы — это действие человека)
@@ -120,21 +124,41 @@ const sound = (function () {
     });
   }
 
-  // птичка (светлая тема): два коротких «чирик» и плавный «чиу» в конце
+  // одна «птичья» нота: тон идёт по точкам [время, частота], поверх — быстрая трель
+  // (частотная модуляция вторым осциллятором). Именно трель убирает «роботность» чистой синусоиды
+  const birdNote = (t, curve, vol, vibRate, vibDepth) => {
+    const dur = curve[curve.length - 1][0];
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + Math.min(0.012, dur * 0.25));
+    g.gain.setValueAtTime(vol, t + dur * 0.6);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    g.connect(ctx.destination);
+
+    const osc = ctx.createOscillator();
+    osc.frequency.setValueAtTime(curve[0][1], t);
+    curve.slice(1).forEach(([dt, f]) => osc.frequency.exponentialRampToValueAtTime(f, t + dt));
+
+    const lfo = ctx.createOscillator();
+    const depth = ctx.createGain();
+    lfo.frequency.value = vibRate;
+    depth.gain.value = vibDepth;
+    lfo.connect(depth).connect(osc.frequency);
+
+    osc.connect(g);
+    osc.start(t); osc.stop(t + dur + 0.02);
+    lfo.start(t); lfo.stop(t + dur + 0.02);
+  };
+
+  // птичка (светлая тема): синица «зинь-зинь-тю» — два звонких высоких звука и один ниже
   function bird() {
     play((t0) => {
-      const tweet = (t, base, vol) => {
-        const osc = blip(t, base, 0.13, vol);
-        osc.frequency.setValueAtTime(base, t);
-        osc.frequency.exponentialRampToValueAtTime(base * 1.6, t + 0.05);
-        osc.frequency.exponentialRampToValueAtTime(base * 1.1, t + 0.12);
-      };
-      tweet(t0, 2600, 0.09);
-      tweet(t0 + 0.17, 2900, 0.08);
-      // в конце — мягкий «чиу» с плавным спуском тона (без коротких импульсов, чтобы не путать со сверчком)
-      const osc = blip(t0 + 0.36, 3400, 0.18, 0.07);
-      osc.frequency.setValueAtTime(3400, t0 + 0.36);
-      osc.frequency.exponentialRampToValueAtTime(2200, t0 + 0.52);
+      const hi = 5200 + Math.random() * 300; // каждый раз звучит чуть иначе
+      for (let i = 0; i < 2; i++) {
+        const t = t0 + i * 0.2;
+        birdNote(t, [[0, hi * 0.92], [0.02, hi], [0.09, hi * 0.97]], 0.06, 55 + Math.random() * 15, 180);
+      }
+      birdNote(t0 + 0.42, [[0, 4000], [0.03, 3700], [0.16, 3300]], 0.07, 30, 90);
     });
   }
 
