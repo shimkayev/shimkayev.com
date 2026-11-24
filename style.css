@@ -1437,89 +1437,98 @@ body::before {
 .location:hover .location__text { color: #fff; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35); }
 @media (prefers-reduced-motion: reduce) { .location__photo, .location__photo img, .location__text { transition: none; } }
 
-/* Переключатель темы — как настоящий клавишный выключатель, только горизонтальный:
-   клавиша-качелька в рамке. Нажатая половина утоплена (темнее), другая приподнята и отбрасывает тень.
-   Слева солнце (светлая тема), справа луна (тёмная) */
+/* Переключатель темы — как настоящий выключатель-качелька, лёжа горизонтально:
+   одна цельная клавиша. Выбранный конец приподнят — из-под него видна цветная боковая грань
+   и падает тень; другой конец лежит на поверхности ровно. Слева солнце, справа луна */
 .theme-switch {
-  --rk-frame: #e4e4e9;
-  --rk-up-1: #fbfbfc;      /* приподнятая половина: светлый край */
-  --rk-up-2: #ececf0;
-  --rk-down-1: #d2d2d8;    /* утопленная половина */
-  --rk-down-2: #dcdce1;
+  --rk-face-1: #f4f4f6;   /* верхняя грань клавиши */
+  --rk-face-2: #e6e6ea;
+  --rk-on: rgba(0, 0, 0, 0.05);           /* приподнятая половина чуть темнее, как на макете */
+  --rk-edge-1: #ffd25a;   /* боковая грань под приподнятым концом */
+  --rk-edge-2: #f0a300;
   --rk-icon-off: #a5a5ad;
-  --rk-shadow: rgba(0, 0, 0, 0.22);
+  --rk-shadow: rgba(0, 0, 0, 0.28);
   --rk-hi: rgba(255, 255, 255, 0.9);
+  --rk-lift: -7deg;        /* наклон грани: чем больше, тем выше поднят конец */
+  position: relative;
+  isolation: isolate;
   flex-shrink: 0;
   width: 100px;
   height: 56px;
-  padding: 6px;
+  padding: 6px 0 10px;
   border: 0;
-  border-radius: 999px;
-  background: var(--rk-frame);
-  box-shadow:
-    inset 0 2px 4px rgba(0, 0, 0, 0.12),
-    inset 0 -1px 0 var(--rk-hi),
-    0 1px 2px rgba(0, 0, 0, 0.06);
-  perspective: 260px;
+  background: none;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
 .is-dark .theme-switch {
-  --rk-frame: #0e0e10;
-  --rk-up-1: #3a3a3e;
-  --rk-up-2: #2b2b2f;
-  --rk-down-1: #19191b;
-  --rk-down-2: #1f1f22;
-  --rk-icon-off: #5c5c63;
-  --rk-shadow: rgba(0, 0, 0, 0.7);
-  --rk-hi: rgba(255, 255, 255, 0.06);
+  --rk-face-1: #3a3a3f;
+  --rk-face-2: #2c2c30;
+  --rk-on: rgba(0, 0, 0, 0.18);
+  --rk-edge-1: #9a7bff;
+  --rk-edge-2: #5b6cff;
+  --rk-icon-off: #67676f;
+  --rk-shadow: rgba(0, 0, 0, 0.8);
+  --rk-hi: rgba(255, 255, 255, 0.08);
+  --rk-lift: 7deg;
 }
 
-/* сама клавиша: включённая половина лежит ровно, выключенная приподнята и даёт тень вниз */
+/* верхняя грань клавиши */
 .theme-switch__rocker {
   position: relative;
   display: flex;
   width: 100%;
   height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--rk-face-1), var(--rk-face-2));
+  box-shadow: inset 0 1px 0 var(--rk-hi), inset 0 0 0 0.5px rgba(0, 0, 0, 0.06);
 }
+/* боковая грань и тень: та же форма, скошенная от лежащего конца к приподнятому,
+   поэтому под приподнятым концом грань видна, а к лежащему сходит на нет */
+.theme-switch__rocker::before,
+.theme-switch__rocker::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  transform-origin: right center;   /* светлая тема: лежит правый конец, поднят левый */
+  transform: skewY(var(--rk-lift));
+  transition: transform 0.35s cubic-bezier(0.3, 1.3, 0.4, 1), transform-origin 0.35s ease;
+}
+.theme-switch__rocker::before {
+  z-index: -1;
+  background: linear-gradient(90deg, var(--rk-edge-1), var(--rk-edge-2));
+}
+.theme-switch__rocker::after {
+  z-index: -2;
+  background: var(--rk-shadow);
+  filter: blur(5px);
+  translate: 0 3px;
+}
+.is-dark .theme-switch__rocker::before,
+.is-dark .theme-switch__rocker::after { transform-origin: left center; } /* тёмная: поднят правый */
 
 .theme-switch__half {
-  position: relative;
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--rk-icon-off);
-  transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.25s cubic-bezier(0.3, 1.4, 0.4, 1), color 0.25s ease;
+  transition: color 0.3s ease, background 0.3s ease;
 }
 .theme-switch__half--light { border-radius: 999px 0 0 999px; }
 .theme-switch__half--dark  { border-radius: 0 999px 999px 0; }
 .theme-switch__half svg { width: 20px; height: 20px; }
 
-/* включённая половина (по теме) лежит ровно, вровень с рамкой; выключенная приподнята, сверху светлее, снизу тень */
-.theme-switch__half--light { color: #f2a900; }
-:root:not(.is-dark) .theme-switch__half--light,
-.is-dark .theme-switch__half--dark {
-  z-index: 0;
-  transform: none;
-  background: var(--rk-down-1);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-:root:not(.is-dark) .theme-switch__half--dark,
-.is-dark .theme-switch__half--light {
-  z-index: 1;
-  transform: translateY(-2px);
-  background: linear-gradient(180deg, var(--rk-up-1), var(--rk-up-2));
-  box-shadow: 0 5px 7px -2px var(--rk-shadow), inset 0 1px 0 var(--rk-hi);
-  color: var(--rk-icon-off);
-}
-.is-dark .theme-switch__half--dark { color: #6ea1ff; }
+/* выбранная половина (приподнятая) — чуть темнее, иконка цветная */
+:root:not(.is-dark) .theme-switch__half--light { background: var(--rk-on); color: #f2a900; }
+.is-dark .theme-switch__half--dark { background: var(--rk-on); color: #8fa8ff; }
 
 @media (prefers-reduced-motion: reduce) {
-  .theme-switch__half { transition: none; }
+  .theme-switch__rocker::before, .theme-switch__rocker::after, .theme-switch__half { transition: none; }
 }
 @media (max-width: 720px) {
-  .theme-switch { width: 88px; height: 48px; padding: 5px; }
+  .theme-switch { width: 88px; height: 48px; padding: 5px 0 9px; }
   .theme-switch__half svg { width: 18px; height: 18px; }
 }
 
