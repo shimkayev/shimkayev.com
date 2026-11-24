@@ -1437,100 +1437,39 @@ body::before {
 .location:hover .location__text { color: #fff; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35); }
 @media (prefers-reduced-motion: reduce) { .location__photo, .location__photo img, .location__text { transition: none; } }
 
-/* Переключатель темы — как настоящий выключатель-качелька, лёжа горизонтально:
-   одна цельная клавиша. Выбранный конец приподнят — из-под него видна цветная боковая грань
-   и падает тень; другой конец лежит на поверхности ровно. Слева солнце, справа луна */
 .theme-switch {
-  --rk-face-1: #f4f4f6;   /* верхняя грань клавиши */
-  --rk-face-2: #e6e6ea;
-  --rk-on: rgba(0, 0, 0, 0.05);           /* приподнятая половина чуть темнее, как на макете */
-  --rk-edge-1: #ffd25a;   /* боковая грань под приподнятым концом */
-  --rk-edge-2: #f0a300;
-  --rk-icon-off: #a5a5ad;
-  --rk-shadow: rgba(0, 0, 0, 0.28);
-  --rk-hi: rgba(255, 255, 255, 0.9);
-  --rk-lift: -7deg;        /* наклон грани: чем больше, тем выше поднят конец */
-  position: relative;
-  isolation: isolate;
+  /* круглая кнопка той же высоты, что меню, и в том же стекле */
   flex-shrink: 0;
-  width: 100px;
+  width: 56px;
   height: 56px;
-  padding: 6px 0 10px;
-  border: 0;
-  background: none;
+  padding: 0;
+  border-radius: 50%;
+  border: 0.5px solid var(--menu-stroke);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+          backdrop-filter: blur(20px) saturate(180%);
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.2s;
 }
-.is-dark .theme-switch {
-  --rk-face-1: #3a3a3f;
-  --rk-face-2: #2c2c30;
-  --rk-on: rgba(0, 0, 0, 0.18);
-  --rk-edge-1: #9a7bff;
-  --rk-edge-2: #5b6cff;
-  --rk-icon-off: #67676f;
-  --rk-shadow: rgba(0, 0, 0, 0.8);
-  --rk-hi: rgba(255, 255, 255, 0.08);
-  --rk-lift: 7deg;
-}
+.theme-switch:hover { background: var(--bubble-bg); }
 
-/* верхняя грань клавиши */
-.theme-switch__rocker {
-  position: relative;
-  display: flex;
-  width: 100%;
-  height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(180deg, var(--rk-face-1), var(--rk-face-2));
-  box-shadow: inset 0 1px 0 var(--rk-hi), inset 0 0 0 0.5px rgba(0, 0, 0, 0.06);
-}
-/* боковая грань и тень: та же форма, скошенная от лежащего конца к приподнятому,
-   поэтому под приподнятым концом грань видна, а к лежащему сходит на нет */
-.theme-switch__rocker::before,
-.theme-switch__rocker::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 999px;
-  transform-origin: right center;   /* светлая тема: лежит правый конец, поднят левый */
-  transform: skewY(var(--rk-lift));
-  transition: transform 0.35s cubic-bezier(0.3, 1.3, 0.4, 1), transform-origin 0.35s ease;
-}
-.theme-switch__rocker::before {
-  z-index: -1;
-  background: linear-gradient(90deg, var(--rk-edge-1), var(--rk-edge-2));
-}
-.theme-switch__rocker::after {
-  z-index: -2;
-  background: var(--rk-shadow);
-  filter: blur(5px);
-  translate: 0 3px;
-}
-.is-dark .theme-switch__rocker::before,
-.is-dark .theme-switch__rocker::after { transform-origin: left center; } /* тёмная: поднят правый */
-
-.theme-switch__half {
-  flex: 1;
+.theme-switch__knob {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--rk-icon-off);
-  transition: color 0.3s ease, background 0.3s ease;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  color: var(--text);
 }
-.theme-switch__half--light { border-radius: 999px 0 0 999px; }
-.theme-switch__half--dark  { border-radius: 0 999px 999px 0; }
-.theme-switch__half svg { width: 20px; height: 20px; }
 
-/* выбранная половина (приподнятая) — чуть темнее, иконка цветная */
-:root:not(.is-dark) .theme-switch__half--light { background: var(--rk-on); color: #f2a900; }
-.is-dark .theme-switch__half--dark { background: var(--rk-on); color: #8fa8ff; }
+.theme-switch__knob svg { width: 22px; height: 22px; }
+/* кнопка показывает тему, на которую переключит: в светлой — синяя луна, в тёмной — жёлтое солнце */
+.theme-switch .icon-sun { color: #ffcc00; display: none; }
+.theme-switch .icon-moon { color: #2f6fd6; display: block; }
 
-@media (prefers-reduced-motion: reduce) {
-  .theme-switch__rocker::before, .theme-switch__rocker::after, .theme-switch__half { transition: none; }
-}
-@media (max-width: 720px) {
-  .theme-switch { width: 88px; height: 48px; padding: 5px 0 9px; }
-  .theme-switch__half svg { width: 18px; height: 18px; }
-}
+.is-dark .theme-switch .icon-sun { display: block; }
+.is-dark .theme-switch .icon-moon { display: none; }
 
 .theme-switch:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 
