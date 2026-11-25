@@ -1793,8 +1793,9 @@ body::before {
 
 /* ---------- Анимированная обложка кейса Альфа-Банка: надпись облетает смартфон ----------
    Слои снизу вверх: фон с телефоном → задняя половина кольца (бледная) → телефон, вырезанный по контуру →
-   передняя половина кольца. Буквы стоят по окружности в 3D и вращаются; телефон перекрывает те, что «за» ним */
-.cover-orbit { position: relative; container-type: inline-size; background: #000; }
+   передняя половина кольца. Положение букв на наклонном кольце считает script.js и двигает их обычным 2D,
+   поэтому работает одинаково во всех браузерах, включая Safari */
+.cover-orbit { position: relative; background: #000; }
 .cover-orbit > img {
   position: absolute;
   inset: 0;
@@ -1805,32 +1806,17 @@ body::before {
 .cover-orbit__ring {
   position: absolute;
   inset: 0;
-  perspective: 120cqw;
   pointer-events: none;
 }
-.cover-orbit__spin {
-  position: absolute;
-  left: 50%;
-  top: 52%;
-  transform-style: preserve-3d;
-  animation: cover-orbit 18s linear infinite;
-}
-/* кольцо видно чуть сверху и наклонено как телефон; вращается вокруг своей оси */
-@keyframes cover-orbit {
-  from { transform: rotateX(-14deg) rotateZ(-7deg) rotateY(0deg); }
-  to   { transform: rotateX(-14deg) rotateZ(-7deg) rotateY(-360deg); }
-}
-.cover-orbit__spin > span {
+.cover-orbit__ring > span {
   position: absolute;
   left: 0;
   top: 0;
-  font: 800 4.6cqw/1 -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 800;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  line-height: 1;
   color: #ef3124; /* фирменный красный Альфы: читается и на тёмном фоне, и на белом экране */
   white-space: pre;
-  transform: rotateY(calc(var(--i) * 360deg / var(--n))) translateZ(29cqw) translate(-50%, -50%);
+  will-change: transform, opacity;
 }
-.cover-orbit__ring--back { opacity: 0.45; }                               /* буквы за телефоном — бледнее */
-.cover-orbit__ring--front .cover-orbit__spin > span { backface-visibility: hidden; } /* спереди только ближняя половина */
-@media (prefers-reduced-motion: reduce) {
-  .cover-orbit__spin { animation: none; transform: rotateX(-14deg) rotateZ(-7deg) rotateY(-20deg); }
-}
+.cover-orbit__ring--back { opacity: 0.45; } /* буквы за телефоном — бледнее */

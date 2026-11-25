@@ -396,23 +396,77 @@ document.querySelectorAll('.phones--scroll').forEach((box) => {
     .observe(header, { attributes: true, attributeFilter: ['class'] });
 })();
 
-// Анимированная обложка: раскладываем надпись по буквам по окружности
+// Анимированная обложка: надпись «ALFA BUSINESS» облетает телефон по наклонному кольцу.
+// Каждую букву ставим на окружность в 3D, проецируем на плоскость и двигаем обычным 2D (translate/rotate/scale),
+// поэтому анимация одинаково работает во всех браузерах. Буквы ближней половины — в верхнем слое (поверх телефона),
+// дальней — в нижнем (за телефоном)
 (function () {
-  const N = 48; // сколько букв на кольце
-  document.querySelectorAll('.cover-orbit__ring[data-orbit-text]').forEach((ring) => {
-    const base = ring.dataset.orbitText;
+  const covers = document.querySelectorAll('.cover-orbit');
+  if (!covers.length) return;
+  const N = 48;                    // букв на кольце
+  const R = 0.29;                  // радиус кольца, доля ширины обложки
+  const FONT = 0.046;              // размер букв, доля ширины
+  const CY = 0.52;                 // высота центра кольца, доля высоты
+  const TILT_X = -14 * Math.PI / 180;  // кольцо видно чуть сверху
+  const TILT_Z = -7 * Math.PI / 180;   // наклон как у телефона
+  const PERSP = 1.2;               // перспектива, доля ширины
+  const PERIOD = 18000;            // один оборот, мс
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  covers.forEach((cover) => {
+    const back = cover.querySelector('.cover-orbit__ring--back');
+    const front = cover.querySelector('.cover-orbit__ring--front');
+    if (!back || !front) return;
+    const base = front.dataset.orbitText || 'ALFA BUSINESS • ';
     let text = '';
     while (text.length < N) text += base;
-    text = text.slice(0, N);
-    const spin = document.createElement('span');
-    spin.className = 'cover-orbit__spin';
-    spin.style.setProperty('--n', N);
-    [...text].forEach((ch, i) => {
+    text = [...text.slice(0, N)];
+    const make = (ring) => text.map((ch) => {
       const s = document.createElement('span');
       s.textContent = ch;
-      s.style.setProperty('--i', i);
-      spin.appendChild(s);
+      ring.appendChild(s);
+      return s;
     });
-    ring.appendChild(spin);
+    const backEls = make(back);
+    const frontEls = make(front);
+
+    let W = 0, H = 0, visible = true, start = performance.now();
+    const measure = () => {
+      W = cover.clientWidth; H = cover.clientHeight;
+      const fs = (W * FONT) + 'px';
+      backEls.concat(frontEls).forEach((s) => { s.style.fontSize = fs; });
+    };
+    measure();
+    if ('ResizeObserver' in window) new ResizeObserver(measure).observe(cover);
+
+    const cosX = Math.cos(TILT_X), sinX = Math.sin(TILT_X);
+    const cosZ = Math.cos(TILT_Z), sinZ = Math.sin(TILT_Z);
+    const zDeg = TILT_Z * 180 / Math.PI;
+
+    const draw = (t) => {
+      const turn = -((t - start) % PERIOD) / PERIOD * Math.PI * 2;
+      const r = W * R, p = W * PERSP, cx = W / 2, cy = H * CY;
+      for (let i = 0; i < N; i++) {
+        const a = turn + i * Math.PI * 2 / N;
+        const x0 = r * Math.sin(a), z0 = r * Math.cos(a);
+        const y1 = -z0 * sinX, z1 = z0 * cosX;                 // rotateX
+        const x2 = x0 * cosZ - y1 * sinZ, y2 = x0 * sinZ + y1 * cosZ; // rotateZ
+        const k = p / (p - z1);                                // перспектива
+        const facing = Math.cos(a);                            // >0 — буква смотрит на нас
+        const tf = 'translate(' + (cx + x2 * k) + 'px,' + (cy + y2 * k) + 'px) translate(-50%,-50%) rotate(' + zDeg + 'deg) scale(' + (facing * k) + ',' + k + ')';
+        frontEls[i].style.transform = tf;
+        backEls[i].style.transform = tf;
+        const isFront = facing > 0;
+        frontEls[i].style.opacity = isFront ? 1 : 0;
+        backEls[i].style.opacity = isFront ? 0 : 1;
+      }
+    };
+
+    if (reduce) { draw(start + PERIOD * 0.05); return; }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((es) => { visible = es[0].isIntersecting; }).observe(cover);
+    }
+    const loop = (t) => { if (visible) draw(t); requestAnimationFrame(loop); };
+    requestAnimationFrame(loop);
   });
 })();
