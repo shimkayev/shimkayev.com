@@ -410,22 +410,39 @@ a.menu__item:hover { color: var(--text-muted); }
   height: 120px;
   z-index: 9;
   pointer-events: none; /* не мешает кликам */
-  /* градиент в цвет фона с мягкой кривой (как «scrim»), без резкой границы:
-     белый в светлой теме, чёрный в тёмной */
-  background: linear-gradient(to top,
-    color-mix(in srgb, var(--bg) 100%, transparent) 0%,
-    color-mix(in srgb, var(--bg) 74.2%, transparent) 19%,
-    color-mix(in srgb, var(--bg) 54.1%, transparent) 34%,
-    color-mix(in srgb, var(--bg) 38.2%, transparent) 47%,
-    color-mix(in srgb, var(--bg) 28.5%, transparent) 56.5%,
-    color-mix(in srgb, var(--bg) 19.4%, transparent) 65%,
-    color-mix(in srgb, var(--bg) 12.8%, transparent) 73%,
-    color-mix(in srgb, var(--bg) 7.9%, transparent) 80.2%,
-    color-mix(in srgb, var(--bg) 4.5%, transparent) 86.1%,
-    color-mix(in srgb, var(--bg) 2.3%, transparent) 91%,
-    color-mix(in srgb, var(--bg) 0.9%, transparent) 95.2%,
-    color-mix(in srgb, var(--bg) 0.2%, transparent) 98.2%,
-    color-mix(in srgb, var(--bg) 0%, transparent) 100%);
+  /* стекло: размывает контент под собой и слегка тонирует в цвет фона.
+     Маска с мягкой кривой («scrim») плавно гасит эффект к краю, без резкой границы */
+  background: color-mix(in srgb, var(--bg) 55%, transparent);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+          backdrop-filter: blur(14px) saturate(180%);
+  -webkit-mask-image: linear-gradient(to top,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.742) 19%,
+    rgba(0, 0, 0, 0.541) 34%,
+    rgba(0, 0, 0, 0.382) 47%,
+    rgba(0, 0, 0, 0.285) 56.5%,
+    rgba(0, 0, 0, 0.194) 65%,
+    rgba(0, 0, 0, 0.128) 73%,
+    rgba(0, 0, 0, 0.079) 80.2%,
+    rgba(0, 0, 0, 0.045) 86.1%,
+    rgba(0, 0, 0, 0.023) 91%,
+    rgba(0, 0, 0, 0.009) 95.2%,
+    rgba(0, 0, 0, 0.002) 98.2%,
+    rgba(0, 0, 0, 0) 100%);
+          mask-image: linear-gradient(to top,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.742) 19%,
+    rgba(0, 0, 0, 0.541) 34%,
+    rgba(0, 0, 0, 0.382) 47%,
+    rgba(0, 0, 0, 0.285) 56.5%,
+    rgba(0, 0, 0, 0.194) 65%,
+    rgba(0, 0, 0, 0.128) 73%,
+    rgba(0, 0, 0, 0.079) 80.2%,
+    rgba(0, 0, 0, 0.045) 86.1%,
+    rgba(0, 0, 0, 0.023) 91%,
+    rgba(0, 0, 0, 0.009) 95.2%,
+    rgba(0, 0, 0, 0.002) 98.2%,
+    rgba(0, 0, 0, 0) 100%);
 }
 
 
@@ -439,20 +456,39 @@ body::before {
   height: 120px;
   z-index: 9; /* под шапкой (у неё 10) */
   pointer-events: none;
-  background: linear-gradient(to bottom,
-    color-mix(in srgb, var(--bg) 100%, transparent) 0%,
-    color-mix(in srgb, var(--bg) 74.2%, transparent) 19%,
-    color-mix(in srgb, var(--bg) 54.1%, transparent) 34%,
-    color-mix(in srgb, var(--bg) 38.2%, transparent) 47%,
-    color-mix(in srgb, var(--bg) 28.5%, transparent) 56.5%,
-    color-mix(in srgb, var(--bg) 19.4%, transparent) 65%,
-    color-mix(in srgb, var(--bg) 12.8%, transparent) 73%,
-    color-mix(in srgb, var(--bg) 7.9%, transparent) 80.2%,
-    color-mix(in srgb, var(--bg) 4.5%, transparent) 86.1%,
-    color-mix(in srgb, var(--bg) 2.3%, transparent) 91%,
-    color-mix(in srgb, var(--bg) 0.9%, transparent) 95.2%,
-    color-mix(in srgb, var(--bg) 0.2%, transparent) 98.2%,
-    color-mix(in srgb, var(--bg) 0%, transparent) 100%);
+  /* стекло: размывает контент под собой и слегка тонирует в цвет фона.
+     Маска с мягкой кривой («scrim») плавно гасит эффект к краю, без резкой границы */
+  background: color-mix(in srgb, var(--bg) 55%, transparent);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+          backdrop-filter: blur(14px) saturate(180%);
+  -webkit-mask-image: linear-gradient(to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.742) 19%,
+    rgba(0, 0, 0, 0.541) 34%,
+    rgba(0, 0, 0, 0.382) 47%,
+    rgba(0, 0, 0, 0.285) 56.5%,
+    rgba(0, 0, 0, 0.194) 65%,
+    rgba(0, 0, 0, 0.128) 73%,
+    rgba(0, 0, 0, 0.079) 80.2%,
+    rgba(0, 0, 0, 0.045) 86.1%,
+    rgba(0, 0, 0, 0.023) 91%,
+    rgba(0, 0, 0, 0.009) 95.2%,
+    rgba(0, 0, 0, 0.002) 98.2%,
+    rgba(0, 0, 0, 0) 100%);
+          mask-image: linear-gradient(to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.742) 19%,
+    rgba(0, 0, 0, 0.541) 34%,
+    rgba(0, 0, 0, 0.382) 47%,
+    rgba(0, 0, 0, 0.285) 56.5%,
+    rgba(0, 0, 0, 0.194) 65%,
+    rgba(0, 0, 0, 0.128) 73%,
+    rgba(0, 0, 0, 0.079) 80.2%,
+    rgba(0, 0, 0, 0.045) 86.1%,
+    rgba(0, 0, 0, 0.023) 91%,
+    rgba(0, 0, 0, 0.009) 95.2%,
+    rgba(0, 0, 0, 0.002) 98.2%,
+    rgba(0, 0, 0, 0) 100%);
 }
 
 /* чтобы последний кейс можно было докрутить выше стекла */
