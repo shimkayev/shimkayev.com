@@ -415,6 +415,9 @@ a.menu__item:hover { color: var(--text-muted); }
   background: color-mix(in srgb, var(--bg) 55%, transparent);
   -webkit-backdrop-filter: blur(14px) saturate(180%);
           backdrop-filter: blur(14px) saturate(180%);
+  /* преломление: SVG-фильтр #glass-refract искривляет контент под стеклом, как толстое стекло.
+     Где браузер не умеет url() в backdrop-filter (Safari), остаётся обычное размытие строкой выше */
+          backdrop-filter: url(#glass-refract) blur(4px) saturate(180%);
   -webkit-mask-image: linear-gradient(to top,
     rgba(0, 0, 0, 1) 0%,
     rgba(0, 0, 0, 0.742) 19%,
@@ -461,6 +464,9 @@ body::before {
   background: color-mix(in srgb, var(--bg) 55%, transparent);
   -webkit-backdrop-filter: blur(14px) saturate(180%);
           backdrop-filter: blur(14px) saturate(180%);
+  /* преломление: SVG-фильтр #glass-refract искривляет контент под стеклом, как толстое стекло.
+     Где браузер не умеет url() в backdrop-filter (Safari), остаётся обычное размытие строкой выше */
+          backdrop-filter: url(#glass-refract) blur(4px) saturate(180%);
   -webkit-mask-image: linear-gradient(to bottom,
     rgba(0, 0, 0, 1) 0%,
     rgba(0, 0, 0, 0.742) 19%,

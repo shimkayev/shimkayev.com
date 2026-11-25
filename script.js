@@ -395,3 +395,19 @@ document.querySelectorAll('.phones--scroll').forEach((box) => {
   new MutationObserver(() => { if (header.classList.contains('is-hidden')) set(false); })
     .observe(header, { attributes: true, attributeFilter: ['class'] });
 })();
+
+// Фильтр преломления для стекла у краёв экрана: шум искривляет то, что под стеклом
+(function () {
+  const ns = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('width', '0');
+  svg.setAttribute('height', '0');
+  svg.setAttribute('aria-hidden', 'true');
+  svg.style.position = 'absolute';
+  svg.innerHTML =
+    '<filter id="glass-refract" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">' +
+      '<feTurbulence type="fractalNoise" baseFrequency="0.006 0.018" numOctaves="2" seed="4" result="noise"/>' +
+      '<feDisplacementMap in="SourceGraphic" in2="noise" scale="36" xChannelSelector="R" yChannelSelector="G"/>' +
+    '</filter>';
+  document.body.appendChild(svg);
+})();
