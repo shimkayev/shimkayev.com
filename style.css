@@ -1790,37 +1790,3 @@ body::before {
   color: var(--text-muted);
   text-align: center;
 }
-
-/* ---------- Анимированная обложка кейса Альфа-Банка: надпись облетает смартфон ----------
-   Слои снизу вверх: фон с телефоном → задняя половина кольца (бледная) → телефон, вырезанный по контуру →
-   передняя половина кольца. Положение букв на наклонном кольце считает script.js и двигает их обычным 2D,
-   поэтому работает одинаково во всех браузерах, включая Safari */
-.cover-orbit { position: relative; background: #000; }
-.cover-orbit > img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  /* кроп крупнее: телефон ближе, его верх примерно на 16% высоты, низ уходит за край.
-     Фон и вырезка телефона масштабируются одинаково, поэтому совпадают */
-  transform: scale(1.35);
-  transform-origin: 56% -38.6%;
-}
-.cover-orbit__ring {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-.cover-orbit__ring > span {
-  position: absolute;
-  left: 0;
-  top: 0;
-  font-weight: 800;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
-  line-height: 1;
-  color: #ef3124; /* фирменный красный Альфы: читается и на тёмном фоне, и на белом экране */
-  white-space: pre;
-  will-change: transform, opacity;
-}
-.cover-orbit__ring--back { opacity: 0.45; } /* буквы за телефоном — бледнее */
