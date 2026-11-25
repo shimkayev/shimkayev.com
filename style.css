@@ -653,9 +653,6 @@ body::before {
   background: var(--bubble-bg);
 }
 .case-page__cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
-/* обложка кейса Tele2 про номера: голубой фон и цифры «+707» по центру, как на карточке */
-.case-page__cover--tele2 { display: flex; align-items: center; justify-content: center; background: #d4eafc; }
-.case-page__cover--tele2 img { width: auto; height: 75%; object-fit: contain; }
 
 .case-page__section { margin: 72px 4px 0; }
 
