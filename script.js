@@ -396,12 +396,12 @@ document.querySelectorAll('.phones--scroll').forEach((box) => {
     .observe(header, { attributes: true, attributeFilter: ['class'] });
 })();
 
-// Стекло у краёв экрана: верхнее и нижнее, по 6 слоёв прогрессивного размытия (стили — .edge-glass в style.css)
+// Стекло у краёв экрана: верхнее и нижнее, по 3 слоя прогрессивного размытия (стили — .edge-glass в style.css)
 (function () {
   const make = (el, side) => {
     el.classList.add('edge-glass', 'edge-glass--' + side);
     el.setAttribute('aria-hidden', 'true');
-    el.innerHTML = '<i></i><i></i><i></i><i></i><i></i><i></i>';
+    el.innerHTML = '<i></i><i></i><i></i>';
   };
   const bottom = document.querySelector('.bottom-glass') || document.body.appendChild(document.createElement('div'));
   make(bottom, 'bottom');

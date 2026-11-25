@@ -402,14 +402,14 @@ a.menu__item:hover { color: var(--text-muted); }
 .case__link:hover { text-decoration: underline; }
 
 /* ---------- Стекло у верхнего и нижнего края экрана ----------
-   Прогрессивное размытие без тонировки: 6 слоёв стекла с размытием 1–32px,
-   каждый виден только в своей полосе. К краю экрана размытие нарастает, к середине исчезает.
+   Прогрессивное размытие без тонировки: 3 перекрывающихся слоя (2, 6 и 16px),
+   каждый плавно проявляется к краю экрана, поэтому размытие нарастает мягко, без полос.
    Слои создаёт script.js внутри .edge-glass */
 .edge-glass {
   position: fixed;
   left: 0;
   right: 0;
-  height: 120px;
+  height: 100px;
   z-index: 9;            /* под шапкой (у неё 10) */
   pointer-events: none;  /* не мешает кликам */
 }
@@ -417,34 +417,19 @@ a.menu__item:hover { color: var(--text-muted); }
 .edge-glass--top    { top: 0;    --dir: to top; }
 .edge-glass > i { position: absolute; inset: 0; }
 .edge-glass > i:nth-child(1) {
-  -webkit-backdrop-filter: blur(1px); backdrop-filter: blur(1px);
-  -webkit-mask-image: linear-gradient(var(--dir), transparent 12.5%, #000 25.0%, #000 37.5%, transparent 50.0%);
-          mask-image: linear-gradient(var(--dir), transparent 12.5%, #000 25.0%, #000 37.5%, transparent 50.0%);
+  -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
+  -webkit-mask-image: linear-gradient(var(--dir), transparent 0%, #000 55%);
+          mask-image: linear-gradient(var(--dir), transparent 0%, #000 55%);
 }
 .edge-glass > i:nth-child(2) {
-  -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
-  -webkit-mask-image: linear-gradient(var(--dir), transparent 25.0%, #000 37.5%, #000 50.0%, transparent 62.5%);
-          mask-image: linear-gradient(var(--dir), transparent 25.0%, #000 37.5%, #000 50.0%, transparent 62.5%);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  -webkit-mask-image: linear-gradient(var(--dir), transparent 25%, #000 85%);
+          mask-image: linear-gradient(var(--dir), transparent 25%, #000 85%);
 }
 .edge-glass > i:nth-child(3) {
-  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
-  -webkit-mask-image: linear-gradient(var(--dir), transparent 37.5%, #000 50.0%, #000 62.5%, transparent 75.0%);
-          mask-image: linear-gradient(var(--dir), transparent 37.5%, #000 50.0%, #000 62.5%, transparent 75.0%);
-}
-.edge-glass > i:nth-child(4) {
-  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
-  -webkit-mask-image: linear-gradient(var(--dir), transparent 50.0%, #000 62.5%, #000 75.0%, transparent 87.5%);
-          mask-image: linear-gradient(var(--dir), transparent 50.0%, #000 62.5%, #000 75.0%, transparent 87.5%);
-}
-.edge-glass > i:nth-child(5) {
   -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
-  -webkit-mask-image: linear-gradient(var(--dir), transparent 62.5%, #000 75.0%, #000 87.5%, transparent 100.0%);
-          mask-image: linear-gradient(var(--dir), transparent 62.5%, #000 75.0%, #000 87.5%, transparent 100.0%);
-}
-.edge-glass > i:nth-child(6) {
-  -webkit-backdrop-filter: blur(32px); backdrop-filter: blur(32px);
-  -webkit-mask-image: linear-gradient(var(--dir), transparent 75.0%, #000 87.5%, #000 100%);
-          mask-image: linear-gradient(var(--dir), transparent 75.0%, #000 87.5%, #000 100%);
+  -webkit-mask-image: linear-gradient(var(--dir), transparent 55%, #000 100%);
+          mask-image: linear-gradient(var(--dir), transparent 55%, #000 100%);
 }
 
 /* чтобы последний кейс можно было докрутить выше стекла */
