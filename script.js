@@ -396,7 +396,7 @@ document.querySelectorAll('.phones--scroll').forEach((box) => {
     .observe(header, { attributes: true, attributeFilter: ['class'] });
 })();
 
-// Стекло у краёв экрана: верхнее и нижнее, по 3 слоя прогрессивного размытия (стили — .edge-glass в style.css)
+// Стекло у нижнего края экрана: по 3 слоя прогрессивного размытия (стили — .edge-glass в style.css)
 (function () {
   const make = (el, side) => {
     el.classList.add('edge-glass', 'edge-glass--' + side);
@@ -405,7 +405,4 @@ document.querySelectorAll('.phones--scroll').forEach((box) => {
   };
   const bottom = document.querySelector('.bottom-glass') || document.body.appendChild(document.createElement('div'));
   make(bottom, 'bottom');
-  const top = document.createElement('div');
-  make(top, 'top');
-  document.body.insertBefore(top, document.body.firstChild);
 })();
