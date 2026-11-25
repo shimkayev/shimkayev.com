@@ -395,3 +395,24 @@ document.querySelectorAll('.phones--scroll').forEach((box) => {
   new MutationObserver(() => { if (header.classList.contains('is-hidden')) set(false); })
     .observe(header, { attributes: true, attributeFilter: ['class'] });
 })();
+
+// Анимированная обложка: раскладываем надпись по буквам по окружности
+(function () {
+  const N = 48; // сколько букв на кольце
+  document.querySelectorAll('.cover-orbit__ring[data-orbit-text]').forEach((ring) => {
+    const base = ring.dataset.orbitText;
+    let text = '';
+    while (text.length < N) text += base;
+    text = text.slice(0, N);
+    const spin = document.createElement('span');
+    spin.className = 'cover-orbit__spin';
+    spin.style.setProperty('--n', N);
+    [...text].forEach((ch, i) => {
+      const s = document.createElement('span');
+      s.textContent = ch;
+      s.style.setProperty('--i', i);
+      spin.appendChild(s);
+    });
+    ring.appendChild(spin);
+  });
+})();

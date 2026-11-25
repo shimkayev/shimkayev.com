@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Портфолио</title>
-  <link rel="stylesheet" href="style.css?v=150">
+  <link rel="stylesheet" href="style.css?v=151">
   <!-- Прячем элементы до анимации появления и сразу применяем сохранённую тему, чтобы не было мигания -->
   <script>
     (function () {
@@ -149,8 +149,11 @@
       </article>
 
       <article class="case" data-reveal>
-        <a draggable="false" class="case__cover" href="abusiness.html" aria-label="Редизайн мобильного банка для бизнеса">
-          <img draggable="false" src="images/case-alfa-cover.webp?v=2" alt="Руки держат iPhone с главным экраном приложения Альфа-Банка для бизнеса" loading="lazy">
+        <a draggable="false" class="case__cover cover-orbit" href="abusiness.html" aria-label="Редизайн мобильного банка для бизнеса">
+          <img class="cover-orbit__bg" draggable="false" src="images/alfa-orbit-bg.webp" alt="Смартфон с главным экраном приложения Альфа-Банка для бизнеса" loading="lazy">
+          <span class="cover-orbit__ring cover-orbit__ring--back" data-orbit-text="ALFA BUSINESS • " aria-hidden="true"></span>
+          <img class="cover-orbit__phone" draggable="false" src="images/alfa-orbit-phone.webp" alt="" aria-hidden="true" loading="lazy">
+          <span class="cover-orbit__ring cover-orbit__ring--front" data-orbit-text="ALFA BUSINESS • " aria-hidden="true"></span>
         </a>
         <h3 class="case__title">Редизайн мобильного банка для&nbsp;бизнеса</h3>
         <p class="case__text">Вместе с&nbsp;командой выяснил, почему предприниматели не&nbsp;справляются с&nbsp;базовыми задачами в&nbsp;приложении, и&nbsp;переделал ключевые сценарии и&nbsp;навигацию под их&nbsp;реальное поведение.</p>
