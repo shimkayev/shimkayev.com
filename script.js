@@ -441,7 +441,6 @@ document.querySelectorAll('.phones--scroll').forEach((box) => {
 
     const cosX = Math.cos(TILT_X), sinX = Math.sin(TILT_X);
     const cosZ = Math.cos(TILT_Z), sinZ = Math.sin(TILT_Z);
-    const zDeg = TILT_Z * 180 / Math.PI;
 
     const draw = (t) => {
       const turn = -((t - start) % PERIOD) / PERIOD * Math.PI * 2;
@@ -453,7 +452,14 @@ document.querySelectorAll('.phones--scroll').forEach((box) => {
         const x2 = x0 * cosZ - y1 * sinZ, y2 = x0 * sinZ + y1 * cosZ; // rotateZ
         const k = p / (p - z1);                                // перспектива
         const facing = Math.cos(a);                            // >0 — буква смотрит на нас
-        const tf = 'translate(' + (cx + x2 * k) + 'px,' + (cy + y2 * k) + 'px) translate(-50%,-50%) rotate(' + zDeg + 'deg) scale(' + (facing * k) + ',' + k + ')';
+        // буква лежит на ленте кольца: её горизонталь идёт по касательной к кольцу, вертикаль — вдоль оси кольца.
+        // Проецируем оба направления так же, как точку, и собираем из них 2D-матрицу
+        const sa = Math.sin(a);
+        const tx = (facing * cosZ - sa * sinX * sinZ) * k;
+        const ty = (facing * sinZ + sa * sinX * cosZ) * k;
+        const ux = -cosX * sinZ * k;
+        const uy = cosX * cosZ * k;
+        const tf = 'translate(' + (cx + x2 * k) + 'px,' + (cy + y2 * k) + 'px) matrix(' + tx + ',' + ty + ',' + ux + ',' + uy + ',0,0) translate(-50%,-50%)';
         frontEls[i].style.transform = tf;
         backEls[i].style.transform = tf;
         const isFront = facing > 0;
