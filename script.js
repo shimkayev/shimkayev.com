@@ -1,3 +1,13 @@
+// Чистые адреса: если страницу открыли по старой ссылке с .html (или /index.html),
+// убираем это из адресной строки без перезагрузки
+(function () {
+  const p = location.pathname;
+  if (/\.html$/.test(p)) {
+    const clean = p.replace(/index\.html$/, '').replace(/\.html$/, '') || '/';
+    history.replaceState(null, '', clean + location.search + location.hash);
+  }
+})();
+
 // Стартовый экран «Напиши мне»: пока посетитель не нажал «Отправить», анимации главной ждут
 const introEl = document.querySelector('.intro');
 const introPending = !!introEl && document.documentElement.classList.contains('has-intro');
