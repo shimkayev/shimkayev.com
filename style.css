@@ -410,14 +410,14 @@ a.menu__item:hover { color: var(--text-muted); }
   height: 120px;
   z-index: 9;
   pointer-events: none; /* не мешает кликам */
-  /* стекло: размывает контент под собой и слегка тонирует в цвет фона.
-     Маска с мягкой кривой («scrim») плавно гасит эффект к краю, без резкой границы */
-  background: color-mix(in srgb, var(--bg) 55%, transparent);
+  /* стекло-линза: у края экрана контент преломляется (растягивается и смещается), как в толстом стекле.
+     Маска с мягкой кривой («scrim») плавно гасит эффект к середине экрана, без резкой границы */
+  background: color-mix(in srgb, var(--bg) 30%, transparent);
   -webkit-backdrop-filter: blur(14px) saturate(180%);
           backdrop-filter: blur(14px) saturate(180%);
-  /* преломление: SVG-фильтр #glass-refract искривляет контент под стеклом, как толстое стекло.
-     Где браузер не умеет url() в backdrop-filter (Safari), остаётся обычное размытие строкой выше */
-          backdrop-filter: url(#glass-refract) blur(4px) saturate(180%);
+  /* преломление: SVG-фильтр-линза (script.js) сдвигает контент к краю всё сильнее — край «увеличивает»,
+     как кромка толстого стекла. Где браузер не умеет url() в backdrop-filter (Safari), остаётся размытие строкой выше */
+          backdrop-filter: url(#glass-lens-bottom) blur(1px) saturate(160%);
   -webkit-mask-image: linear-gradient(to top,
     rgba(0, 0, 0, 1) 0%,
     rgba(0, 0, 0, 0.742) 19%,
@@ -459,14 +459,14 @@ body::before {
   height: 120px;
   z-index: 9; /* под шапкой (у неё 10) */
   pointer-events: none;
-  /* стекло: размывает контент под собой и слегка тонирует в цвет фона.
-     Маска с мягкой кривой («scrim») плавно гасит эффект к краю, без резкой границы */
-  background: color-mix(in srgb, var(--bg) 55%, transparent);
+  /* стекло-линза: у края экрана контент преломляется (растягивается и смещается), как в толстом стекле.
+     Маска с мягкой кривой («scrim») плавно гасит эффект к середине экрана, без резкой границы */
+  background: color-mix(in srgb, var(--bg) 30%, transparent);
   -webkit-backdrop-filter: blur(14px) saturate(180%);
           backdrop-filter: blur(14px) saturate(180%);
-  /* преломление: SVG-фильтр #glass-refract искривляет контент под стеклом, как толстое стекло.
-     Где браузер не умеет url() в backdrop-filter (Safari), остаётся обычное размытие строкой выше */
-          backdrop-filter: url(#glass-refract) blur(4px) saturate(180%);
+  /* преломление: SVG-фильтр-линза (script.js) сдвигает контент к краю всё сильнее — край «увеличивает»,
+     как кромка толстого стекла. Где браузер не умеет url() в backdrop-filter (Safari), остаётся размытие строкой выше */
+          backdrop-filter: url(#glass-lens-top) blur(1px) saturate(160%);
   -webkit-mask-image: linear-gradient(to bottom,
     rgba(0, 0, 0, 1) 0%,
     rgba(0, 0, 0, 0.742) 19%,

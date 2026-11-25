@@ -396,18 +396,29 @@ document.querySelectorAll('.phones--scroll').forEach((box) => {
     .observe(header, { attributes: true, attributeFilter: ['class'] });
 })();
 
-// Фильтр преломления для стекла у краёв экрана: шум искривляет то, что под стеклом
+// Фильтры-линзы для стекла у краёв экрана. Карта смещения — плавный градиент (без шума):
+// чем ближе к краю экрана, тем сильнее контент берётся «изнутри» экрана, и край выглядит как толстое стекло
 (function () {
   const ns = 'http://www.w3.org/2000/svg';
+  // карта: зелёный канал 128 = без сдвига; меньше — берём пиксели выше, больше — ниже
+  const map = (from, to) => 'data:image/svg+xml,' + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" preserveAspectRatio="none">' +
+    '<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">' +
+    '<stop offset="0" stop-color="rgb(128,' + from + ',128)"/>' +
+    '<stop offset="0.55" stop-color="rgb(128,' + Math.round((from * 3 + to) / 4) + ',128)"/>' +
+    '<stop offset="1" stop-color="rgb(128,' + to + ',128)"/>' +
+    '</linearGradient></defs><rect width="100" height="100" fill="url(#g)"/></svg>');
+  const lens = (id, from, to) =>
+    '<filter id="' + id + '" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">' +
+      '<feImage href="' + map(from, to) + '" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="m"/>' +
+      '<feDisplacementMap in="SourceGraphic" in2="m" scale="70" xChannelSelector="R" yChannelSelector="G"/>' +
+    '</filter>';
   const svg = document.createElementNS(ns, 'svg');
   svg.setAttribute('width', '0');
   svg.setAttribute('height', '0');
   svg.setAttribute('aria-hidden', 'true');
   svg.style.position = 'absolute';
-  svg.innerHTML =
-    '<filter id="glass-refract" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">' +
-      '<feTurbulence type="fractalNoise" baseFrequency="0.006 0.018" numOctaves="2" seed="4" result="noise"/>' +
-      '<feDisplacementMap in="SourceGraphic" in2="noise" scale="36" xChannelSelector="R" yChannelSelector="G"/>' +
-    '</filter>';
+  // низ: вверху полосы без сдвига, у края экрана берём пиксели выше; верх — наоборот
+  svg.innerHTML = lens('glass-lens-bottom', 128, 20) + lens('glass-lens-top', 236, 128);
   document.body.appendChild(svg);
 })();
