@@ -407,11 +407,25 @@ a.menu__item:hover { color: var(--text-muted); }
   left: 0;
   right: 0;
   bottom: 0;
-  height: 96px;
+  height: 120px;
   z-index: 9;
   pointer-events: none; /* не мешает кликам */
-  /* плавный градиент в цвет фона: белый в светлой теме, чёрный в тёмной */
-  background: linear-gradient(to top, var(--bg) 0%, transparent 100%);
+  /* градиент в цвет фона с мягкой кривой (как «scrim»), без резкой границы:
+     белый в светлой теме, чёрный в тёмной */
+  background: linear-gradient(to top,
+    color-mix(in srgb, var(--bg) 100%, transparent) 0%,
+    color-mix(in srgb, var(--bg) 74.2%, transparent) 19%,
+    color-mix(in srgb, var(--bg) 54.1%, transparent) 34%,
+    color-mix(in srgb, var(--bg) 38.2%, transparent) 47%,
+    color-mix(in srgb, var(--bg) 28.5%, transparent) 56.5%,
+    color-mix(in srgb, var(--bg) 19.4%, transparent) 65%,
+    color-mix(in srgb, var(--bg) 12.8%, transparent) 73%,
+    color-mix(in srgb, var(--bg) 7.9%, transparent) 80.2%,
+    color-mix(in srgb, var(--bg) 4.5%, transparent) 86.1%,
+    color-mix(in srgb, var(--bg) 2.3%, transparent) 91%,
+    color-mix(in srgb, var(--bg) 0.9%, transparent) 95.2%,
+    color-mix(in srgb, var(--bg) 0.2%, transparent) 98.2%,
+    color-mix(in srgb, var(--bg) 0%, transparent) 100%);
 }
 
 
@@ -422,10 +436,23 @@ body::before {
   left: 0;
   right: 0;
   top: 0;
-  height: 96px;
+  height: 120px;
   z-index: 9; /* под шапкой (у неё 10) */
   pointer-events: none;
-  background: linear-gradient(to bottom, var(--bg) 0%, transparent 100%);
+  background: linear-gradient(to bottom,
+    color-mix(in srgb, var(--bg) 100%, transparent) 0%,
+    color-mix(in srgb, var(--bg) 74.2%, transparent) 19%,
+    color-mix(in srgb, var(--bg) 54.1%, transparent) 34%,
+    color-mix(in srgb, var(--bg) 38.2%, transparent) 47%,
+    color-mix(in srgb, var(--bg) 28.5%, transparent) 56.5%,
+    color-mix(in srgb, var(--bg) 19.4%, transparent) 65%,
+    color-mix(in srgb, var(--bg) 12.8%, transparent) 73%,
+    color-mix(in srgb, var(--bg) 7.9%, transparent) 80.2%,
+    color-mix(in srgb, var(--bg) 4.5%, transparent) 86.1%,
+    color-mix(in srgb, var(--bg) 2.3%, transparent) 91%,
+    color-mix(in srgb, var(--bg) 0.9%, transparent) 95.2%,
+    color-mix(in srgb, var(--bg) 0.2%, transparent) 98.2%,
+    color-mix(in srgb, var(--bg) 0%, transparent) 100%);
 }
 
 /* чтобы последний кейс можно было докрутить выше стекла */
