@@ -1699,8 +1699,11 @@ a.menu__item:hover { color: var(--text-muted); }
 .case-page__section li a:hover { text-decoration: underline; }
 
 /* CV: по клику скачивается PDF, рядом иконка скачивания */
-.menu__item--cv { display: inline-flex; align-items: center; gap: 4px; }
-.menu__item--cv svg { flex-shrink: 0; color: var(--text-muted); position: relative; top: 1px; } /* иконка серая; сдвиг на 1px — по центру заглавных букв */
+.menu__item--cv,
+.menu__item--ext { display: inline-flex; align-items: center; gap: 4px; }
+.menu__item--cv svg,
+.menu__item--ext svg { flex-shrink: 0; color: var(--text-muted); position: relative; top: 1px; } /* иконка серая; сдвиг на 1px — по центру заглавных букв */
+/* Telegram и LinkedIn: стрелка вправо-вверх — внешняя ссылка */
 
 /* в мобильной версии пункт CV в меню не показываем */
 @media (max-width: 720px) {
