@@ -396,29 +396,16 @@ document.querySelectorAll('.phones--scroll').forEach((box) => {
     .observe(header, { attributes: true, attributeFilter: ['class'] });
 })();
 
-// Фильтры-линзы для стекла у краёв экрана. Карта смещения — плавный градиент (без шума):
-// чем ближе к краю экрана, тем сильнее контент берётся «изнутри» экрана, и край выглядит как толстое стекло
+// Стекло у краёв экрана: верхнее и нижнее, по 6 слоёв прогрессивного размытия (стили — .edge-glass в style.css)
 (function () {
-  const ns = 'http://www.w3.org/2000/svg';
-  // карта: зелёный канал 128 = без сдвига; меньше — берём пиксели выше, больше — ниже
-  const map = (from, to) => 'data:image/svg+xml,' + encodeURIComponent(
-    '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" preserveAspectRatio="none">' +
-    '<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">' +
-    '<stop offset="0" stop-color="rgb(128,' + from + ',128)"/>' +
-    '<stop offset="0.55" stop-color="rgb(128,' + Math.round((from * 3 + to) / 4) + ',128)"/>' +
-    '<stop offset="1" stop-color="rgb(128,' + to + ',128)"/>' +
-    '</linearGradient></defs><rect width="100" height="100" fill="url(#g)"/></svg>');
-  const lens = (id, from, to) =>
-    '<filter id="' + id + '" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">' +
-      '<feImage href="' + map(from, to) + '" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="m"/>' +
-      '<feDisplacementMap in="SourceGraphic" in2="m" scale="70" xChannelSelector="R" yChannelSelector="G"/>' +
-    '</filter>';
-  const svg = document.createElementNS(ns, 'svg');
-  svg.setAttribute('width', '0');
-  svg.setAttribute('height', '0');
-  svg.setAttribute('aria-hidden', 'true');
-  svg.style.position = 'absolute';
-  // низ: вверху полосы без сдвига, у края экрана берём пиксели выше; верх — наоборот
-  svg.innerHTML = lens('glass-lens-bottom', 128, 20) + lens('glass-lens-top', 236, 128);
-  document.body.appendChild(svg);
+  const make = (el, side) => {
+    el.classList.add('edge-glass', 'edge-glass--' + side);
+    el.setAttribute('aria-hidden', 'true');
+    el.innerHTML = '<i></i><i></i><i></i><i></i><i></i><i></i>';
+  };
+  const bottom = document.querySelector('.bottom-glass') || document.body.appendChild(document.createElement('div'));
+  make(bottom, 'bottom');
+  const top = document.createElement('div');
+  make(top, 'top');
+  document.body.insertBefore(top, document.body.firstChild);
 })();

@@ -401,100 +401,77 @@ a.menu__item:hover { color: var(--text-muted); }
 }
 .case__link:hover { text-decoration: underline; }
 
-/* ---------- Стекло внизу экрана ---------- */
-.bottom-glass {
+/* ---------- Стекло у верхнего и нижнего края экрана ----------
+   Как в iOS (Liquid Glass, край прокрутки): прогрессивное размытие — несколько слоёв стекла
+   с нарастающей силой размытия, каждый виден только в своей полосе. У края экрана размытие сильное,
+   к середине плавно сходит на нет, без двоения и без резкой границы. Сверху — мягкий тон в цвет фона.
+   Слои создаёт script.js внутри .edge-glass */
+.edge-glass {
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 0;
   height: 120px;
-  z-index: 9;
-  pointer-events: none; /* не мешает кликам */
-  /* стекло-линза: у края экрана контент преломляется (растягивается и смещается), как в толстом стекле.
-     Маска с мягкой кривой («scrim») плавно гасит эффект к середине экрана, без резкой границы */
-  background: color-mix(in srgb, var(--bg) 30%, transparent);
-  -webkit-backdrop-filter: blur(14px) saturate(180%);
-          backdrop-filter: blur(14px) saturate(180%);
-  /* преломление: SVG-фильтр-линза (script.js) сдвигает контент к краю всё сильнее — край «увеличивает»,
-     как кромка толстого стекла. Где браузер не умеет url() в backdrop-filter (Safari), остаётся размытие строкой выше */
-          backdrop-filter: url(#glass-lens-bottom) blur(1px) saturate(160%);
-  -webkit-mask-image: linear-gradient(to top,
-    rgba(0, 0, 0, 1) 0%,
-    rgba(0, 0, 0, 0.742) 19%,
-    rgba(0, 0, 0, 0.541) 34%,
-    rgba(0, 0, 0, 0.382) 47%,
-    rgba(0, 0, 0, 0.285) 56.5%,
-    rgba(0, 0, 0, 0.194) 65%,
-    rgba(0, 0, 0, 0.128) 73%,
-    rgba(0, 0, 0, 0.079) 80.2%,
-    rgba(0, 0, 0, 0.045) 86.1%,
-    rgba(0, 0, 0, 0.023) 91%,
-    rgba(0, 0, 0, 0.009) 95.2%,
-    rgba(0, 0, 0, 0.002) 98.2%,
-    rgba(0, 0, 0, 0) 100%);
-          mask-image: linear-gradient(to top,
-    rgba(0, 0, 0, 1) 0%,
-    rgba(0, 0, 0, 0.742) 19%,
-    rgba(0, 0, 0, 0.541) 34%,
-    rgba(0, 0, 0, 0.382) 47%,
-    rgba(0, 0, 0, 0.285) 56.5%,
-    rgba(0, 0, 0, 0.194) 65%,
-    rgba(0, 0, 0, 0.128) 73%,
-    rgba(0, 0, 0, 0.079) 80.2%,
-    rgba(0, 0, 0, 0.045) 86.1%,
-    rgba(0, 0, 0, 0.023) 91%,
-    rgba(0, 0, 0, 0.009) 95.2%,
-    rgba(0, 0, 0, 0.002) 98.2%,
-    rgba(0, 0, 0, 0) 100%);
+  z-index: 9;            /* под шапкой (у неё 10) */
+  pointer-events: none;  /* не мешает кликам */
 }
-
-
-/* такой же градиент сверху экрана: контент плавно уходит под шапку */
-body::before {
-  content: "";
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 120px;
-  z-index: 9; /* под шапкой (у неё 10) */
-  pointer-events: none;
-  /* стекло-линза: у края экрана контент преломляется (растягивается и смещается), как в толстом стекле.
-     Маска с мягкой кривой («scrim») плавно гасит эффект к середине экрана, без резкой границы */
-  background: color-mix(in srgb, var(--bg) 30%, transparent);
-  -webkit-backdrop-filter: blur(14px) saturate(180%);
-          backdrop-filter: blur(14px) saturate(180%);
-  /* преломление: SVG-фильтр-линза (script.js) сдвигает контент к краю всё сильнее — край «увеличивает»,
-     как кромка толстого стекла. Где браузер не умеет url() в backdrop-filter (Safari), остаётся размытие строкой выше */
-          backdrop-filter: url(#glass-lens-top) blur(1px) saturate(160%);
-  -webkit-mask-image: linear-gradient(to bottom,
-    rgba(0, 0, 0, 1) 0%,
-    rgba(0, 0, 0, 0.742) 19%,
-    rgba(0, 0, 0, 0.541) 34%,
-    rgba(0, 0, 0, 0.382) 47%,
-    rgba(0, 0, 0, 0.285) 56.5%,
-    rgba(0, 0, 0, 0.194) 65%,
-    rgba(0, 0, 0, 0.128) 73%,
-    rgba(0, 0, 0, 0.079) 80.2%,
-    rgba(0, 0, 0, 0.045) 86.1%,
-    rgba(0, 0, 0, 0.023) 91%,
-    rgba(0, 0, 0, 0.009) 95.2%,
-    rgba(0, 0, 0, 0.002) 98.2%,
-    rgba(0, 0, 0, 0) 100%);
-          mask-image: linear-gradient(to bottom,
-    rgba(0, 0, 0, 1) 0%,
-    rgba(0, 0, 0, 0.742) 19%,
-    rgba(0, 0, 0, 0.541) 34%,
-    rgba(0, 0, 0, 0.382) 47%,
-    rgba(0, 0, 0, 0.285) 56.5%,
-    rgba(0, 0, 0, 0.194) 65%,
-    rgba(0, 0, 0, 0.128) 73%,
-    rgba(0, 0, 0, 0.079) 80.2%,
-    rgba(0, 0, 0, 0.045) 86.1%,
-    rgba(0, 0, 0, 0.023) 91%,
-    rgba(0, 0, 0, 0.009) 95.2%,
-    rgba(0, 0, 0, 0.002) 98.2%,
-    rgba(0, 0, 0, 0) 100%);
+.edge-glass--bottom { bottom: 0; --dir: to bottom; background: linear-gradient(to top,
+    color-mix(in srgb, var(--bg) 70%, transparent) 0%,
+    color-mix(in srgb, var(--bg) 51.9%, transparent) 19%,
+    color-mix(in srgb, var(--bg) 37.9%, transparent) 34%,
+    color-mix(in srgb, var(--bg) 26.7%, transparent) 47%,
+    color-mix(in srgb, var(--bg) 19.9%, transparent) 56.5%,
+    color-mix(in srgb, var(--bg) 13.6%, transparent) 65%,
+    color-mix(in srgb, var(--bg) 9.0%, transparent) 73%,
+    color-mix(in srgb, var(--bg) 5.5%, transparent) 80.2%,
+    color-mix(in srgb, var(--bg) 3.1%, transparent) 86.1%,
+    color-mix(in srgb, var(--bg) 1.6%, transparent) 91%,
+    color-mix(in srgb, var(--bg) 0.6%, transparent) 95.2%,
+    color-mix(in srgb, var(--bg) 0.1%, transparent) 98.2%,
+    color-mix(in srgb, var(--bg) 0%, transparent) 100%); }
+.edge-glass--top    { top: 0;    --dir: to top;    background: linear-gradient(to bottom,
+    color-mix(in srgb, var(--bg) 70%, transparent) 0%,
+    color-mix(in srgb, var(--bg) 51.9%, transparent) 19%,
+    color-mix(in srgb, var(--bg) 37.9%, transparent) 34%,
+    color-mix(in srgb, var(--bg) 26.7%, transparent) 47%,
+    color-mix(in srgb, var(--bg) 19.9%, transparent) 56.5%,
+    color-mix(in srgb, var(--bg) 13.6%, transparent) 65%,
+    color-mix(in srgb, var(--bg) 9.0%, transparent) 73%,
+    color-mix(in srgb, var(--bg) 5.5%, transparent) 80.2%,
+    color-mix(in srgb, var(--bg) 3.1%, transparent) 86.1%,
+    color-mix(in srgb, var(--bg) 1.6%, transparent) 91%,
+    color-mix(in srgb, var(--bg) 0.6%, transparent) 95.2%,
+    color-mix(in srgb, var(--bg) 0.1%, transparent) 98.2%,
+    color-mix(in srgb, var(--bg) 0%, transparent) 100%); }
+.edge-glass > i { position: absolute; inset: 0; }
+.edge-glass > i:nth-child(1) {
+  -webkit-backdrop-filter: blur(0.5px); backdrop-filter: blur(0.5px);
+  -webkit-mask-image: linear-gradient(var(--dir), transparent 0.0%, #000 12.5%, #000 25.0%, transparent 37.5%);
+          mask-image: linear-gradient(var(--dir), transparent 0.0%, #000 12.5%, #000 25.0%, transparent 37.5%);
+}
+.edge-glass > i:nth-child(2) {
+  -webkit-backdrop-filter: blur(1px); backdrop-filter: blur(1px);
+  -webkit-mask-image: linear-gradient(var(--dir), transparent 12.5%, #000 25.0%, #000 37.5%, transparent 50.0%);
+          mask-image: linear-gradient(var(--dir), transparent 12.5%, #000 25.0%, #000 37.5%, transparent 50.0%);
+}
+.edge-glass > i:nth-child(3) {
+  -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
+  -webkit-mask-image: linear-gradient(var(--dir), transparent 25.0%, #000 37.5%, #000 50.0%, transparent 62.5%);
+          mask-image: linear-gradient(var(--dir), transparent 25.0%, #000 37.5%, #000 50.0%, transparent 62.5%);
+}
+.edge-glass > i:nth-child(4) {
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  -webkit-mask-image: linear-gradient(var(--dir), transparent 37.5%, #000 50.0%, #000 62.5%, transparent 75.0%);
+          mask-image: linear-gradient(var(--dir), transparent 37.5%, #000 50.0%, #000 62.5%, transparent 75.0%);
+}
+.edge-glass > i:nth-child(5) {
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  -webkit-mask-image: linear-gradient(var(--dir), transparent 50.0%, #000 62.5%, #000 75.0%, transparent 87.5%);
+          mask-image: linear-gradient(var(--dir), transparent 50.0%, #000 62.5%, #000 75.0%, transparent 87.5%);
+}
+.edge-glass > i:nth-child(6) {
+  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+  -webkit-mask-image: linear-gradient(var(--dir), transparent 62.5%, #000 75.0%);
+          mask-image: linear-gradient(var(--dir), transparent 62.5%, #000 75.0%);
 }
 
 /* чтобы последний кейс можно было докрутить выше стекла */
