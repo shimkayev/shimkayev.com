@@ -403,10 +403,10 @@ document.querySelectorAll('.phones--scroll').forEach((box) => {
 (function () {
   const covers = document.querySelectorAll('.cover-orbit');
   if (!covers.length) return;
-  const N = 48;                    // букв на кольце
-  const R = 0.29;                  // радиус кольца, доля ширины обложки
-  const FONT = 0.046;              // размер букв, доля ширины
-  const CY = 0.52;                 // высота центра кольца, доля высоты
+  const N = 64;                    // букв на кольце
+  const R = 0.34;                  // радиус кольца, доля ширины обложки
+  const FONT = 0.047;              // размер букв, доля ширины
+  const CY = 0.54;                 // высота центра кольца, доля высоты
   const TILT_X = -14 * Math.PI / 180;  // кольцо видно чуть сверху
   const TILT_Z = -7 * Math.PI / 180;   // наклон как у телефона
   const PERSP = 1.2;               // перспектива, доля ширины

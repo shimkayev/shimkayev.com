@@ -1802,6 +1802,10 @@ body::before {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* кроп крупнее: телефон ближе, его верх примерно на 16% высоты, низ уходит за край.
+     Фон и вырезка телефона масштабируются одинаково, поэтому совпадают */
+  transform: scale(1.35);
+  transform-origin: 56% -38.6%;
 }
 .cover-orbit__ring {
   position: absolute;
