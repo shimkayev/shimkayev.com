@@ -417,10 +417,13 @@ document.querySelectorAll('.phones--scroll').forEach((box) => {
   make(bottom, 'bottom');
 })();
 
-// Аналитика в Clarity: отмечаем важные действия, чтобы видеть их счётчиками и фильтровать записи
+// Аналитика (Clarity и Яндекс Метрика): отмечаем важные действия, чтобы видеть их счётчиками и фильтровать записи
 // (скачал CV, перешёл в Telegram или LinkedIn, открыл кейс)
 (function () {
-  const track = (name) => { if (typeof window.clarity === 'function') window.clarity('event', name); };
+  const track = (name) => {
+    if (typeof window.clarity === 'function') window.clarity('event', name);
+    if (typeof window.ym === 'function') window.ym(114692680, 'reachGoal', name); // цель в Яндекс Метрике
+  };
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a');
     if (!a) return;
