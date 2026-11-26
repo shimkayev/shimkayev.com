@@ -1702,3 +1702,12 @@ a.menu__item:hover { color: var(--text-muted); }
   color: var(--text-muted);
   text-align: center;
 }
+
+/* обложки кейсов: светлая картинка в светлой теме, тёмная — в тёмной */
+img.cover-dark { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) img.cover-light { display: none; }
+  :root:not([data-theme="light"]) img.cover-dark { display: block; }
+}
+:root[data-theme="dark"] img.cover-light { display: none; }
+:root[data-theme="dark"] img.cover-dark { display: block; }
