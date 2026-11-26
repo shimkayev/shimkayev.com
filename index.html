@@ -19,7 +19,9 @@
       var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
       root.classList.toggle('is-dark', dark);
       // стартовый экран «напиши мне» показываем один раз за визит
-      try { if (!sessionStorage.getItem('introDone')) root.classList.add('has-intro'); } catch (e) {}
+      // стартовый экран «Привет» не показываем, если страница открыта внутри другого окна —
+      // например, в карте кликов Яндекс Метрики: там нужна сама главная, а не приветствие
+      try { if (!sessionStorage.getItem('introDone') && window.self === window.top) root.classList.add('has-intro'); } catch (e) {}
     })();
   </script>
   <!-- Яндекс Метрика: посещения, Вебвизор, карты кликов и скроллинга -->
