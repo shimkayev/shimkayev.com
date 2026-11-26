@@ -8,17 +8,9 @@
   }
 })();
 
-// Стартовый экран «Напиши мне»: пока посетитель не нажал «Отправить», анимации главной ждут
-const introEl = document.querySelector('.intro');
-const introPending = !!introEl && document.documentElement.classList.contains('has-intro');
-const whenReady = (fn) => {
-  if (introPending) document.addEventListener('intro:done', fn, { once: true });
-  else fn();
-};
-
 // Плавное появление: элементы, видимые при открытии страницы, появляются по очереди.
 // Всё, что ниже первого экрана, показывается сразу, без анимации.
-whenReady(function () {
+(function () {
   const items = document.querySelectorAll('[data-reveal]');
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const STEP = 0.1; // задержка между элементами, сек
@@ -39,7 +31,7 @@ whenReady(function () {
       el.removeEventListener('animationend', done);
     });
   });
-});
+})();
 
 // Звук печати: короткий щелчок клавиши, синтезируется на лету (без аудиофайла).
 // Браузеры не дают играть звук, пока человек не кликнул или не нажал клавишу на странице,
@@ -224,8 +216,7 @@ const sound = (function () {
     tick();
   };
 
-  // после стартового экрана отвечаю чуть позже — сначала появляется сообщение посетителя
-  whenReady(() => setTimeout(type, DOTS_DELAY + (introPending ? 500 : 0)));
+  setTimeout(type, DOTS_DELAY);
   const replay = () => { if (!typing) setTimeout(type, 50); };
   bubble.addEventListener('click', replay);
 
@@ -298,38 +289,6 @@ const sound = (function () {
 // В Safari на iPhone :active срабатывает, только если на странице есть обработчик касаний —
 // нужен для эффекта нажатия на карточки кейсов
 document.addEventListener('touchstart', function () {}, { passive: true });
-
-// Отправка сообщения со стартового экрана
-(function () {
-  if (!introPending) return;
-  const root = document.documentElement;
-  const form = introEl.querySelector('.intro__composer');
-  const out = document.querySelector('.bubble-out');
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let sent = false;
-
-  // Enter тоже отправляет приветствие
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !sent) { e.preventDefault(); form.requestSubmit ? form.requestSubmit() : form.dispatchEvent(new Event('submit', { cancelable: true })); }
-  });
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    if (sent) return;
-    sent = true;
-    if (out) out.textContent = 'Привет 👋';
-    try { sessionStorage.setItem('introDone', '1'); } catch (err) {}
-    introEl.classList.add('is-leaving');
-    setTimeout(() => {
-      root.classList.remove('has-intro');
-      root.classList.add('intro-sent');
-      introEl.remove();
-      window.scrollTo(0, 0);
-      document.dispatchEvent(new Event('intro:done'));
-    }, reduce ? 0 : 450);
-  });
-})();
-
 
 // Карточки с экранами: на компьютере листаются перетаскиванием мышью.
 // Привязку браузера на компьютере выключили в CSS, поэтому после отпускания карточку

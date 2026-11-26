@@ -1497,111 +1497,6 @@ a.menu__item:hover { color: var(--text-muted); }
 /* по клику бабл печатает приветствие заново, со звуком */
 .bubble { cursor: pointer; -webkit-user-select: none; user-select: none; }
 
-/* ---------- Стартовый экран «Напиши мне» ---------- */
-.intro { display: none; } /* без JS и при повторном заходе в рамках визита — сразу главная */
-.has-intro .intro {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px 16px;
-  background: var(--bg);
-}
-.has-intro body { overflow: hidden; } /* главная под стартовым экраном не прокручивается */
-
-.intro__inner {
-  width: 100%;
-  max-width: 520px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  animation: reveal 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-}
-/* имя в самом верху экрана, на высоте шапки главной (20px сверху, 56px высотой) */
-.intro__name {
-  position: absolute;
-  top: 20px;
-  left: 0;
-  right: 0;
-  line-height: 56px;
-  text-align: center;
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--text-muted);
-  animation: reveal 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-}
-@media (prefers-reduced-motion: reduce) { .intro__name { animation: none; } }
-.intro__composer { display: flex; gap: 8px; } /* только поле и кнопка, по центру экрана */
-/* приветствие нельзя менять — это не поле ввода, а готовое сообщение */
-.intro__input {
-  width: 240px;
-  display: flex;
-  align-items: center;
-  cursor: default;
-  -webkit-user-select: none;
-          user-select: none;
-  height: 56px;
-  padding: 0 22px;
-  border-radius: 999px;
-  border: 0;
-  background: var(--bubble-bg);
-  font: inherit;
-  font-size: 17px;
-  color: var(--text);
-  outline: none;
-}
-.intro__send {
-  flex-shrink: 0;
-  width: 56px;
-  height: 56px;
-  border: 0;
-  border-radius: 50%;
-  background: #0a84ff;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  transition: background-color 0.2s, transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-.intro__send:hover { background: #0071e3; }
-.intro__send:active { transform: scale(0.92); transition-duration: 0.1s; }
-.intro__send:focus-visible { outline: 2px solid #0a84ff; outline-offset: 3px; }
-
-/* уход стартового экрана после «Отправить» */
-.intro.is-leaving { opacity: 0; transition: opacity 0.45s ease; }
-.intro.is-leaving .intro__inner { transform: translateY(-16px) scale(0.98); transition: transform 0.45s ease; }
-
-/* сообщение посетителя на главной — синий бабл справа, над моим ответом */
-.hero { position: relative; }
-.bubble-out { display: none; }
-.intro-sent .bubble-out {
-  position: absolute;
-  right: 4px;
-  bottom: calc(100% + 12px);
-  display: block;
-  max-width: 80%;
-  padding: 10px 16px;
-  border-radius: 21px 21px 6px 21px;
-  background: #0a84ff;
-  color: #fff;
-  font-size: 17px;
-  line-height: 22px;
-  letter-spacing: -0.01em;
-  white-space: pre-wrap;
-  transform-origin: bottom right;
-  animation: bubble-in 0.45s cubic-bezier(.2, .9, .3, 1.2) both;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .intro__inner, .intro-sent .bubble-out { animation: none; }
-  .intro.is-leaving, .intro.is-leaving .intro__inner { transition: none; }
-}
-
 /* ══ Eye tracker ═══════════════════════════════════════════
    From Bencho (bencho.dev, MIT). See watcher.js. The frame holds
    the largest ball the Size knob allows, so the wall never
@@ -1687,9 +1582,20 @@ a.menu__item:hover { color: var(--text-muted); }
 @keyframes pet-caret {
   50% { opacity: 0; }}
 
-/* ── на этом сайте: на стартовом экране, слева от приветствия ──
-   Размер по самому шарику (56px, как поле и кнопка), а не 200×200 */
-.intro__eyes.eyt { flex-shrink: 0; width: auto; height: auto; }
+/* ── на этом сайте: на главной, в левом нижнем углу экрана ──
+   Размер по самому шарику (56px), а не 200×200; поверх стеклянного градиента снизу */
+.eyes-corner.eyt {
+  position: fixed;
+  left: 24px;
+  bottom: 24px;
+  z-index: 11;
+  width: auto;
+  height: auto;
+  pointer-events: none;
+}
+@media (max-width: 600px) {
+  .eyes-corner.eyt { left: 16px; bottom: 16px; }
+}
 
 
 /* ссылки внутри текста кейсов (например, отсылка к другому кейсу) */

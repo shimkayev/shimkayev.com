@@ -7,7 +7,7 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=163">
+  <link rel="stylesheet" href="style.css?v=164">
   <!-- Прячем элементы до анимации появления и сразу применяем сохранённую тему, чтобы не было мигания -->
   <script>
     (function () {
@@ -18,15 +18,6 @@
       if (saved === 'light' || saved === 'dark') root.dataset.theme = saved;
       var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
       root.classList.toggle('is-dark', dark);
-      // стартовый экран «напиши мне» показываем один раз за визит
-      // В карте кликов Метрики (страница открыта внутри другого окна) стартовый экран не показываем,
-      // чтобы была видна сама главная. Чтобы посмотреть клики по экрану «Привет»,
-      // в карте кликов открой адрес с #intro: https://shimkayev.com/#intro
-      try {
-        var framed = window.self !== window.top;
-        var forceIntro = location.hash === '#intro';
-        if (forceIntro || (!framed && !sessionStorage.getItem('introDone'))) root.classList.add('has-intro');
-      } catch (e) {}
     })();
   </script>
   <!-- Яндекс Метрика: посещения, Вебвизор, карты кликов и скроллинга -->
@@ -42,24 +33,6 @@
   <noscript><div><img src="https://mc.yandex.ru/watch/114692680" style="position:absolute; left:-9999px;" alt=""></div></noscript>
 </head>
 <body>
-
-  <!-- Стартовый экран: посетитель «отправляет» мне сообщение, а на главной я ему отвечаю.
-       Нажатие «Отправить» — действие человека, поэтому браузер разрешает звук печати -->
-  <div class="intro" role="dialog" aria-modal="true" aria-label="Начать диалог">
-    <p class="intro__name">Shimkayev Aman</p>
-    <div class="intro__inner">
-      <form class="intro__composer">
-        <!-- круглый с глазами (Eye tracker из Bencho): следит за курсором -->
-        <div class="intro__eyes" data-eye-tracker></div>
-        <span class="intro__input">Привет 👋</span>
-        <button class="intro__send" type="submit" aria-label="Отправить">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M12 19V5M5 12l7-7 7 7"/>
-          </svg>
-        </button>
-      </form>
-    </div>
-  </div>
 
   <div class="container">
     <header class="header">
@@ -107,8 +80,6 @@
     </header>
 
     <section class="hero">
-      <!-- сообщение посетителя со стартового экрана -->
-      <p class="bubble-out" aria-live="polite"></p>
       <p class="bubble" data-reveal data-text="Привет 👋  Я, Аман">
         <span class="bubble__typing" aria-hidden="true"><i></i><i></i><i></i></span>
         <span class="bubble__text"></span>
@@ -180,11 +151,14 @@
     </section>
   </div>
 
+  <!-- шарик с глазами в левом нижнем углу: следит за курсором -->
+  <div class="eyes-corner" data-eye-tracker aria-hidden="true"></div>
+
   <!-- Градиент внизу экрана -->
   <div class="bottom-glass" aria-hidden="true"></div>
 
 
-  <script src="script.js?v=43"></script>
+  <script src="script.js?v=44"></script>
   <script src="watcher.js?v=4"></script>
 </body>
 </html>
