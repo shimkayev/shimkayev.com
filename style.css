@@ -294,6 +294,11 @@ a.menu__item:hover { color: var(--text-muted); }
 /* картинку и ссылку нельзя утащить мышкой при зажатии */
 .case__cover, .case__cover img { -webkit-user-drag: none; }
 .case__cover:active { transform: scale(0.97); transition-duration: 0.1s; }
+/* наведение мышью: обложка чуть увеличивается (только на устройствах с курсором) */
+@media (hover: hover) and (pointer: fine) {
+  .case__cover:hover { transform: scale(1.02); }
+  .case__cover:active { transform: scale(0.97); }
+}
 @media (prefers-reduced-motion: reduce) { .case__cover { transition: none; } }
 
 .case__cover img {
