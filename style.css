@@ -588,6 +588,21 @@ a.menu__item:hover { color: var(--text-muted); }
 /* ---------- Отзывы ---------- */
 .page__title--section { margin-top: 120px; }
 
+/* ---------- Обо мне: вводный текст перед опытом работы ---------- */
+.about-intro {
+  margin: 24px 4px 0;
+  font-size: 15px;
+  line-height: 24px;
+}
+.about-intro p + p { margin-top: 12px; }
+.about-intro__lead {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.about-intro p.about-intro__lead + p { margin-top: 20px; }
+
 .reviews {
   list-style: none;
   margin-top: 40px;
@@ -1711,3 +1726,6 @@ img.cover-dark { display: none; }
 }
 :root[data-theme="dark"] img.cover-light { display: none; }
 :root[data-theme="dark"] img.cover-dark { display: block; }
+
+/* слово с дефисом не разрывается на две строки */
+.nowrap { white-space: nowrap; }
