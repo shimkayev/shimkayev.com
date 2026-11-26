@@ -433,3 +433,34 @@ document.querySelectorAll('.phones--scroll').forEach((box) => {
     else if (/^\/(abusiness|tele2-number|tele2-ds)$/.test(href)) track('case_open_' + href.slice(1));
   });
 })();
+
+// Цели Метрики на страницах кейсов:
+// «дочитал кейс» — посетитель долистал до последнего раздела (Выводы / Документация);
+// «смотрел кейс больше 1 и 3 минут» — считаем только время, когда вкладка открыта и видна
+(function () {
+  const m = location.pathname.match(/\/(abusiness|tele2-number|tele2-ds)(\.html)?$/);
+  if (!m) return;
+  const caseId = m[1];
+  const goal = (name) => { if (typeof window.ym === 'function') window.ym(114692680, 'reachGoal', name); };
+
+  const sections = document.querySelectorAll('.case-page__section');
+  const last = sections[sections.length - 1];
+  if (last && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        goal('case_finished_' + caseId);
+        io.disconnect();
+      }
+    }, { threshold: 0.2 });
+    io.observe(last.querySelector('h2') || last);
+  }
+
+  let seconds = 0;
+  const marks = { 60: 'case_read_60s_', 180: 'case_read_180s_' };
+  const timer = setInterval(() => {
+    if (document.visibilityState !== 'visible') return;
+    seconds += 1;
+    if (marks[seconds]) goal(marks[seconds] + caseId);
+    if (seconds >= 180) clearInterval(timer);
+  }, 1000);
+})();
