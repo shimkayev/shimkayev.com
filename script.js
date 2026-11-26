@@ -416,3 +416,18 @@ document.querySelectorAll('.phones--scroll').forEach((box) => {
   const bottom = document.querySelector('.bottom-glass') || document.body.appendChild(document.createElement('div'));
   make(bottom, 'bottom');
 })();
+
+// Аналитика в Clarity: отмечаем важные действия, чтобы видеть их счётчиками и фильтровать записи
+// (скачал CV, перешёл в Telegram или LinkedIn, открыл кейс)
+(function () {
+  const track = (name) => { if (typeof window.clarity === 'function') window.clarity('event', name); };
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a');
+    if (!a) return;
+    const href = a.getAttribute('href') || '';
+    if (href.endsWith('cv.pdf')) track('cv_download');
+    else if (href.includes('t.me/')) track('telegram_click');
+    else if (href.includes('linkedin.com/')) track('linkedin_click');
+    else if (/^\/(abusiness|tele2-number|tele2-ds)$/.test(href)) track('case_open_' + href.slice(1));
+  });
+})();
