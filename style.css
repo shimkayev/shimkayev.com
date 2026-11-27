@@ -486,6 +486,10 @@ a.menu__item:hover { color: var(--text-muted); }
   .avatar-link:hover .avatar-preview { opacity: 1; transform: none; }
 }
 @media (prefers-reduced-motion: reduce) { .avatar-preview { transition: none; } }
+/* в тёмной теме — другая аватарка (и в шапке, и в превью при наведении) */
+.avatar--dark { display: none !important; }
+.is-dark .avatar--light { display: none !important; }
+.is-dark .avatar--dark { display: block !important; }
 /* на широком экране аватар прижат к левому краю экрана (как переключатель темы к правому),
    а меню занимает всю ширину контейнера */
 @media (min-width: 721px) {

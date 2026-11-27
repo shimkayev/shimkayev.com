@@ -7,7 +7,7 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=168">
+  <link rel="stylesheet" href="style.css?v=169">
   <!-- Прячем элементы до анимации появления и сразу применяем сохранённую тему, чтобы не было мигания -->
   <script>
     (function () {
@@ -37,8 +37,9 @@
   <div class="container">
     <header class="header">
       <a class="avatar-link" href="/" aria-label="На главную">
-        <img class="avatar" data-reveal src="images/avatar.jpg?v=5" alt="Аман" width="56" height="56">
-        <span class="avatar-preview" aria-hidden="true"><img src="images/avatar-large.webp?v=3" alt="" width="240" height="240" draggable="false"></span>
+        <img class="avatar avatar--light" data-reveal src="images/avatar.jpg?v=5" alt="Аман" width="56" height="56">
+        <img class="avatar avatar--dark" data-reveal src="images/avatar-dark.jpg?v=1" alt="Аман" width="56" height="56">
+        <span class="avatar-preview" aria-hidden="true"><img class="avatar--light" src="images/avatar-large.webp?v=3" alt="" width="240" height="240" draggable="false"><img class="avatar--dark" src="images/avatar-dark-large.webp?v=1" alt="" width="240" height="240" draggable="false" loading="lazy"></span>
       </a>
 
       <!-- Город — рядом с аватаром -->
